@@ -69,6 +69,17 @@ Read the JSON output. Branch on:
   k8s-helm`. There is no backend/frontend architecture preset to pick — the
   core `backend-engineer` / `frontend-engineer` handle those by reading the
   codebase (see Stage 3 + `docs/setup/conform-to-codebase.md`).
+- **`plugins` → required-plugin readiness (DO NOT skip this check).** The
+  workflow depends on two Claude Code plugins (install via `/plugin` →
+  `claude-plugins-official`; see `docs/setup/plugin-dependencies.md`):
+  - `pr-review-toolkit: false` → **blocking-ish**: Gate 4b (quality review)
+    dispatches its reviewers. Without it, warn loudly and tell the operator
+    the gate falls back to the built-in `feature-dev:code-reviewer` +
+    `senior-tech-lead` (degraded). Strongly recommend installing it first.
+  - `superpowers: false` → **warn**: A001/A003 + the fix flow invoke its
+    skills (TDD / verification / systematic-debugging). Without it those
+    won't auto-invoke, but the inline A-rules + `discipline-red-flags.md`
+    still apply. Recommend installing it.
 
 Report Stage 0 summary as the first interactive checkpoint:
 
@@ -80,6 +91,9 @@ Git: 247 commits in last 6 months
 Existing install: no
 Sibling installs: ../service-billing (1 found)
 Presets: none required (core is architecture-agnostic; k8s-helm only if you deploy via Helm)
+Plugins: superpowers ✓ · pr-review-toolkit ✗ ← REQUIRED for Gate 4b
+  ⚠ install pr-review-toolkit (/plugin → claude-plugins-official) before the first sprint,
+    or the 6-gate review falls back to feature-dev:code-reviewer (degraded).
 Proceed? [Y/n]
 ```
 

@@ -34,6 +34,11 @@ git clone https://github.com/Maximumsoft-Co-LTD/claude-flightdeck.git ~/code/cla
 
 **Prereqs:** `bash` + `git` (installer) · `jq` (hooks — `brew install jq` /
 `apt install jq`) · optional `gh` (CI gate + `/flightdeck-feedback`).
+**Claude Code plugins** (install via `/plugin` → `claude-plugins-official`):
+**`pr-review-toolkit`** (required — drives the 6-gate quality review) and
+**`superpowers`** (strongly recommended — TDD / verification / debugging
+skills the rules invoke). `/onboard` Stage 0 checks both. Details +
+graceful-degradation: [`docs/setup/plugin-dependencies.md`](core/docs/setup/plugin-dependencies.md).
 **Windows:** use `install.ps1` (PowerShell) or WSL — see
 [`docs/windows-install.md`](docs/windows-install.md).
 

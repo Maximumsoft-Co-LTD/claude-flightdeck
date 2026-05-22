@@ -17,6 +17,7 @@
 #     "sibling_installs":  ["../service-a", "../service-b", ...],
 #     "presets_recommended": ["k8s-helm"],            // only the shipped infra preset; core is architecture-agnostic
 #     "arch_fit":          {"k8s-helm":"high|low"},   // does the repo actually use this preset?
+#     "plugins":           {"superpowers":true|false,"pr-review-toolkit":true|false},  // required-plugin readiness
 #     "git_repo":         true|false,
 #     "git_commits":      <int>
 #   }
@@ -132,6 +133,23 @@ grep -lsq '"next"'  "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null 
 grep -lsq '"vue"'   "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null && FRAMEWORKS+=("vue")
 grep -lsq '"react"' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null && FRAMEWORKS+=("react")
 
+# ---------- Claude Code plugin readiness ----------
+# The workflow leans on two plugins. `pr-review-toolkit` is required for the
+# 6-gate review (Gate 4b dispatches its reviewers); `superpowers` is strongly
+# recommended (TDD / verification / debugging skills the A-rules invoke).
+# Source of truth: ~/.claude/plugins/installed_plugins.json (honor CLAUDE_CONFIG_DIR).
+PLUGINS_JSON="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/plugins/installed_plugins.json"
+have_plugin() {  # $1 = plugin short name (without @marketplace)
+  [[ -f "$PLUGINS_JSON" ]] || return 1
+  if command -v jq >/dev/null 2>&1; then
+    jq -e --arg p "$1" '(.plugins // {}) | keys[] | select(startswith($p + "@"))' "$PLUGINS_JSON" >/dev/null 2>&1
+  else
+    grep -q "\"$1@" "$PLUGINS_JSON" 2>/dev/null
+  fi
+}
+have_plugin superpowers       && SP=true  || SP=false
+have_plugin pr-review-toolkit && PRT=true || PRT=false
+
 # Preset recommendation — only the infra preset is shipped; everything else is
 # handled by the architecture-agnostic core engineers + onboarding-learned
 # code-style.md. (Opinionated-architecture presets are now custom/opt-in.)
@@ -194,6 +212,7 @@ printf '"manifest":%s,' "$MANIFEST"
 printf '"sibling_installs":'; json_array "${SIBLINGS[@]:-}"; printf ','
 printf '"presets_recommended":'; json_array "${PRESETS[@]:-}"; printf ','
 printf '"arch_fit":%s,' "$ARCH_FIT_JSON"
+printf '"plugins":{"superpowers":%s,"pr-review-toolkit":%s},' "$SP" "$PRT"
 printf '"git_repo":%s,' "$GIT_REPO"
 printf '"git_commits":%s' "$GIT_COMMITS"
 printf '}\n'

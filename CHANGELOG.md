@@ -13,6 +13,30 @@
 
 - (none yet)
 
+## v0.8.1 — 2026-05-22
+
+The **"plugin prerequisites"** release — makes the two Claude Code plugins the
+workflow depends on explicit, and checks for them at onboard time.
+
+### Added
+
+- **`core/docs/setup/plugin-dependencies.md`** — documents the required
+  `pr-review-toolkit` (drives Gate 4b) and strongly-recommended `superpowers`
+  (TDD / verification / debugging skills the A-rules invoke), how to install
+  them (`/plugin` → `claude-plugins-official`), and what degrades if missing.
+- **`detect-topology.sh`** now emits a `plugins` object
+  (`{"superpowers":bool,"pr-review-toolkit":bool}`) by reading
+  `~/.claude/plugins/installed_plugins.json` (honors `CLAUDE_CONFIG_DIR`).
+- **`/onboard` Stage 0** reads it and **warns** when either plugin is missing
+  — pr-review-toolkit as near-blocking (Gate 4b falls back to the built-in
+  `feature-dev:code-reviewer`, degraded), superpowers as a recommendation
+  (the inline A-rules still apply).
+
+### Changed
+
+- **`README.md`** prereqs + **`docs/INDEX.md`** setup table now list the
+  plugin prerequisites.
+
 ## v0.8.0 — 2026-05-22
 
 The **"learn the codebase"** release — the template no longer imposes an

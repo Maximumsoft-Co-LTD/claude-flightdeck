@@ -125,6 +125,7 @@ Full architecture rationale:
 
 | Doc | When you read it |
 |---|---|
+| [`plugin-dependencies`](./setup/plugin-dependencies.md) | First time — install the required `pr-review-toolkit` + `superpowers` plugins |
 | [`workflow-master`](./setup/workflow-master.md) | First time — the end-to-end S1-S7 pipeline |
 | [`workflow-rules`](./setup/workflow-rules.md) | First time — the universal rules across stages |
 | [`lesson-trigger-map`](./setup/lesson-trigger-map.md) | Before touching unfamiliar code — "if touching X → apply L###" |
