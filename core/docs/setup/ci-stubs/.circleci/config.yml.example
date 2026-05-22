@@ -1,0 +1,97 @@
+# CircleCI stub — 6-gate post-delegation review
+# Drop into .circleci/config.yml at repo root (rename without .example).
+# Mirror of .github/workflows/post-delegation-gate.yml — see
+# docs/setup/ci-integration.md for adaptation notes.
+
+version: 2.1
+
+orbs:
+  go: circleci/go@1.11
+  node: circleci/node@5.2
+  python: circleci/python@2.1
+
+executors:
+  ubuntu:
+    docker:
+      - image: cimg/base:stable
+    resource_class: medium
+
+jobs:
+  post-delegation-gate:
+    executor: ubuntu
+    steps:
+      - checkout
+      - run:
+          name: Gate 1 — Inspect
+          command: |
+            git fetch --no-tags origin "${CIRCLE_BRANCH:-main}"
+            BASE="${CIRCLE_PR_BASE_BRANCH:-main}"
+            echo "== Diff stat vs $BASE =="
+            git diff --stat "origin/$BASE...HEAD" || true
+            git diff --name-only "origin/$BASE...HEAD" || true
+            SECRETS=$(git diff --name-only "origin/$BASE...HEAD" \
+              | grep -E '(\.env(\..+)?$|credentials|secrets?\.ya?ml|id_rsa|\.pem$)' || true)
+            if [ -n "$SECRETS" ]; then echo "WARN: likely-sensitive files: $SECRETS"; fi
+
+      - run:
+          name: Gate 2 — Build + Test
+          command: |
+            if [ -f Makefile ] && grep -qE '^(build|test):' Makefile; then
+              make build && make test
+            elif [ -f go.mod ]; then
+              go build ./... && go test ./...
+            elif [ -f package.json ]; then
+              npm ci && npm test
+            elif [ -f pyproject.toml ] || [ -f setup.py ]; then
+              pip install -e . && pytest
+            else
+              echo "WARN: no recognized stack; skipping Gate 2."
+            fi
+
+      - run:
+          name: Gate 3 — Boundary
+          command: |
+            if [ -f Makefile ] && grep -qE '^verify-isolation:' Makefile; then
+              make verify-isolation
+            else
+              echo "NOTICE: no verify-isolation target; skipping."
+            fi
+
+      - run:
+          name: Gate 4 — Quality (manual / agent)
+          command: |
+            echo "Gate 4 — Quality is a manual + reviewer-agent gate in PR review."
+            echo "See docs/playbooks/post-delegation-review.md §Gate 4."
+
+      - run:
+          name: Gate 5 — Wiring (advisory)
+          command: |
+            set +e
+            COMP=$(git ls-files | grep -E '(cmd/.*/main\.(go|ts|js)$|src/main\.(go|ts|js|py)$|index\.(ts|js)$)' || true)
+            [ -z "$COMP" ] && { echo "no composition root found"; exit 0; }
+            # CircleCI exposes only the PR URL via env; full body requires the API.
+            # Use the most recent commit message as a coarse proxy.
+            git log -1 --format=%B > /tmp/pr.txt
+            SYMS=$(grep -oE '\b(New|Register|Wire|Bind)[A-Z][A-Za-z0-9]+' /tmp/pr.txt | sort -u || true)
+            [ -z "$SYMS" ] && { echo "no symbol candidates"; exit 0; }
+            MISSING=""
+            for s in $SYMS; do grep -rqE "\b${s}\b" $COMP || MISSING="$MISSING $s"; done
+            if [ -n "$MISSING" ]; then echo "WARN: not in composition root:$MISSING"; fi
+            exit 0
+
+      - run:
+          name: Gate 6 — Smoke
+          command: |
+            if [ -f Makefile ] && grep -qE '^smoke:' Makefile; then
+              make smoke
+            else
+              echo "NOTICE: no smoke target; skipping."
+            fi
+
+workflows:
+  post-delegation:
+    jobs:
+      - post-delegation-gate:
+          filters:
+            branches:
+              ignore: [main, dev, integration]   # PR-source branches

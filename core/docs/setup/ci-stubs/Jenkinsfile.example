@@ -1,0 +1,117 @@
+// Jenkins declarative pipeline — 6-gate post-delegation review
+// Drop this content into Jenkinsfile at repo root.
+// Mirror of .github/workflows/post-delegation-gate.yml — see
+// docs/setup/ci-integration.md for adaptation notes (agent labels,
+// secret bindings, parallel stages, etc.).
+
+pipeline {
+  agent { label 'linux && docker' }
+
+  options {
+    timeout(time: 30, unit: 'MINUTES')
+    timestamps()
+    ansiColor('xterm')
+  }
+
+  environment {
+    BASE_REF = "${env.CHANGE_TARGET ?: 'main'}"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+        sh 'git fetch --no-tags origin "$BASE_REF"'
+      }
+    }
+
+    stage('Gate 1 — Inspect') {
+      steps {
+        sh '''
+          set -e
+          git diff --stat "origin/$BASE_REF...HEAD" || true
+          git diff --name-only "origin/$BASE_REF...HEAD" || true
+          SECRETS=$(git diff --name-only "origin/$BASE_REF...HEAD" \
+            | grep -E '(\\.env(\\..+)?$|credentials|secrets?\\.ya?ml|id_rsa|\\.pem$)' || true)
+          if [ -n "$SECRETS" ]; then echo "WARN: likely-sensitive files: $SECRETS"; fi
+        '''
+      }
+    }
+
+    stage('Gate 2 — Build + Test') {
+      steps {
+        sh '''
+          set -e
+          if [ -f Makefile ] && grep -qE '^(build|test):' Makefile; then
+            make build && make test
+          elif [ -f go.mod ]; then
+            go build ./... && go test ./...
+          elif [ -f package.json ]; then
+            npm ci && npm test
+          elif [ -f pyproject.toml ] || [ -f setup.py ]; then
+            pip install -e . && pytest
+          else
+            echo "WARN: no recognized stack; skipping Gate 2."
+          fi
+        '''
+      }
+    }
+
+    stage('Gate 3 — Boundary') {
+      steps {
+        sh '''
+          set -e
+          if [ -f Makefile ] && grep -qE '^verify-isolation:' Makefile; then
+            make verify-isolation
+          else
+            echo "NOTICE: no verify-isolation target; skipping."
+          fi
+        '''
+      }
+    }
+
+    // Gate 4 (Quality) is a manual / reviewer-agent gate in PR review.
+    // It does not run in CI by design — see docs/playbooks/post-delegation-review.md.
+
+    stage('Gate 5 — Wiring (advisory)') {
+      // never block on wiring — Jenkins `catchError` keeps green.
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+          sh '''
+            set -e
+            COMP=$(git ls-files | grep -E '(cmd/.*/main\\.(go|ts|js)$|src/main\\.(go|ts|js|py)$|index\\.(ts|js)$)' || true)
+            [ -z "$COMP" ] && { echo "no composition root found"; exit 0; }
+            # CHANGE_BODY is supplied by the Jenkins GitHub/GitLab PR plugin.
+            printf '%s' "${CHANGE_BODY:-}" > /tmp/pr.txt
+            SYMS=$(grep -oE '\\b(New|Register|Wire|Bind)[A-Z][A-Za-z0-9]+' /tmp/pr.txt | sort -u || true)
+            [ -z "$SYMS" ] && { echo "no symbol candidates"; exit 0; }
+            MISSING=""
+            for s in $SYMS; do grep -rqE "\\b${s}\\b" $COMP || MISSING="$MISSING $s"; done
+            if [ -n "$MISSING" ]; then echo "WARN: not in composition root:$MISSING"; fi
+          '''
+        }
+      }
+    }
+
+    stage('Gate 6 — Smoke') {
+      steps {
+        sh '''
+          set -e
+          if [ -f Makefile ] && grep -qE '^smoke:' Makefile; then
+            make smoke
+          else
+            echo "NOTICE: no smoke target; skipping."
+          fi
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      script {
+        currentBuild.description = "6-gate review: see stage results"
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+# {{PROJECT_NAME}} — Backlog
+
+> **Track**: {{PROJECT_NAME}} (`{{AGENT_PREFIX}}-`)
+> **Source-of-truth**: this file. `STATUS.md` reflects the row of the active sprint.
+> **Discipline**: append-only; close items by changing status, never delete. Re-prioritize via row order.
+> **Last updated**: YYYY-MM-DD
+> **Next ID**: B001
+
+Backlog row format reference → [`../designs/_templates/BACKLOG_ENTRY_TEMPLATE.md`](../designs/_templates/BACKLOG_ENTRY_TEMPLATE.md).
+
+## Complexity Scale
+
+| Size | Estimate | Example |
+|------|----------|---------|
+| S | ~1 task group | Seed data, simple config |
+| M | ~2-3 task groups | CRUD backend or frontend |
+| L | ~4-6 task groups | Full feature (backend + frontend + tests) |
+| XL | ~7+ task groups | Complex feature (real-time, multi-repo, etc.) |
+
+---
+
+## Unscheduled
+
+> Items not yet assigned to a sprint, sorted by priority (P0 first).
+
+| ID | Type | Title | Pri | Size | Status |
+|----|------|-------|-----|------|--------|
+| B001 | feat | **Example feature row** — what it does in ≤100 chars | P1 | M | new |
+| B002 | bug | **Example bug row** — short symptom description | P2 | S | new |
+| B003 | enh | **Example enhancement row** — improvement description | P3 | S | new |
+
+---
+
+## Scheduled
+
+> Items assigned to a sprint, grouped by sprint number.
+
+### Sprint S01
+
+| ID | Type | Title | Pri | Size | Status |
+|----|------|-------|-----|------|--------|
+| B0XX | feat | **Example scheduled row** — short description | P1 | M | scheduled S01 |
+| B0XX | feat | **Another scheduled row** — short description | P1 | S | scheduled S01 |
+
+---
+
+## Recently Done
+
+> Move here once a task is closed in the sprint. Move to `## Archive` (collapsed) after a few sprints.
+
+| ID | Type | Title | Pri | Size | Status |
+|----|------|-------|-----|------|--------|
+| B0XX | feat | **Example completed row** — short description | P1 | M | done S01 |
+| B0XX | bug | **Example fixed bug** — short description | P2 | S | done S01 |
+
+---
+
+## Archive
+
+<details>
+<summary>Completed items (older sprints)</summary>
+
+| ID | Type | Title | Pri | Size | Status |
+|----|------|-------|-----|------|--------|
+
+</details>

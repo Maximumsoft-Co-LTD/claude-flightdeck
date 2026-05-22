@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local install fixtures + temp test outputs
+/tmp/
+test.config
+template.config
+
+# Install artifacts that shouldn't end up in the template repo if someone
+# accidentally runs install.sh into its own root:
+/.ai-workflows/
+/.claude.backup-*/
+/.claude.settings.user.json.stash
+
+# Build / lint outputs (none expected; defense in depth)
+*.log
+*.bak
+
+# Backup files left by sed -i on macOS
+*.bak.bak

@@ -1,0 +1,170 @@
+# CLAUDE.md — {{PROJECT_NAME}} (root)
+
+> Root-level orchestrator manual. Cross-area rules + navigation map.
+> Per-area operating details (commands, layout, internal rules) live in
+> each area's own `CLAUDE.md`. Keep this file ≤ 200 lines.
+
+## What this repo is
+
+{{PROJECT_NAME}} — stack: **{{TECH_STACK_DESC}}**. Task IDs use prefix
+`{{TASK_ID_PREFIX}}`. Project slug: `{{PROJECT_SLUG}}`.
+
+> Replace this paragraph with a 2-3 sentence project overview. State
+> what the system does, who consumes it, and the design-doc location
+> (source-of-truth). Example:
+>
+> > Back-office API + Operator portal. Consumed by 3 internal teams +
+> > 1 external SDK. Design source-of-truth:
+> > `docs/superpowers/specs/<dated-design>.md` — read it before
+> > touching architecture.
+
+## Cross-area non-negotiables
+
+Replace this section with the 3-7 rules that are non-negotiable across
+**every** area of your codebase. Examples from the source repos:
+
+### N1. Architecture boundary (per preset)
+
+If you installed a preset that defines an architectural rule (hex
+direction, FSD layers, …), reference its rule file here. e.g.:
+
+> Every Go service follows the import direction
+> `cmd → adapters → usecase → ports → domain`. Run
+> `make verify-isolation` before commit. Full rule:
+> [`.claude/rules/hex-boundaries.md`](.claude/rules/hex-boundaries.md).
+
+### N2. Contract-first for cross-service changes
+
+Cross-service contracts (events, REST API shape) MUST change first, in
+a separate commit, before any downstream code edits. Code follows
+contracts, not the reverse. See
+[`docs/playbooks/contract-first.md`](docs/playbooks/contract-first.md).
+
+### N3. 6-gate post-delegation review (MANDATORY)
+
+Every coding subagent that returns MUST pass 6 gates before merge.
+**Read [`docs/playbooks/post-delegation-review.md`](docs/playbooks/post-delegation-review.md) for the full playbook.**
+
+1. **Inspect** — `git diff --stat` + read the diff (don't trust the
+   subagent's summary)
+2. **Build + Test** — real build + real test in every touched area
+3. **Boundary** — preset-specific architectural check
+4. **Quality (parallel)** — `pr-review-toolkit:{code-reviewer,
+   silent-failure-hunter, type-design-analyzer}` (+
+   `:pr-test-analyzer` if tests touched)
+5. **Wiring (L116)** — composition root has the new code; migrations
+   applied; instrumentation emits
+6. **Integration smoke** — start the system, run the golden path
+   (+ `/design-review` if UI changed)
+
+### N4. Parallel coding conflict prevention (4-layer)
+
+See [`docs/playbooks/parallel-conflict-prevention.md`](docs/playbooks/parallel-conflict-prevention.md). Always: path
+declaration → worktree isolation → contract-first → task dependency
+graph.
+
+### N5. Test-first discipline
+
+Every implementation task starts with a failing test
+(`superpowers:test-driven-development`). No "tests after" — the
+failing-first step is what makes the test meaningful.
+
+### N6. Separation of Duties
+
+For regulated work (auth, secrets, RBAC, financial, anything in
+scope of SOC2 / HIPAA / FedRAMP / SOX), gate 4 reviewer findings
+MUST be acknowledged by a human approver named in the PR's
+`PR-APPROVER:` metadata trailer. The approver cannot be the agent
+or person who authored the code. CODEOWNERS gates the right team is
+involved; the trailer records the named human. See
+[`docs/setup/separation-of-duties.md`](docs/setup/separation-of-duties.md).
+
+> Add N7, N8… as your project demands. Keep to ~7 max.
+
+## Workflow (Discovery → Sprint → Design → Implement → Review → Retro)
+
+End-to-end pipeline: [`docs/setup/workflow-master.md`](docs/setup/workflow-master.md).
+Stages + driver skills + artifacts + bound rules in one table.
+
+Auto-loaded hot rules: [`.claude/rules/brain-hot.md`](.claude/rules/brain-hot.md).
+Mechanical "if touching X → apply Y": [`docs/setup/lesson-trigger-map.md`](docs/setup/lesson-trigger-map.md).
+
+Canonical skills by stage:
+
+| Stage | Skill | Artifact |
+|---|---|---|
+| Discovery | `/discover` | `docs/spec/discovery/D###-slug.md` |
+| Promote backlog → sprint | `/promote` | `docs/spec/sprints/sprint-S<N>.md` row |
+| Pick next task | `/next-task` | (selects from sprint file) |
+| Author D-doc | `design-doc-writer` agent | `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` |
+| Single foreground dispatch | `Agent()` directly | code + tests |
+| Parallel fanout | `/dispatch-parallel` | N parallel commits in worktrees |
+| 6-gate post-dispatch review | `/post-delegation-gate` | review log |
+| UI design fidelity gate | `/design-review` | `docs/spec/reviews/sprint-S<N>-design-review.md` |
+| Mid-sprint progress | `/progress` | (status print) |
+| Live per-task retro | append manually or `/retro --task` | `docs/spec/retros/sprint-S<N>-tasks.md` |
+| Sprint close + audit | `/retro` | `docs/spec/retros/sprint-S<N>.md` |
+| Archive old sprint files | `/archive` | move to `sprints/historical/` |
+
+## Sources of truth + cadence
+
+- **Active sprint**: [`docs/spec/STATUS.md`](docs/spec/STATUS.md)
+  (single-pane glance — A008)
+- **Backlog**: [`docs/spec/backlog.md`](docs/spec/backlog.md)
+- **Task spec**: every task gets a design doc at
+  `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` BEFORE implementation
+  (A005)
+- **Live mini-retros**:
+  `docs/spec/retros/sprint-S<N>-tasks.md` — append after each task
+  closes (A009)
+- **Delegation**: dispatch via `Agent` tool with `subagent_type=...`
+  (see routing below). **Never `claude -p`** (A006)
+
+## Subagent dispatch routing
+
+| If the task is… | Use `subagent_type` | Reads first |
+|---|---|---|
+| Pick next task / orchestrate a sprint phase | `{{AGENT_PREFIX}}-orchestrator` | `docs/spec/STATUS.md` + backlog |
+| Author a ≥500-line design doc | `design-doc-writer` | task brief + relevant area CLAUDE.md |
+| Cross-service design review | `senior-tech-lead` | task design doc + relevant area CLAUDE.md |
+| Sprint close + retro authoring | `sprint-retro-author` | sprint files + live mini-retros |
+| _(preset agents appear here once installed — see `.claude/agents/`)_ | | |
+| Open-ended research / multi-file exploration | `Explore` (built-in) | as needed |
+| Code review (general quality) | `pr-review-toolkit:code-reviewer` | the diff |
+| Silent failure check | `pr-review-toolkit:silent-failure-hunter` | the diff |
+| Type design quality | `pr-review-toolkit:type-design-analyzer` | the diff |
+| Test coverage gap | `pr-review-toolkit:pr-test-analyzer` | the diff |
+| Architectural plan | `feature-dev:code-architect` | relevant CLAUDE.md + design specs |
+
+## Routing the user's request
+
+| If the user asks about… | Read first |
+|---|---|
+| Start a new sprint / pick next task | `docs/spec/STATUS.md` + `docs/spec/backlog.md` → `/next-task` |
+| Add a new feature | the relevant area CLAUDE.md → `/promote` → `/next-task` |
+| Review a UI sprint / catch "green tests but wrong UI" | `/design-review` |
+| Sprint retro / sprint close | `/retro` |
+| Deploy / release | `docs/setup/deployment-workflow.md` + `/deploy` |
+| Local dev setup | this file `## Quick start` + project README |
+
+## Quick start
+
+```bash
+# Replace with your project's bootstrap commands. Examples:
+# make bootstrap            # init submodules, install deps, copy .env
+# make build                # build everything
+# make test                 # run tests
+# make docker-up            # local stack
+# make smoke                # /healthz on every service + golden-path E2E
+```
+
+## See also
+
+- Auto-loaded hot rules: [`.claude/rules/brain-hot.md`](.claude/rules/brain-hot.md)
+- Sub-agent pre-task ritual: [`.claude/rules/agent-pre-task-ritual.md`](.claude/rules/agent-pre-task-ritual.md)
+- When-to-delegate playbook: [`.claude/rules/sub-agent-workflow.md`](.claude/rules/sub-agent-workflow.md)
+- LSP-first navigation: [`.claude/rules/lsp-first.md`](.claude/rules/lsp-first.md)
+- Design templates: [`docs/designs/_templates/`](docs/designs/_templates/)
+- All workflow docs: [`docs/setup/`](docs/setup/)
+- All playbooks: [`docs/playbooks/`](docs/playbooks/)
+- External Brain (if configured): `{{BRAIN_PATH}}`

@@ -1,0 +1,42 @@
+# {{PROJECT_NAME}} — Status
+
+> Source of truth for the {{PROJECT_NAME}} track. Each session updates its row when sprint state changes.
+>
+> **Discipline (per A008 source-of-truth rule)**: Each row holds **CURRENT-SPRINT STATE ONLY** (1-3 sentences). When a sprint closes, **MOVE its prose to `STATUS-archive.md` in the SAME commit** — do NOT append to your row. Active-sprint detail lives in `sprints/sprint-NN.md`, closed-sprint detail in `retros/sprint-NN.md`. `STATUS.md` is a single-pane glance, not a ledger.
+
+## Active per track
+
+| Track | Active sprint | In-flight task | Branch | Last update | Owner session |
+|---|---|---|---|---|---|
+| **{{PROJECT_NAME}}** (`{{AGENT_PREFIX}}-`) | _(replace with your first sprint row, e.g.: **S01 ACTIVE 🚀** — feature description; D-doc landed; X tasks waved)_ | _(in-flight task ID)_ | `main` (or feature branch) | YYYY-MM-DD | main-session |
+| **{{PROJECT_NAME}}** (`{{AGENT_PREFIX}}-`) | _(second track row if you split tracks; otherwise delete this row)_ | _(in-flight task ID)_ | `main` | YYYY-MM-DD | main-session |
+
+## Sprint cadence (target)
+
+| Sprint | Status | Window | Goal |
+|---|---|---|---|
+| **S01** | 🟡 next | week 1 | _(first sprint goal — e.g., scaffold foundation, first contract, first end-to-end)_ |
+| **S02** | 🟡 open | week 2 | _(second sprint goal)_ |
+| **S03** | 🟡 open | week 3 | _(third sprint goal)_ |
+
+## Update protocol
+
+When a session changes its track row:
+
+1. Grep current row by track name (always unique).
+2. **REPLACE** Active sprint / In-flight task / Last update / Owner session columns — do NOT append historical prose.
+3. **MOVE** prior sprint's prose into `STATUS-archive.md` in the SAME commit (or confirm it already lives there). Append-only; preserve verbatim.
+4. Commit with message `docs(status): {{PROJECT_SLUG}} <change-summary>`.
+5. If conflict on merge — both sessions closed at same time; reconcile by reading both rows and combining.
+
+When opening a new sprint:
+
+1. Update this row (REPLACE, not append) + move closed sprint prose to `STATUS-archive.md` in same commit.
+2. Create sprint file at `docs/spec/sprints/sprint-S<NN>.md` (using `_template-sprint.md` or `_templates/BACKLOG_ENTRY_TEMPLATE.md` adapted).
+3. Update `backlog-index.md` track pointer.
+
+## See also
+
+- Active backlog: `backlog.md`
+- Sprint index: `sprints/INDEX.md`
+- Workflow master: `../setup/workflow-master.md`

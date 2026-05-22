@@ -1,0 +1,103 @@
+# GitLab CI stub — 6-gate post-delegation review
+# Drop this content into .gitlab-ci.yml at repo root (or include it).
+# Mirror of .github/workflows/post-delegation-gate.yml — see
+# docs/setup/ci-integration.md for adaptation notes.
+
+stages:
+  - inspect
+  - build_test
+  - boundary
+  - wiring
+  - smoke
+
+variables:
+  GIT_DEPTH: "0"   # full history for diff vs target branch
+
+.default_image: &default_image
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq git jq make curl
+
+# ---- Gate 1 -----------------------------------------------------------
+gate1_inspect:
+  <<: *default_image
+  stage: inspect
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - 'echo "== Diff stat vs $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =="'
+    - git fetch origin "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    - git diff --stat "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD" || true
+    - git diff --name-only "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD" || true
+    - |
+      SECRETS=$(git diff --name-only "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME...HEAD" \
+        | grep -E '(\.env(\..+)?$|credentials|secrets?\.ya?ml|id_rsa|\.pem$)' || true)
+      if [ -n "$SECRETS" ]; then
+        echo "WARN: likely-sensitive files in diff:"; echo "$SECRETS"
+      fi
+
+# ---- Gate 2 -----------------------------------------------------------
+gate2_build_test:
+  <<: *default_image
+  stage: build_test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - |
+      if [ -f Makefile ] && grep -qE '^(build|test):' Makefile; then
+        make build && make test
+      elif [ -f go.mod ]; then
+        apt-get install -y -qq golang-go && go build ./... && go test ./...
+      elif [ -f package.json ]; then
+        apt-get install -y -qq nodejs npm && npm ci && npm test
+      elif [ -f pyproject.toml ] || [ -f setup.py ]; then
+        apt-get install -y -qq python3-pip && pip3 install -e . && pytest
+      else
+        echo "WARN: no recognized stack; skipping Gate 2."
+      fi
+
+# ---- Gate 3 -----------------------------------------------------------
+gate3_boundary:
+  <<: *default_image
+  stage: boundary
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - |
+      if [ -f Makefile ] && grep -qE '^verify-isolation:' Makefile; then
+        make verify-isolation
+      else
+        echo "NOTICE: no verify-isolation Makefile target; skipping."
+      fi
+
+# ---- Gate 5 (wiring) — advisory --------------------------------------
+gate5_wiring:
+  <<: *default_image
+  stage: wiring
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - |
+      COMP=$(git ls-files | grep -E '(cmd/.*/main\.(go|ts|js)$|src/main\.(go|ts|js|py)$|index\.(ts|js)$)' || true)
+      [ -z "$COMP" ] && { echo "no composition root found"; exit 0; }
+      printf '%s' "$CI_MERGE_REQUEST_DESCRIPTION" > /tmp/pr.txt
+      SYMS=$(grep -oE '\b(New|Register|Wire|Bind)[A-Z][A-Za-z0-9]+' /tmp/pr.txt | sort -u || true)
+      [ -z "$SYMS" ] && { echo "no symbol candidates in PR description"; exit 0; }
+      MISSING=""
+      for s in $SYMS; do grep -rqE "\b${s}\b" $COMP || MISSING="$MISSING $s"; done
+      if [ -n "$MISSING" ]; then echo "WARN: not in composition root:$MISSING"; fi
+
+# ---- Gate 6 -----------------------------------------------------------
+gate6_smoke:
+  <<: *default_image
+  stage: smoke
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - |
+      if [ -f Makefile ] && grep -qE '^smoke:' Makefile; then
+        make smoke
+      else
+        echo "NOTICE: no smoke Makefile target; skipping."
+      fi

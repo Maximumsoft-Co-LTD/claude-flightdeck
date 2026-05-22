@@ -1,0 +1,24 @@
+# AI-Workflows install config — copy to template.config and edit, then:
+#   ./install.sh <target-dir> --config template.config
+#
+# Anything you leave blank, the installer will prompt for interactively.
+
+PROJECT_NAME="My Service"
+PROJECT_SLUG="my-service"           # kebab-case; used in branch + agent names
+AGENT_PREFIX="my"                   # produces e.g. my-backend, my-frontend agents
+TASK_ID_PREFIX="MYSVC"              # produces MYSVC-001, MYSVC-002 …
+TECH_STACK_DESC="Go 1.22 + Postgres 16 + Next.js 14"
+
+# Leave BRAIN_PATH blank to use in-repo .claude/memory/.
+# Set it to an Obsidian vault path to share lessons across projects.
+BRAIN_PATH=""
+# BRAIN_PATH="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/your-vault/brain"
+
+# Comma-separated. Available presets:
+#   go-hex        Go hexagonal architecture (engineer + reviewer + kafka + observability + hex rule)
+#   nextjs-fsd    Next.js 14 + Feature-Sliced Design (engineer + FSD layers rule + playwright)
+#   vue-pinia     Vue 3 + Pinia + TS (engineer + Vue patterns)
+#   k8s-helm      Kubernetes + Helm + ArgoCD (engineer + production infra doc)
+#
+# Pass via --preset flag instead of here if you prefer.
+PRESETS=""

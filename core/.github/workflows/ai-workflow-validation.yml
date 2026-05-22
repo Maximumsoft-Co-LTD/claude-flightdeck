@@ -1,0 +1,54 @@
+name: ai-workflow-validation
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: No unrendered placeholders remain
+        run: |
+          set -e
+          MATCHES=$(grep -rEn '\{\{[A-Z_][A-Z0-9_]*\}\}' \
+                      --include='*.md' --include='*.yml' --include='*.yaml' \
+                      --include='*.json' --include='*.sh' --include='*.toml' \
+                      --exclude-dir=node_modules --exclude-dir=.git \
+                      --exclude='*.tmpl' . || true)
+          if [ -n "$MATCHES" ]; then
+            echo "Unrendered placeholders found (run the installer or render templates):"
+            echo "$MATCHES"
+            exit 1
+          fi
+
+      - name: Every .claude/agents/*.md has YAML frontmatter with name + description
+        run: |
+          set -e
+          if [ -d .claude/agents ]; then
+            for f in .claude/agents/*.md; do
+              [ -f "$f" ] || continue
+              head -n 30 "$f" | grep -qE '^name:[[:space:]]+\S' \
+                || { echo "$f: missing 'name:' in frontmatter"; exit 1; }
+              head -n 30 "$f" | grep -qE '^description:[[:space:]]+\S' \
+                || { echo "$f: missing 'description:' in frontmatter"; exit 1; }
+            done
+          fi
+
+      - name: Every .claude/skills/*/SKILL.md has name + description + Token budget heading
+        run: |
+          set -e
+          if [ -d .claude/skills ]; then
+            for f in .claude/skills/*/SKILL.md; do
+              [ -f "$f" ] || continue
+              head -n 30 "$f" | grep -qE '^name:[[:space:]]+\S' \
+                || { echo "$f: missing 'name:' in frontmatter"; exit 1; }
+              head -n 30 "$f" | grep -qE '^description:[[:space:]]+\S' \
+                || { echo "$f: missing 'description:' in frontmatter"; exit 1; }
+              grep -qE '^##[[:space:]]+Token budget' "$f" \
+                || { echo "$f: missing '## Token budget' heading"; exit 1; }
+            done
+          fi

@@ -1,0 +1,94 @@
+# Azure DevOps Pipelines stub — 6-gate post-delegation review
+# Drop into azure-pipelines.yml at repo root.
+# Mirror of .github/workflows/post-delegation-gate.yml — see
+# docs/setup/ci-integration.md for adaptation notes.
+
+trigger: none   # PR-only
+
+pr:
+  branches:
+    include: [main, dev, integration]
+
+pool:
+  vmImage: 'ubuntu-22.04'
+
+variables:
+  BASE_REF: $(System.PullRequest.TargetBranch)
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+    persistCredentials: true
+
+  - script: |
+      set -e
+      git fetch --no-tags origin "$(BASE_REF)"
+    displayName: 'Fetch base branch'
+
+  - script: |
+      set -e
+      echo "== Diff stat vs $(BASE_REF) =="
+      git diff --stat "origin/$(BASE_REF)...HEAD" || true
+      git diff --name-only "origin/$(BASE_REF)...HEAD" || true
+      SECRETS=$(git diff --name-only "origin/$(BASE_REF)...HEAD" \
+        | grep -E '(\.env(\..+)?$|credentials|secrets?\.ya?ml|id_rsa|\.pem$)' || true)
+      if [ -n "$SECRETS" ]; then
+        echo "##vso[task.logissue type=warning]Likely-sensitive files: $SECRETS"
+      fi
+    displayName: 'Gate 1 — Inspect'
+
+  - script: |
+      set -e
+      if [ -f Makefile ] && grep -qE '^(build|test):' Makefile; then
+        make build && make test
+      elif [ -f go.mod ]; then
+        go build ./... && go test ./...
+      elif [ -f package.json ]; then
+        npm ci && npm test
+      elif [ -f pyproject.toml ] || [ -f setup.py ]; then
+        pip install -e . && pytest
+      else
+        echo "##vso[task.logissue type=warning]Gate 2 — no recognized stack; skipping."
+      fi
+    displayName: 'Gate 2 — Build + Test'
+
+  - script: |
+      set -e
+      if [ -f Makefile ] && grep -qE '^verify-isolation:' Makefile; then
+        make verify-isolation
+      else
+        echo "Gate 3 — no verify-isolation target; skipping."
+      fi
+    displayName: 'Gate 3 — Boundary'
+
+  - script: |
+      echo "Gate 4 — Quality is a manual + reviewer-agent gate in PR review."
+      echo "See docs/playbooks/post-delegation-review.md §Gate 4."
+    displayName: 'Gate 4 — Quality (manual)'
+
+  # Gate 5 wiring — advisory only (`continueOnError: true`)
+  - script: |
+      set -e
+      COMP=$(git ls-files | grep -E '(cmd/.*/main\.(go|ts|js)$|src/main\.(go|ts|js|py)$|index\.(ts|js)$)' || true)
+      [ -z "$COMP" ] && { echo "no composition root found"; exit 0; }
+      # System.PullRequest.PullRequestTitle is available; full body
+      # requires the Azure DevOps REST API (out of scope for the stub).
+      printf '%s' "$(System.PullRequest.PullRequestTitle)" > /tmp/pr.txt
+      SYMS=$(grep -oE '\b(New|Register|Wire|Bind)[A-Z][A-Za-z0-9]+' /tmp/pr.txt | sort -u || true)
+      [ -z "$SYMS" ] && { echo "no symbol candidates"; exit 0; }
+      MISSING=""
+      for s in $SYMS; do grep -rqE "\b${s}\b" $COMP || MISSING="$MISSING $s"; done
+      if [ -n "$MISSING" ]; then
+        echo "##vso[task.logissue type=warning]Gate 5 — not in composition root:$MISSING"
+      fi
+    displayName: 'Gate 5 — Wiring (advisory)'
+    continueOnError: true
+
+  - script: |
+      set -e
+      if [ -f Makefile ] && grep -qE '^smoke:' Makefile; then
+        make smoke
+      else
+        echo "Gate 6 — no smoke target; skipping."
+      fi
+    displayName: 'Gate 6 — Smoke'

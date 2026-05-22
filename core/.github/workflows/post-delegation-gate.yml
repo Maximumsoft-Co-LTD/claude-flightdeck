@@ -1,0 +1,196 @@
+name: post-delegation-gate
+
+# PR-blocking implementation of the 6-gate post-delegation review.
+# Authoritative playbook: docs/playbooks/post-delegation-review.md.
+# Each step below maps to one gate; on red, fix and re-run the failing
+# gate before merge. Quality (Gate 4) intentionally runs as a logged
+# no-op in CI — humans + reviewer agents do this in PR review, not CI.
+
+on:
+  pull_request:
+    branches: [main, dev, integration]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  post-delegation-gate:
+    name: 6-gate review
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout (full history for diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect project stack
+        id: detect
+        run: |
+          set -euo pipefail
+          STACK=""
+          [[ -f go.mod        ]] && STACK="$STACK go"
+          [[ -f package.json  ]] && STACK="$STACK node"
+          [[ -f pyproject.toml || -f setup.py ]] && STACK="$STACK python"
+          [[ -f Cargo.toml    ]] && STACK="$STACK rust"
+          STACK="${STACK# }"
+          [[ -z "$STACK" ]] && STACK="unknown"
+          echo "stack=$STACK" >> "$GITHUB_OUTPUT"
+          echo "Detected stack: $STACK"
+
+      # Gate 1 — Inspect: log the diff stat so reviewers see scope at a
+      # glance + flag stray secrets / large binaries via simple grep.
+      - name: Gate 1 — Inspect
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          echo "::group::Diff stat vs $BASE_REF"
+          git diff --stat "origin/$BASE_REF...HEAD" || true
+          echo "::endgroup::"
+          echo "::group::Files changed"
+          git diff --name-only "origin/$BASE_REF...HEAD" || true
+          echo "::endgroup::"
+          # Soft scan for likely-secret files in the diff.
+          SECRETS=$(git diff --name-only "origin/$BASE_REF...HEAD" \
+            | grep -E '(\.env(\..+)?$|credentials|secrets?\.ya?ml|id_rsa|\.pem$)' || true)
+          if [[ -n "$SECRETS" ]]; then
+            echo "::warning::Likely-sensitive files in diff:"
+            echo "$SECRETS"
+          fi
+
+      # Gate 2 — Build + Test: best-effort per detected stack. Each
+      # branch is intentionally minimal; projects override with their
+      # own Makefile target if it exists.
+      - name: Set up Go
+        if: contains(steps.detect.outputs.stack, 'go')
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Set up Node
+        if: contains(steps.detect.outputs.stack, 'node')
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Set up Python
+        if: contains(steps.detect.outputs.stack, 'python')
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: pip
+
+      - name: Gate 2 — Build + Test
+        env:
+          STACK: ${{ steps.detect.outputs.stack }}
+        run: |
+          set -euo pipefail
+          if [[ -f Makefile ]] && grep -qE '^(build|test):' Makefile; then
+            echo "==> make build && make test"
+            make build
+            make test
+          else
+            case "$STACK" in
+              *go*)     echo "==> go build ./... && go test ./..."
+                        go build ./... && go test ./... ;;
+              *node*)   echo "==> npm ci && npm test"
+                        npm ci && npm test ;;
+              *python*) echo "==> pip install -e . && pytest"
+                        pip install -e . && pytest ;;
+              *)        echo "::warning::Gate 2 — no recognized stack; skipping build/test." ;;
+            esac
+          fi
+
+      # Gate 3 — Boundary: run project-specific architectural check if
+      # exposed as a `verify-isolation` Make target. Most preset
+      # projects (go-hex, nextjs-fsd) ship one.
+      - name: Gate 3 — Boundary
+        run: |
+          set -euo pipefail
+          if [[ -f Makefile ]] && grep -qE '^verify-isolation:' Makefile; then
+            echo "==> make verify-isolation"
+            make verify-isolation
+          else
+            echo "::notice::Gate 3 — no 'verify-isolation' Makefile target; skipping."
+            echo "::notice::Add one to enforce architectural boundaries in CI."
+          fi
+
+      # Gate 4 — Quality: humans + reviewer subagents (pr-review-toolkit:*)
+      # run this in PR review, not in CI. CI logs a notice so it's
+      # visible in the run summary.
+      - name: Gate 4 — Quality (manual / agent review)
+        run: |
+          echo "::notice::Gate 4 — Quality is a manual + reviewer-agent gate."
+          echo "::notice::Run pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer} in PR review."
+          echo "::notice::See docs/playbooks/post-delegation-review.md §Gate 4."
+
+      # Gate 5 — Wiring: best-effort grep — if the PR description
+      # mentions new symbols and a composition root exists, check
+      # they're referenced. Always advisory (not blocking).
+      #
+      # SAFETY: PR body is untrusted input. We stage it to a file
+      # (printf via env var, never inlined into a shell template) and
+      # then process with grep — never with eval / shell expansion.
+      - name: Gate 5 — Wiring (advisory)
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+          COMP_ROOTS=$(git ls-files | grep -E '(cmd/.*/main\.(go|ts|js)$|app/main\.(go|ts|js|py)$|src/main\.(go|ts|js|py)$|index\.(ts|js)$)' || true)
+          if [[ -z "$COMP_ROOTS" ]]; then
+            echo "::notice::Gate 5 — no composition-root file found; nothing to grep."
+            exit 0
+          fi
+          echo "Composition roots found:"; echo "$COMP_ROOTS"
+          # Stage PR body to a file so it's pure data (grep is safe on
+          # arbitrary bytes; shell interpolation would not be).
+          PR_BODY_FILE="$(mktemp)"
+          printf '%s' "${PR_BODY:-}" > "$PR_BODY_FILE"
+          SYMS=$(grep -oE '\b(New|Register|Wire|Bind)[A-Z][A-Za-z0-9]+' "$PR_BODY_FILE" | sort -u || true)
+          rm -f "$PR_BODY_FILE"
+          if [[ -z "$SYMS" ]]; then
+            echo "::notice::Gate 5 — no New*/Register* symbol candidates in PR body."
+            exit 0
+          fi
+          MISSING=""
+          for s in $SYMS; do
+            if ! grep -rqE "\b${s}\b" $COMP_ROOTS; then
+              MISSING="$MISSING $s"
+            fi
+          done
+          if [[ -n "$MISSING" ]]; then
+            echo "::warning::Gate 5 — symbols mentioned in PR but not in composition root:$MISSING"
+          else
+            echo "All PR-mentioned symbols are wired into composition root."
+          fi
+
+      # Gate 6 — Integration smoke: run `make smoke` if the project
+      # exposes it. Otherwise log a notice.
+      - name: Gate 6 — Smoke
+        run: |
+          set -euo pipefail
+          if [[ -f Makefile ]] && grep -qE '^smoke:' Makefile; then
+            echo "==> make smoke"
+            make smoke
+          else
+            echo "::notice::Gate 6 — no 'smoke' Makefile target; skipping."
+            echo "::notice::See docs/playbooks/post-delegation-review.md §Gate 6 for the recipe."
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### 6-gate review — summary"
+            echo "| Gate | Status |"
+            echo "|------|--------|"
+            echo "| 1 Inspect | logged |"
+            echo "| 2 Build+Test | see job log |"
+            echo "| 3 Boundary | see job log |"
+            echo "| 4 Quality | manual / agent (PR review) |"
+            echo "| 5 Wiring | advisory (see warnings) |"
+            echo "| 6 Smoke | see job log |"
+          } >> "$GITHUB_STEP_SUMMARY"

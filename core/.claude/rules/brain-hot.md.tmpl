@@ -1,0 +1,163 @@
+# Brain Hot — {{PROJECT_NAME}} hot rules (auto-loaded)
+
+> Condensation of the highest-leverage rules + lessons that apply to ~80%
+> of tasks. Auto-loaded at session start. Full rule text lives in
+> your project's local A### rule file (typically named
+> `{{PROJECT_SLUG}}-local.md` here in `.claude/rules/`, created on
+> demand once you have >5 A011+ rules) and `../../docs/setup/lesson-trigger-map.md`
+> (mechanical "if touching X → apply Y").
+>
+> If a rule below is unclear in context, open the cited source-of-truth
+> file before guessing.
+
+> **Stack:** {{TECH_STACK_DESC}}
+> **Brain:** {{BRAIN_PATH}}  (deeper lessons + retros live here)
+
+---
+
+## The 10 always-apply rules (memorize)
+
+These fire on **every task**. Numbered as A001-A010 so per-project
+overrides can append A011+ at the bottom.
+
+### Coding quality (the non-negotiables)
+
+- **A001 — TDD by default.** Write the failing test FIRST, see it red,
+  then implement until green. Refactor with the test as your safety net.
+  No "I'll add tests after." If the change is unit-testable, TDD is not
+  optional. Invoke `superpowers:test-driven-development` before any
+  implementation. *Why:* the failing-first step is what makes the test
+  meaningful; an after-the-fact test only proves what you already wrote.
+- **A002 — Zero-bug discipline.** Treat every task as a contract: it ships
+  green or it doesn't ship. No silent failures, no "I'll fix the edge
+  case in a follow-up," no commented-out tests. Edge cases identified
+  during impl become tests, not TODOs. If you can't make it green, raise
+  the task back as blocked instead of merging yellow.
+- **A003 — Verification before completion.** Never claim "done" without
+  invoking `superpowers:verification-before-completion`. Run the actual
+  build + test + smoke command; paste the **real output** into your
+  report (not "tests passed"). Evidence before assertions, always.
+- **A004 — 6-gate post-delegation review (MANDATORY).** Every coding
+  subagent that returns must pass all 6 gates before merge.
+  Full playbook: [`../../docs/playbooks/post-delegation-review.md`](../../docs/playbooks/post-delegation-review.md).
+  1. **Inspect**: `git diff --stat` + read the diff. Never trust the
+     subagent's "done" summary.
+  2. **Build + Test**: real build + real test in every touched area;
+     green is the only acceptable state.
+  3. **Boundary / Architecture**: project-specific architectural check
+     (hex direction, FSD layers, RBAC seed, etc. — defined per preset).
+  4. **Quality (parallel reviewers)**: dispatch
+     `pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer}`
+     in a single message. Add `:pr-test-analyzer` if tests touched,
+     `:comment-analyzer` if comments touched.
+  5. **Wiring (L116)**: composition root has the new code; migrations
+     applied; instrumentation emits; topics created; contracts in sync.
+     Compile-green ≠ feature-wired.
+  6. **Integration smoke**: start the system, run the golden path
+     end-to-end. If UI changed: run `/design-review` for real-browser
+     visual fidelity (green unit/type/lint ≠ correct UI).
+- **A005 — Design-doc-first.** Every non-trivial task needs a design doc
+  in `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` MERGED before any code
+  edit. Sprint file = scope; D-doc = how. Skipping this is the single
+  biggest cause of churn.
+
+### Delegation & parallelism
+
+- **A006 — Subagent dispatch via the `Agent` tool.** Use `subagent_type`
+  to pick the right specialist (`{{AGENT_PREFIX}}-orchestrator`,
+  `design-doc-writer`, `senior-tech-lead`, plus any preset agents).
+  **Never `claude -p`** — that's an external process per task, no shared
+  memory, brittle output, slow iteration.
+- **A007 — Parallel safety (4-layer).** When dispatching 2+ subagents in
+  one message: (1) declare each agent's allowed paths upfront and grep
+  for overlap, (2) `isolation: "worktree"` on every parallel write
+  agent, (3) contract-first if the change touches a cross-service
+  shape, (4) `TaskCreate` + `addBlocks/addBlockedBy` for any
+  dependency. Overlap detected → serialize, don't parallel. Full
+  playbook: [`../../docs/playbooks/parallel-conflict-prevention.md`](../../docs/playbooks/parallel-conflict-prevention.md).
+
+### Sources of truth & rhythm
+
+- **A008 — `docs/spec/STATUS.md` + `docs/spec/backlog.md` are
+  source-of-truth** for "what's next". Never derive from chat history.
+  At sprint close, MOVE prose to `STATUS-archive.md` in the SAME commit
+  (do not append to live rows).
+- **A009 — Live per-task mini-retro (L036).** After each task passes the
+  6-gate review, append a 6-field mini-retro to
+  `docs/spec/retros/sprint-S<N>-tasks.md` BEFORE moving on. `/retro`
+  aggregates these at sprint close. Deferring retros = losing the
+  learning.
+- **A010 — LSP-first navigation** (A013/L147 in source repos). For
+  *semantic* questions (what is this symbol, where is it defined, who
+  calls it) → built-in LSP (`documentSymbol`, `hover`, `findReferences`,
+  `goToDefinition`). For *text* search (regex in YAML, cross-language
+  string) → Grep. See [`lsp-first.md`](./lsp-first.md).
+
+---
+
+## Cross-cutting lessons (L###) that bite often
+
+These come from the source codebases; keep applying them.
+
+- **L020 — Selector contract.** Every `data-testid` ships in the D-doc
+  selector map BEFORE UI + E2E impl. Mismatch class kills hours.
+- **L035 — Touched-files matrix.** Every D-doc declares which files it
+  touches. Used by `/dispatch-parallel` Conflict Radar (Layer 1).
+- **L076 — D-doc ≥500L for non-trivial impl tasks.** Empirical zero-fix
+  threshold across 48+ sprints. Light template OK for surgical sweeps.
+- **L087 — Backlog sync per-task** (see A009 above for retro).
+- **L116 — Composition-root wiring.** Post-delegation, grep
+  `cmd/<svc>/main.go` (or your composition root) for every new
+  use-case + adapter + migration. **Compile-green ≠ feature-wired.**
+- **L147 — LSP-first** (see A010 above).
+- **L149 — AC type-contradiction scan.** Before authoring a D-doc, LSP
+  `hover` every type the AC mentions; catch contradictions early.
+- **L156 — LSP type verification** before pasting code templates into a
+  D-doc. Hallucinated types = rework.
+- **L101 — Evidence-based.** Curl-verify, never fix from code reading
+  alone. The compiler doesn't know what production is doing.
+- **L182 — Visual fidelity ≠ structural review.** Unit + accessibility
+  tree snapshots can pass while pixels / spacing / theme tokens are
+  wrong. UI sprints MUST run `/design-review` (3-lens visual gate)
+  before promote.
+
+---
+
+## Token hygiene & session economy
+
+- **CLAUDE.md ≤ 200 lines.** Keep root small; details go in `docs/`.
+- **`SKILL.md` must have a `## Token budget` section.** Skills that
+  read big files use Grep + offset Reads, not full slurps.
+- **`/clear` between skills** to dump stale Reads from context.
+- **Sub-agents preserve main-session context** — delegate broad
+  exploration to `Explore` instead of inlining 5+ Greps.
+- **Never delete the `else` branch of global `~/.claude/settings.json`
+  hooks** — they affect ALL projects.
+
+---
+
+## Project-specific rules (append yours below)
+
+> Add your project-local A### rules here. Use the same format: bold
+> short rule, one sentence, optional link to a longer doc. Keep this
+> section ≤ 30 lines; if you have more, factor into a separate
+> dedicated rules file (e.g. `{{PROJECT_SLUG}}-local.md`) and link from here.
+
+- **A011 — _your first project rule_** — _one line_. → optional
+  [`./your-detail-file.md`](./your-detail-file.md)
+- **A012 — _your second project rule_** — _one line_.
+
+---
+
+## Where to look next
+
+- Mechanical "if touching X → apply Y": [`../../docs/setup/lesson-trigger-map.md`](../../docs/setup/lesson-trigger-map.md)
+- End-to-end pipeline: [`../../docs/setup/workflow-master.md`](../../docs/setup/workflow-master.md)
+- Pre-task ritual (subagent reading list): [`./agent-pre-task-ritual.md`](./agent-pre-task-ritual.md)
+- 6-gate review playbook: [`../../docs/playbooks/post-delegation-review.md`](../../docs/playbooks/post-delegation-review.md)
+- LSP-first cascade: [`./lsp-first.md`](./lsp-first.md)
+- Subagent routing + when-to-delegate: [`./sub-agent-workflow.md`](./sub-agent-workflow.md)
+- Type × phase decision matrix: [`./phase-matrix.md`](./phase-matrix.md)
+- Reflex coding rules: [`./programming-fundamentals.md`](./programming-fundamentals.md)
+- Reflex git rules (branch / commit / PR): [`./git-workflow.md`](./git-workflow.md)
+- External Brain (if configured): `{{BRAIN_PATH}}`

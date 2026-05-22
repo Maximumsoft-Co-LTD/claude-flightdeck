@@ -1,0 +1,166 @@
+---
+name: next-task
+description: "Find the next uncompleted task from the active sprint and dispatch it to the right specialized subagent. Enforces design-first (task MUST have design doc before code) + 6-gate post-delegation review. Use when asked: 'what's next', 'next task', 'continue the sprint', 'pick the next thing', '/next-task', or anytime the user wants the orchestrator to drive forward without naming a specific task. Sister skill: `/assign` (when the user knows the task ID — pass `{{TASK_ID_PREFIX}}-S<N>.<NN>` directly)."
+user_invocable: true
+---
+
+# /next-task — {{PROJECT_NAME}} sprint orchestrator (design-first)
+
+Find and execute the next task from the active sprint. Every task requires a Design Doc before implementation (design-first is non-negotiable — clear ports require upfront design).
+
+## Token budget (MANDATORY)
+
+- Steps 1–6 (identify task): ≤15k tokens total. Use Grep + offset/limit; never full-Read files ≥200 lines.
+- Step 7 (create design doc): Read `docs/designs/_templates/DESIGN_TEMPLATE.md` ONLY if a fresh design doesn't already exist for this task.
+- Step 9 (dispatch): do not re-read CLAUDE.md — the harness auto-loads it; double-loading is waste.
+
+## Steps
+
+1. **Find the active sprint pointer**
+
+   ```
+   Grep docs/spec/STATUS.md for the project row (or the active-sprint marker)
+   ```
+
+   Extract: active sprint number, in-flight task ID, branch, last update.
+
+   Fallback: `Grep` `docs/spec/backlog-index.md` for the active-sprint marker (e.g. `🚀`) → identify the active sprint pointer.
+
+2. **Find the next un-started task in the sprint file**
+
+   ```
+   Read docs/spec/sprints/sprint-S<N>.md with limit: 80 (header + task table only)
+   Scan for the first row with status [ ] Not Started
+   ```
+
+   - If a row is `[B] Blocked`, skip it.
+   - If all rows are done → announce sprint complete, suggest `/retro`.
+   - **Read the task's `Type:` slot** (feat / fix / refactor / chore / docs / spike / release). If missing, ask the user (default = `feat`).
+   - **Look up the type in `.claude/rules/phase-matrix.md`** to determine which phases run / run light / skip for this task. Quote the phase list back to the user before dispatch (e.g. `Type=fix → phases 1, 2⚠, 3, 4 (regression first), 5, 6, 8, 12`).
+
+2b. **Check FOLLOWUPS.md** — concrete scan rules:
+
+   - `Grep docs/spec/FOLLOWUPS.md` `## Open` section for **(a)** the task's component path or directory (e.g. `apps/web/features/auth`), **(b)** the design-doc slug (`D<NNN>-<slug>` token), and **(c)** any backlog keyword present in the candidate row's Item cell.
+   - **Surface ALL `Priority=high` open rows unconditionally** — even if the keyword grep didn't hit. High-priority follow-ups are always candidates for bundling.
+   - For each surfaced row, ask the user: "Open follow-up `F####` looks related — should we bundle it into this task?". Never silently consume a follow-up.
+   - Cite scanned IDs in the dispatch summary (e.g. `Follow-ups scanned: F0007, F0012` or `Follow-ups scanned: none matched`).
+
+3. **Verify dependencies**
+
+   For the candidate task, check all `blockedBy:` entries:
+
+   - Are they marked `[x] Done` or `[~] Partial`?
+   - If any is open → skip; pick the next candidate.
+
+4. **State-scan (pre-flight grep)**
+
+   ```
+   Glob the paths the task is expected to touch
+   Grep for existing implementation
+   ```
+
+   - If already shipped → mark "Verification Only", skip to Step 11.
+   - If partially shipped → revise the task spec to reflect the actual residual scope.
+
+5. **Readiness check**
+
+   | # | Check | Required for |
+   |---|---|---|
+   | 1 | Design doc at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` | All tasks |
+   | 2 | Dependencies marked Done / Partial | All |
+   | 3 | Contract update committed if cross-service | Tasks touching event/REST/RPC shape |
+   | 4 | Idempotent migration pattern declared | Tasks with persistence schema changes |
+   | 5 | Observability instrumentation plan declared | Any new handler / consumer / worker |
+   | 6 | Authz/AuthN requirements declared | Any new protected route |
+
+   If any required check is missing → **BLOCK**: print the gap, keep task at `[ ] Not Started`, drop a note `[B] Blocked — <reason>` in the sprint file, skip to next task.
+
+6. **Show the task to user**
+
+   Display: task ID, one-line description, target component(s), AC, readiness result. Ask: "Confirm dispatch? (yes / pick different / write design doc first)".
+
+6b. **Mid-sprint follow-up consumption** — if the user confirmed bundling an open follow-up (from Step 2b) into this dispatch, update the row in `docs/spec/FOLLOWUPS.md`:
+
+   - Change its `Status` cell from `open` to `in-progress`.
+   - Keep the row in `## Open` for now (it transitions to `## Closed` only at sprint-close `/retro` once status becomes `consumed-by:<task-id>` or `wont-do`).
+   - Commit this `FOLLOWUPS.md` edit in the **same commit** as the sprint-file task pickup (single atomic state move).
+   - Cite the `F####` ID(s) in the dispatch summary so the audit trail is unambiguous.
+
+7. **If no design doc exists yet, create one**
+
+   ```
+   Use docs/designs/_templates/DESIGN_TEMPLATE.md (if absent, scaffold it)
+   ```
+
+   Prefer dispatching the `design-doc-writer` agent for this step — it owns the template and the section checklist.
+
+   Sections (mandatory):
+
+   - **Context**: why this task exists, which sprint it belongs to, which rules apply
+   - **API / Contract**: request/response shapes; ref the relevant contract file if any
+   - **Data Model**: entities + their persistence layout
+   - **Use-case Flow**: numbered steps the use-case will take
+   - **Ports**: which inbound and outbound interfaces this work adds/extends
+   - **Adapter Choices**: transport/persistence — which and why
+   - **Migrations**: schema changes, all idempotent
+   - **Tests Plan**: unit (use-case w/ mock ports) + integration
+   - **Observability Plan**: span names + custom metrics added
+   - **Acceptance Criteria**: numbered, testable
+   - **References**: spec section, prior D-docs, related tasks
+
+8. **Self-review the design doc**
+
+   - Every AC testable?
+   - Use-case flow is I/O-free (no transport / persistence calls in the orchestration)?
+   - Ports + adapters declared distinct?
+   - Migration is idempotent?
+   - Observability span + metric is named?
+
+   Cross-check against the project's local rules file. Iterate until clean.
+
+9. **Dispatch to the right subagent**
+
+   | Task class | Subagent |
+   |---|---|
+   | Backend service feature | `<your backend engineer>` (e.g. `go-hexagonal-engineer` from the go-hex preset) |
+   | Frontend feature | `<your frontend engineer>` (e.g. `frontend-fsd-engineer` from the nextjs-fsd preset) |
+   | Event-pipeline producer/consumer | `<your pipeline engineer>` |
+   | External-provider adapter | `<your adapter engineer>` |
+   | Observability / dashboard | `<your observability engineer>` |
+
+   Dispatch with `Agent(subagent_type=..., prompt="<full task spec + design doc path + relevant rules>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`).
+
+10. **Wait for subagent return; run the 6-gate post-delegation review** (`/post-delegation-gate`)
+
+    Run gates in order; any failure → fix loop → re-run that gate.
+
+11. **Close the task**
+
+    - Update the sprint file: change `[ ] Not Started` → `[x] Done` (or `[~] Partial` if scope cut)
+    - Update `docs/spec/STATUS.md` project row (REPLACE, don't append history; move closed prose to `STATUS-archive.md`)
+    - Bump any submodule pointer if a nested repo was edited
+    - Commit + push
+
+12. **Append the live mini-retro for this task**
+
+    Append a 6-field entry to `docs/spec/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch (what went well / what didn't / lessons / verdict).
+
+13. **Decide what's next**
+
+    - If the sprint has more `[ ] Not Started` rows → loop to Step 2.
+    - If the sprint is done → suggest `/retro` to capture lessons.
+    - If user asked to stop → stop cleanly.
+
+## Common failure modes
+
+- Skipping Step 5 readiness check → design doc missing → subagent has to ask back-and-forth.
+- Forgetting Step 11 STATUS update → next session sees stale state.
+- Running multiple subagents on overlapping paths → merge conflict (use `/dispatch-parallel` which runs the Conflict Radar 4-layer guard).
+- Skipping the 6-gate review → silent failures land on the main branch.
+
+## Related
+
+- `/assign` — sister skill for when the user provides a specific task ID
+- `/dispatch-parallel` — when you have 2+ independent tasks
+- `/post-delegation-gate` — the 6-gate review skill
+- `docs/playbooks/post-delegation-review.md` — canonical gate definition

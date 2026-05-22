@@ -1,0 +1,45 @@
+# CODEOWNERS — {{PROJECT_NAME}}
+#
+# Required reviewer teams for AI-Workflows control-plane surfaces. The
+# placeholder teams (@{{PROJECT_SLUG}}-platform / -pm / -security) MUST be
+# replaced with real GitHub team handles BEFORE merge protection is
+# turned on — see docs/setup/separation-of-duties.md for the wiring.
+#
+# Syntax: github.com/<org>/<team>  (e.g. @acme/platform).
+# First match wins; later, more-specific patterns override earlier ones.
+
+# Default — fall-through owner for everything not matched below.
+*                                @{{PROJECT_SLUG}}-platform
+
+# Control-plane: hooks, agents, rules, settings.
+# Any change to these can shift agent behaviour across every task —
+# requires platform review.
+/.claude/                        @{{PROJECT_SLUG}}-platform
+/.claude/**                      @{{PROJECT_SLUG}}-platform
+/.claude/hooks/**                @{{PROJECT_SLUG}}-platform
+/.claude/settings.json           @{{PROJECT_SLUG}}-platform
+
+# Rules — auto-loaded on every session, including A### / L### rules.
+# Requires BOTH platform + security review (defense-in-depth).
+/.claude/rules/*.md              @{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security
+
+# Playbooks — the deep operational documents agents follow.
+/docs/playbooks/                 @{{PROJECT_SLUG}}-platform
+/docs/playbooks/**               @{{PROJECT_SLUG}}-platform
+
+# Spec / sprint / backlog — product surface. PMs own scope.
+/docs/spec/                      @{{PROJECT_SLUG}}-pm
+/docs/spec/**                    @{{PROJECT_SLUG}}-pm
+/docs/spec/audit/                @{{PROJECT_SLUG}}-security
+/docs/spec/audit/**              @{{PROJECT_SLUG}}-security
+
+# Setup docs — the "how does this template work" surface.
+/docs/setup/                     @{{PROJECT_SLUG}}-platform
+/docs/setup/secret-handling.md   @{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security
+/docs/setup/compliance-mapping.md @{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security
+/docs/setup/separation-of-duties.md @{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security
+/docs/setup/permission-profiles.md  @{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security
+
+# CODEOWNERS itself — meta. Requires platform + security so a single
+# team cannot silently relax review requirements.
+/.github/CODEOWNERS              @{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security
