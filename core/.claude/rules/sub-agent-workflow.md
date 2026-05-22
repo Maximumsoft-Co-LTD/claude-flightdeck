@@ -86,13 +86,27 @@ Preset agents (appear after `--preset` install — examples):
 
 ## §3 Dispatch patterns
 
+> **File-based dispatch (default for non-trivial work).** Do NOT paste a
+> long spec into `prompt` — oversized inline prompts can stall/hang the
+> dispatch. Write the spec to a **brief file**
+> (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md`) and pass a
+> short pointer prompt. The agent reads its brief first (pre-task ritual
+> Step 0). Inline only for a tiny (~≤30-line) instruction. Full
+> convention: [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
 ### §3.1 Single subagent, foreground (most common)
 
 ```
+# 1. Write the brief file (full spec: reads-first, AC, matrix, test plan, contract)
+Write docs/designs/sprint-S<N>/_briefs/{{TASK_ID_PREFIX}}-S02.03-impl.md  <full spec>
+
+# 2. Dispatch with a SHORT pointer prompt
 Agent(
   description: "Implement {{TASK_ID_PREFIX}}-S02.03 (some handler)",
   subagent_type: "<engineer-of-choice>",
-  prompt: "<full task text + context + reads-first>"
+  prompt: "You are the impl engineer for {{TASK_ID_PREFIX}}-S02.03.
+           Your brief: docs/designs/sprint-S<N>/_briefs/{{TASK_ID_PREFIX}}-S02.03-impl.md
+           Read it FIRST, run your pre-task ritual, report per your output contract."
 )
 ```
 
@@ -115,11 +129,15 @@ completes.
 
 ### §3.3 Parallel subagents (independent work)
 
+Write **one brief file per agent** first
+(`_briefs/<TASK_ID>-impl.md`), then dispatch each with a short pointer
+prompt in a single message:
+
 ```
 [Single message containing N Agent tool calls]
-Agent(... task A ..., isolation: "worktree")
-Agent(... task B ..., isolation: "worktree")
-Agent(... task C ..., isolation: "worktree")
+Agent(... pointer to _briefs/<A>-impl.md ..., isolation: "worktree")
+Agent(... pointer to _briefs/<B>-impl.md ..., isolation: "worktree")
+Agent(... pointer to _briefs/<C>-impl.md ..., isolation: "worktree")
 ```
 
 All N run in parallel. Each gets an isolated git worktree so changes

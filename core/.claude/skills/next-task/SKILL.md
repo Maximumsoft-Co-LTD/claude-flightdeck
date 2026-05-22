@@ -94,6 +94,18 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    Prefer dispatching the `design-doc-writer` agent for this step — it owns the template and the section checklist.
 
+   **Dispatch via a brief file, not a long inline prompt** (oversized prompts stall the agent — see `docs/setup/file-based-dispatch.md`):
+
+   ```
+   1. Write docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md
+      <intent, AC, context grep excerpts, constraints, reads-first list, target D-doc path>
+   2. Agent(subagent_type="design-doc-writer",
+            description="design for <TASK_ID>",
+            prompt="You are the design-doc-writer for <TASK_ID>.
+                    Your brief: docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md
+                    Read it FIRST, run your pre-task ritual, write the D-doc, report per your output contract.")
+   ```
+
    Sections (mandatory):
 
    - **Context**: why this task exists, which sprint it belongs to, which rules apply
@@ -128,7 +140,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
    | External-provider adapter | `<your adapter engineer>` |
    | Observability / dashboard | `<your observability engineer>` |
 
-   Dispatch with `Agent(subagent_type=..., prompt="<full task spec + design doc path + relevant rules>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`).
+   **Write the task spec to a brief file, then dispatch with a short pointer prompt** — never paste the full spec into `prompt` (it stalls the agent). Write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md` from `references/dispatch-prompt-template.md`, then `Agent(subagent_type=..., prompt="<short pointer to the brief>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`). Full convention: `docs/setup/file-based-dispatch.md`.
 
 10. **Wait for subagent return; run the 6-gate post-delegation review** (`/post-delegation-gate`)
 

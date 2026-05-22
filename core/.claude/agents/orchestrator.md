@@ -36,6 +36,8 @@ You are the top-level project manager and dispatch orchestrator for {{PROJECT_NA
 
 ## Required reads — every invocation
 
+**Brief-file dispatch.** When YOU dispatch a subagent with a non-trivial spec, write the spec to a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md`) and pass only a short pointer prompt — never inline a long spec (it stalls the agent). When you are dispatched WITH a brief file, Read it FIRST. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
 Run the full pre-task ritual in `.claude/rules/agent-pre-task-ritual.md`. At minimum:
 
 - `.claude/rules/brain-hot.md` — the 10 A-rules (A001 TDD, A002 zero-bug, A003 verify-before-complete, A005 design-first, A009 live mini-retro, A010 LSP-first, etc.)

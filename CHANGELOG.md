@@ -13,6 +13,48 @@
 
 - (none yet)
 
+## v0.5.0 — 2026-05-22
+
+The **"file-based dispatch"** release — stops oversized inline prompts
+from stalling subagents. Instead of pasting a long task spec into the
+`Agent` `prompt` argument, the orchestrator writes a **brief file** and
+dispatches with a short pointer prompt; the agent reads its brief first.
+Modeled on the [superpowers](https://github.com/obra/superpowers)
+plugin's plan/spec-file + prompt-template-file pattern.
+
+### Added
+
+- **`core/docs/setup/file-based-dispatch.md`** — the convention: why
+  long inline prompts hang, the brief-file location/naming
+  (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md`), the short
+  pointer-prompt shape, lifecycle/commit guidance, and a worked example.
+- **Pre-task ritual Step 0** (`agent-pre-task-ritual.md`) — every agent
+  now reads its brief file FIRST when the dispatch names one. Single
+  shared edit ⇒ all 12 agents (5 core + 7 preset) become brief-aware.
+
+### Changed
+
+- **All 12 agent files** — each gains a "Step 0 — read your brief"
+  pointer in its pre-task ritual (role-specific:
+  `design`/`impl`/`review`/`retro`). The `orchestrator` also gains a
+  "write a brief, dispatch a pointer" note for when it dispatches.
+- **`/next-task`, `/assign`, `/dispatch-parallel`** — dispatch steps now
+  write the spec to a brief file and dispatch a short pointer prompt
+  instead of inlining the full spec.
+- **`dispatch-prompt-template.md`** — reframed as the **brief-file
+  content** plus a short pointer-prompt template (was: "paste this as
+  the inline prompt").
+- **`sub-agent-workflow.md`** §3 — file-based dispatch is now the
+  documented default for non-trivial work; inline only for tiny
+  (~≤30-line) tasks.
+
+### Why
+
+A multi-thousand-line `prompt` string can stall the dispatch before the
+subagent starts. A short pointer + a re-readable, auditable brief file
+is robust, keeps the orchestrator's context lean, and lines the audit
+trail up with a concrete artifact.
+
 ## v0.4.1 — 2026-05-22
 
 The **"self-containment"** release — makes every rule and lesson

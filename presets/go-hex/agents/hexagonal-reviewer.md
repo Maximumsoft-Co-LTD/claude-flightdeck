@@ -17,6 +17,8 @@ You enforce the non-negotiable hex import direction defined in `.claude/rules/he
 
 ## Pre-task ritual (MANDATORY)
 
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-review.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
 Execute `.claude/rules/agent-pre-task-ritual.md` before reviewing. At minimum:
 
 1. **Read** `.claude/rules/hex-boundaries.md` — the rule itself.

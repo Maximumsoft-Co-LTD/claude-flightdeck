@@ -52,9 +52,12 @@ The skill reads each task's design doc, extracts the declared paths, runs Confli
 
    When dispatching, include `isolation: "worktree"` in every `Agent()` call. The harness creates a temporary git worktree per subagent.
 
+   **Write one brief file per agent first** (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`, using the per-agent template below), then dispatch each with a SHORT pointer prompt — never inline the full spec (it stalls the agent; see `docs/setup/file-based-dispatch.md`):
+
    ```
-   Agent(description: "Implement <task1>", subagent_type: "<type1>", prompt: "<full spec + paths + reads-first>", isolation: "worktree")
-   Agent(description: "Implement <task2>", subagent_type: "<type2>", prompt: "<full spec + paths + reads-first>", isolation: "worktree")
+   # write N brief files (one per task) ...
+   Agent(description: "Implement <task1>", subagent_type: "<type1>", prompt: "<pointer to _briefs/<task1>-impl.md>", isolation: "worktree")
+   Agent(description: "Implement <task2>", subagent_type: "<type2>", prompt: "<pointer to _briefs/<task2>-impl.md>", isolation: "worktree")
    ...
    ```
 
@@ -95,7 +98,13 @@ The skill reads each task's design doc, extracts the declared paths, runs Confli
      2. <or: fix the violation by ...>
    ```
 
-## Prompt template (per parallel `Agent()` call)
+## Brief-file template (per parallel agent)
+
+Write this to `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`. The
+inline `prompt` is just a pointer: *"You are the impl engineer for
+`<TASK_ID>` (parallel sprint-S<N> work). Your brief:
+`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md` — read it FIRST, run
+your pre-task ritual, report per the output contract in the brief."*
 
 ```
 You are dispatched as part of sprint S<N> parallel work. Execute the pre-task

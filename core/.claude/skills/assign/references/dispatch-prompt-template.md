@@ -1,9 +1,41 @@
 # Dispatch Prompt — Canonical Template
 
-> Loaded by `/assign` Step 8. The dispatched subagent receives this
-> block (with placeholders substituted) as its prompt.
+> Loaded by `/assign` Step 8 and `/next-task` Step 9.
+>
+> **This block is the BRIEF-FILE content, not the inline `prompt`.**
+> Write it (with placeholders substituted) to
+> `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`, then dispatch the
+> agent with the short **pointer prompt** below. Pasting this whole
+> template into the `Agent` `prompt` argument is what causes oversized
+> prompts to stall — write the file instead. See
+> [`docs/setup/file-based-dispatch.md`](../../../../docs/setup/file-based-dispatch.md).
 
-## The template
+## The pointer prompt (this is the inline `prompt`)
+
+```
+You are the impl engineer for <TASK_ID>.
+
+Your brief: docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md
+Read it FIRST — it is your complete task input (mandatory reads,
+verification JSON, AC, touched-files matrix, test plan, output contract).
+The dispatch prompt is short on purpose so it can't stall on an oversized
+payload; the detail is in the brief.
+
+Execute your pre-task ritual (.claude/rules/agent-pre-task-ritual.md),
+emit the verification JSON BEFORE any code, do the work, and report back
+per the output contract in your brief.
+```
+
+Dispatch shape:
+
+```
+Agent(subagent_type="<mapped agent>",
+      description="impl for <TASK_ID>",
+      prompt="<the pointer prompt above>",
+      isolation="worktree")
+```
+
+## The brief-file template (write this to `_briefs/<TASK_ID>-impl.md`)
 
 ```
 [MANDATORY READS]
@@ -240,11 +272,11 @@ Acceptance criteria (verbatim from D018):
 <standard contract>
 ```
 
-## Substitution checklist (before dispatch)
+## Substitution checklist (before writing the brief file)
 
-When the orchestrator instantiates this template, every `<...>`
-placeholder MUST be replaced with a concrete value from the task row
-+ design doc. The orchestrator does NOT dispatch a prompt with
+When the orchestrator instantiates this template into the brief file,
+every `<...>` placeholder MUST be replaced with a concrete value from
+the task row + design doc. The orchestrator does NOT write a brief with
 unresolved placeholders — that breaks the subagent's pre-task ritual.
 
 - [ ] `<TASK_ID>` — exact ID from the sprint row

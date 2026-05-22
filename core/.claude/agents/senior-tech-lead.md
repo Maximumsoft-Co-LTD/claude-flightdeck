@@ -35,6 +35,8 @@ You are review-only. You do not write code. You return a structured verdict the 
 
 ## Pre-task ritual
 
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-review.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
 Execute `.claude/rules/agent-pre-task-ritual.md`. At minimum:
 
 1. Read root `CLAUDE.md` (stack + global rules)

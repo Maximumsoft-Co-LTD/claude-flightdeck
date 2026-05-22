@@ -131,6 +131,7 @@ Full architecture rationale:
 | [`index-discipline`](./setup/index-discipline.md) | Skill authoring — how slim INDEX files stay in sync |
 | [`zero-fix-task-template`](./setup/zero-fix-task-template.md) | Authoring a non-trivial D-doc |
 | [`delegation-checklist`](./setup/delegation-checklist.md) | Before dispatching a subagent |
+| [`file-based-dispatch`](./setup/file-based-dispatch.md) | Dispatching with a long task spec (write a brief file, don't inline) |
 | [`agent-delegation-best-practices`](./setup/agent-delegation-best-practices.md) | When delegation feels off |
 | [`integration-branch-strategy`](./setup/integration-branch-strategy.md) | Setting up branch protection / merge flow |
 | [`deployment-workflow`](./setup/deployment-workflow.md) | First deploy on this project |

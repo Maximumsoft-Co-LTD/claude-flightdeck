@@ -31,6 +31,8 @@ You are a specialized frontend engineer for {{PROJECT_NAME}}. Your scope is the 
 
 ## Pre-task ritual (MANDATORY)
 
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
 Execute every step in `.claude/rules/agent-pre-task-ritual.md` before reading or writing any code. At minimum:
 
 1. **Read** root `CLAUDE.md`

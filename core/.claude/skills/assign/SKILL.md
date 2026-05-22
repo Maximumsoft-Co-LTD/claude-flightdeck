@@ -42,13 +42,19 @@ Define a mapping table for your project (one row per repo or component → the s
    - Determine task type from the title prefix (e.g. `[BE]`, `[FE]`, `[BE+FE]`, `[Infra]`)
    - If FE work and your project uses design references → verify the design / Figma node IDs exist (if missing → **BLOCK**, request design)
 5. **Show task details, ask user to confirm.**
-6. **Check / create the Design Doc** — at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md`. If missing, dispatch the `design-doc-writer` agent first, then resume.
+6. **Check / create the Design Doc** — at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md`. If missing, dispatch the `design-doc-writer` agent first (via a brief file — write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md`, dispatch with a short pointer prompt; see `docs/setup/file-based-dispatch.md`), then resume.
 7. **Cross-cutting pre-checks** — multi-tenancy / RBAC / contract-first, per the rules that apply to {{PROJECT_NAME}}.
-8. **Delegate** — pick the `subagent_type` from `references/repo-to-agent-mapping.md`, then load `references/dispatch-prompt-template.md` and instantiate it with the task ID, type, design-doc path, AC list, touched-files matrix, and test plan (verbatim from the design doc). The dispatched agent emits a JSON object matching `references/verification-json-schema.md` BEFORE writing code.
+8. **Delegate** — pick the `subagent_type` from `references/repo-to-agent-mapping.md`, then instantiate `references/dispatch-prompt-template.md` with the task ID, type, design-doc path, AC list, touched-files matrix, and test plan (verbatim from the design doc) and **write it to a brief file** `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`. Dispatch with the short **pointer prompt** (NOT the full template inline — that stalls the agent; see `docs/setup/file-based-dispatch.md`). The dispatched agent emits a JSON object matching `references/verification-json-schema.md` BEFORE writing code.
 
    ```
+   # 1. write the brief
+   Write docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md  <instantiated template>
+   # 2. dispatch the pointer
    Agent(subagent_type="<mapped agent>",
-         prompt="<instantiated template>",
+         description="impl for <TASK_ID>",
+         prompt="You are the impl engineer for <TASK_ID>. Your brief:
+                 docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md — read it FIRST,
+                 run your pre-task ritual, report per the output contract in the brief.",
          isolation="worktree")
    ```
 
@@ -63,7 +69,7 @@ Define a mapping table for your project (one row per repo or component → the s
 
 - **NEVER delegate without a Design Doc** — Step 6 is non-negotiable.
 - The **Design Doc IS the spec** — the dispatched agent reads and follows it strictly, not as a hint.
-- Include **FULL AC + FULL test plan** in the prompt, not summaries.
+- Include **FULL AC + FULL test plan** in the brief file, not summaries (and not inlined in the dispatch `prompt` — the prompt is just a pointer to the brief).
 - Tests BEFORE implementation (TDD) is the default — the dispatched agent's pre-task ritual enforces this.
 - **The 6-gate post-delegation review is mandatory** — never skip it.
 - Sprint file MUST be updated after every task.

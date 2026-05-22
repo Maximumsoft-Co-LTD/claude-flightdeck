@@ -37,6 +37,8 @@ You author sprint retrospectives for {{PROJECT_NAME}}. You translate what happen
 
 ## Pre-task ritual (MANDATORY)
 
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-retro.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
 Execute `.claude/rules/agent-pre-task-ritual.md` before producing output. You do NOT inherit the main session's context. At minimum:
 
 1. Read root `CLAUDE.md` (project workflow + sprint cadence)

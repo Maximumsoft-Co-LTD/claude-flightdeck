@@ -15,6 +15,21 @@
 
 ## The Ritual — execute in order, do not skip
 
+### Step 0 — Read your brief (if the dispatch named one)
+
+If your dispatch prompt references a **brief file** — typically
+`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md` — **Read it
+FIRST, before anything else.** It is your complete, primary task input:
+intent, acceptance criteria, context excerpts, constraints, the
+reads-first list, and your output contract. The dispatch prompt is kept
+deliberately short (a pointer) so an oversized inline prompt can't stall
+the dispatch; the real detail is in the brief. Re-Read the brief any
+time you need to re-check a detail. See
+[`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+
+> If the dispatch did NOT name a brief file (small inline task), skip
+> this step and proceed with the inline instructions.
+
 ### Step 1 — Repo orientation (Read 3 files)
 
 1. Read the root **`CLAUDE.md`** — orchestrator manual + non-negotiables
