@@ -6,6 +6,8 @@ user_invocable: true
 
 # /dispatch-parallel — Safe Parallel Subagent Dispatch
 
+> **Announce on start:** open your reply with "Using /dispatch-parallel to fan out N tasks after the Conflict Radar check."
+
 Dispatch 2+ coding subagents in a single message with `isolation="worktree"`. Verifies the 4-layer Conflict Radar (see `docs/playbooks/parallel-conflict-prevention.md`) before dispatching.
 
 ## Token budget (MANDATORY)

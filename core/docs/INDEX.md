@@ -103,11 +103,11 @@ Full architecture rationale:
 |---|---|
 | `Explore` | Read-only multi-file search; up to "very thorough" |
 | `general-purpose` | Catch-all multi-step task |
-| `pr-review-toolkit:code-reviewer` | Gate 4 — convention adherence |
-| `pr-review-toolkit:silent-failure-hunter` | Gate 4 — silent error / inadequate handling |
-| `pr-review-toolkit:type-design-analyzer` | Gate 4 — type design quality |
-| `pr-review-toolkit:pr-test-analyzer` | Gate 4 — test coverage gap (if tests touched) |
-| `pr-review-toolkit:comment-analyzer` | Gate 4 — comment accuracy (if comments touched) |
+| `pr-review-toolkit:code-reviewer` | Gate 4b — convention adherence |
+| `pr-review-toolkit:silent-failure-hunter` | Gate 4b — silent error / inadequate handling |
+| `pr-review-toolkit:type-design-analyzer` | Gate 4b — type design quality |
+| `pr-review-toolkit:pr-test-analyzer` | Gate 4b — test coverage gap (if tests touched) |
+| `pr-review-toolkit:comment-analyzer` | Gate 4b — comment accuracy (if comments touched) |
 | `feature-dev:code-architect` | Greenfield architectural blueprint |
 
 ---
@@ -116,7 +116,7 @@ Full architecture rationale:
 
 | Playbook | When you read it | What it answers |
 |---|---|---|
-| [`post-delegation-review`](./playbooks/post-delegation-review.md) | After every coding agent returns | The 6 gates — Inspect / Build+Test / Boundary / Quality / Wiring / Smoke |
+| [`post-delegation-review`](./playbooks/post-delegation-review.md) | After every coding agent returns | The 6 gates — Inspect / Build+Test / Boundary / Spec-compliance (4a) → Quality (4b) / Wiring / Smoke |
 | [`parallel-conflict-prevention`](./playbooks/parallel-conflict-prevention.md) | Before `/dispatch-parallel` | The 4-layer Conflict Radar — path / worktree / contract / dep graph |
 | [`contract-first`](./playbooks/contract-first.md) | Any cross-service interface change | Contract commit first, code follows |
 | [`failure-recovery`](./playbooks/failure-recovery.md) | After a partial dispatch / mid-merge abort | Recovery decision tree; what `/recover` walks you through |

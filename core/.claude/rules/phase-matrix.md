@@ -75,9 +75,16 @@ apps, SDK packages, anything with formal release notes).
 - **feat** — new user-visible behaviour. Adds an endpoint, page,
   message-handler, schema field, or capability. Default zero-fix
   template applies.
-- **fix** — restoring intended behaviour. Step 1 of implementation
-  MUST be a failing regression test; the test commits separately so
-  the gate can verify "fail on pre-fix, pass on fix".
+- **fix** — restoring intended behaviour. **No fix without root-cause
+  first** — invoke `superpowers:systematic-debugging` (reproduce →
+  isolate → hypothesis → root cause) BEFORE proposing a change; a
+  symptom patch that doesn't name the root cause is a failure. Step 1 of
+  implementation MUST be a failing regression test; the test commits
+  separately so the gate can verify "fail on pre-fix, pass on fix".
+  **3-strikes escalation:** if 3 fix attempts on the same bug fail,
+  STOP — do not try fix #4. The pattern signals a structural problem;
+  raise it to the user / `senior-tech-lead` and question the
+  architecture, not the symptom.
 - **refactor** — change shape, keep behaviour. Design doc must
   include a behaviour-equivalence note; the test phase verifies the
   existing suite still passes (no new behavior tests added).

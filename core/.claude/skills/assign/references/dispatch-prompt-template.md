@@ -100,7 +100,16 @@ Test plan (from the design doc):
   • post-review fixes needed (yes/no + summary)
 
 [OUTPUT CONTRACT]
-Your final reply MUST include:
+Your final reply MUST LEAD with a status line, then include the rest:
+- Status: DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+  • DONE — work complete, verified green, ready for the gates
+  • DONE_WITH_CONCERNS — complete but you have doubts (state them; if about
+    correctness/scope they must be resolved before review)
+  • NEEDS_CONTEXT — you're missing information that wasn't in the brief
+    (say exactly what); the orchestrator will supply it and re-dispatch
+  • BLOCKED — you cannot complete (say what you tried + what help you need).
+    It is ALWAYS OK to stop and say "this is too hard" — bad work is worse
+    than no work; you will not be penalised for escalating.
 - Files touched (path + line count)
 - Rules applied (A### / L### list)
 - Skills invoked (e.g., test-driven-development, verification-before-completion)
@@ -208,6 +217,11 @@ Acceptance criteria (verbatim from D015):
 - AC3: Test now passes; no new dangling rows after delete
 
 [CROSS-CUTTING]
+- NO fix without root cause: invoke superpowers:systematic-debugging
+  (reproduce → isolate → root cause) BEFORE changing code. A symptom
+  patch that doesn't name the root cause will be rejected at the gate.
+- 3-strikes: if 3 fix attempts fail, STOP — report BLOCKED and question
+  the architecture; do not attempt fix #4.
 - Regression test commits BEFORE the fix (so /post-delegation-gate
   can verify "failed pre-fix, passes post-fix")
 - 6-gate review will run after you return

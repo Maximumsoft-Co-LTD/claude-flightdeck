@@ -68,6 +68,15 @@ Skills live in `core/.claude/skills/<name>/SKILL.md`. Must keep the
 `## Token budget` section. Deep material goes in `references/`,
 mechanical loops in `scripts/`.
 
+**Description = triggers, not a summary (CSO).** The `description:`
+frontmatter decides whether the model auto-loads the skill. Lead with
+**when to use it** — concrete user phrases, slash-command names, and
+failure *symptoms* (e.g. "after a subagent returns", "tests flaky",
+"merge gone wrong"). Do NOT write a workflow summary: a description that
+explains *how the skill works* makes the model think it already knows
+enough and skip the skill body. (Adopted from superpowers'
+`writing-skills` Claude-Search-Optimization rule.)
+
 ### Ground rules for `core/`
 
 1. **De-domain-specify.** No project-specific names in `core/` — no

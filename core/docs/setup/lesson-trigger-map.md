@@ -113,7 +113,8 @@ The rows below are **stack-neutral**. Where a row says "(per preset)" the concre
 | Gate 1 — Inspect | After every coding subagent returns | `git diff --stat` + `git diff <files>`. Read the actual diff. |
 | Gate 2 — Build + Test | After every coding subagent returns | The project's build + test command in touched modules. |
 | Gate 3 — Boundary | After every coding subagent returns | **Preset-specific** — if `go-hex` is installed, dispatch `hexagonal-reviewer`; if `nextjs-fsd`, run FSD lint; if `vue-pinia`, run the boundary check. See your preset for the project's Gate 3. |
-| Gate 4 — Quality (parallel) | After every coding subagent returns | Dispatch `pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer}` + `:pr-test-analyzer` if tests touched + `:comment-analyzer` if comments touched. |
+| Gate 4a — Spec-compliance | After every coding subagent returns | Read code vs the D-doc AC: every AC built, nothing extra (over/under-build). Verify by reading code, not the report. Gates 4b. |
+| Gate 4b — Quality (parallel) | After 4a passes | Dispatch `pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer}` + `:pr-test-analyzer` if tests touched + `:comment-analyzer` if comments touched. |
 | Gate 5 — Wiring | After every coding subagent returns | **L116** — grep composition root for new code usage. Verify migrations applied, observability emits, message topic created, contracts updated. |
 | Gate 6 — Integration smoke | After every coding subagent returns | Local stack up + smoke (and browser e2e if frontend touched). |
 

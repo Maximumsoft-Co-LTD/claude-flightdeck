@@ -1,6 +1,6 @@
 # Playbook — 6-Gate Post-Delegation Review
 
-> Operator playbook. This is the deep-dive that [`CLAUDE.md`](../../CLAUDE.md) §N4 and [`.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) §4 point to. Execute it after **every** coding subagent returns, before any merge or submodule-pointer bump.
+> Operator playbook. This is the deep-dive that [`CLAUDE.md`](../../CLAUDE.md) §N3 and [`.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) §4 point to. Execute it after **every** coding subagent returns, before any merge or submodule-pointer bump.
 >
 > **Core principle**: a subagent's "done" / "tests passing" summary is an input, not evidence. You re-derive correctness from the diff and from re-run commands. Never skip a gate. On failure: fix → re-run **that** gate → continue.
 
@@ -24,11 +24,31 @@ Subagents don't inherit the main session's SessionStart hooks (brain-hot, MEMORY
 | 1 | **Inspect** | `git diff --stat` + `git diff <files>` | your own read |
 | 2 | **Build + Test** | the project's build + test command (per touched module) | container build |
 | 3 | **Boundary** | **preset-specific** — see Gate 3 below | grep gates / lint |
-| 4 | **Quality (parallel)** | `pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer}` | `+pr-test-analyzer` / `+comment-analyzer` |
+| 4a | **Spec-compliance** | read code vs the D-doc AC list — every AC built, nothing extra | the verification JSON's `files_will_touch` |
+| 4b | **Quality (parallel)** | `pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer}` | `+pr-test-analyzer` / `+comment-analyzer` |
 | 5 | **Wiring** | composition-root grep + migrations + observability + topic + contracts | codegen parity |
 | 6 | **Integration smoke** | the project's local-stack-up + smoke commands | browser e2e |
 
+> Still "6 gates" — Gate 4 is a two-stage gate (4a spec-compliance THEN
+> 4b quality), mirroring the spec-then-quality review order. 4a must pass
+> before 4b: there's no point judging *how well* code is built before
+> confirming it builds *the right thing*.
+>
 > All commands cited below should map to real targets in your meta-repo `Makefile` (or equivalent task runner). Verify the targets exist when you adopt this playbook.
+
+## Rationalizations for skipping a gate
+
+The gates feel like overhead under deadline pressure. These are the
+excuses — each is the exact moment a class of bug slips through. Full
+catalogue of discipline excuses: [`../setup/discipline-red-flags.md`](../setup/discipline-red-flags.md).
+
+| Excuse | Reality |
+|---|---|
+| "The subagent said tests pass" | Re-run them yourself (Gate 2). A "done" summary is an input, not evidence. |
+| "It's a tiny change, skip the gates" | Tiny changes ship the wiring bugs (Gate 5) and silent failures (Gate 4b) most often. |
+| "I read the summary, the diff looks fine" | Read the *diff* (Gate 1), not the prose about it. |
+| "Spec-compliance and quality are one pass" | They're not: 4a = *did it build the AC, nothing extra*; 4b = *is it well-built*. 4a gates 4b. |
+| "Smoke test takes too long" | Gate 6 is where "green tests, broken feature" is caught before prod. |
 
 ---
 
@@ -114,9 +134,30 @@ Agent(
 
 ---
 
-## Gate 4 — Quality (parallel reviewers)
+## Gate 4a — Spec-compliance (runs BEFORE 4b)
 
-**What it checks**: project-convention adherence, silent failures / inadequate error handling, and type-design quality. These run in **parallel** (dispatch all in a single message — multiple `Agent` calls in one block).
+**What it checks**: that the code implements **every acceptance criterion in the design doc — and nothing more**. This is the spec-then-quality discipline: confirm the *right thing* was built before judging *how well* it was built.
+
+**How to run** (the orchestrator does this directly, or dispatches a `senior-tech-lead` / `general-purpose` reviewer with a `<TASK_ID>-review` brief):
+
+1. Open the task's D-doc; list its AC and its touched-files matrix.
+2. **Read the actual code** (not the subagent's summary) and check, AC by AC:
+   - **Missing**: is every AC implemented? Anything claimed-but-not-actually-built?
+   - **Extra / over-built**: anything implemented that no AC asked for (a "nice to have", an unrequested flag, speculative generality)? YAGNI — flag it.
+   - **Misread**: did it solve a slightly different problem than the AC stated?
+3. Cross-check the diff's files against the verification JSON's `files_will_touch` (the agent declared these before coding).
+
+**Core principle**: *do not trust the report — verify by reading code.* A subagent that finished suspiciously fast may have an optimistic summary.
+
+**What failure looks like**: an AC with no corresponding code/test; a feature the AC never requested; the right feature built the wrong way.
+
+**On failure**: send the implementer (same subagent, via `SendMessage`) the specific gap — "AC3 not implemented" / "remove the unrequested `--json` flag" — and re-run 4a. Do **not** proceed to 4b with an unmet or over-built spec.
+
+---
+
+## Gate 4b — Quality (parallel reviewers)
+
+**What it checks**: project-convention adherence, silent failures / inadequate error handling, and type-design quality. These run in **parallel** (dispatch all in a single message — multiple `Agent` calls in one block). **Only after Gate 4a passes.**
 
 **Dispatch** (single message, parallel):
 

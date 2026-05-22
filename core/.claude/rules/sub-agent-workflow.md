@@ -12,6 +12,15 @@
 
 ---
 
+## §0 Announce the discipline
+
+When you invoke a discipline skill or gate (`/next-task`, `/assign`,
+`/dispatch-parallel`, `/post-delegation-gate`, `/design-review`,
+`/retro`), **open with one line naming it**: e.g. *"Using
+/post-delegation-gate to run the 6 gates on this diff."* This signals to
+the user which discipline is active and makes a skipped step visible.
+(Adopted from the superpowers "announce at start" convention.)
+
 ## §1 When to delegate vs inline
 
 ```
@@ -180,10 +189,12 @@ Codified in [`../../CLAUDE.md`](../../CLAUDE.md) §N3 + full playbook at
 3. **Boundary** — dispatch the preset architectural reviewer (e.g.
    `hexagonal-reviewer` for go-hex). If no preset reviewer, run the
    project's architectural lint.
-4. **Quality (parallel)** — single message with
+4. **Spec-compliance (4a) → Quality (4b)** — 4a FIRST: read the code
+   against the D-doc AC list; confirm every AC is built and nothing extra
+   (over/under-build). THEN 4b: single message with
    `pr-review-toolkit:code-reviewer`, `:silent-failure-hunter`,
-   `:type-design-analyzer`. Add `:pr-test-analyzer` if tests touched,
-   `:comment-analyzer` if comments touched.
+   `:type-design-analyzer` (add `:pr-test-analyzer` if tests touched,
+   `:comment-analyzer` if comments touched). 4a gates 4b.
 5. **Wiring (L116)** — composition root has the new code; migrations
    applied; instrumentation emits; topics created; contracts updated.
 6. **Integration smoke** — real system, golden path, end-to-end. UI

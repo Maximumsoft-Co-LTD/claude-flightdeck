@@ -1,10 +1,12 @@
 ---
 name: post-delegation-gate
-description: "Run the 6-gate post-delegation review on a coding subagent's output. Use after any agent dispatch that touched code, BEFORE declaring work 'done' or merging. Enforces the non-negotiable review chain: inspect diff → build+test → architectural-boundary check → quality (parallel reviewers) → wiring check → integration smoke. Use when the user says '/post-delegation-gate', 'review the agent's work', 'run the gates'."
+description: "Run the 6-gate post-delegation review on a coding subagent's output. Use after ANY coding subagent returns or reports DONE, before declaring work 'done' or merging — the gate chain is inspect diff → build+test → boundary → spec-compliance (4a) → quality (4b) → wiring → smoke. Use when the user says '/post-delegation-gate', 'review the agent's work', 'run the gates', or whenever a dispatched agent just returned code."
 user_invocable: true
 ---
 
 # /post-delegation-gate — 6-Gate Review (Mandatory)
+
+> **Announce on start:** open your reply with "Using /post-delegation-gate to run the 6 gates on this diff."
 
 Run after every coding subagent returns. **Skipping a gate is not permitted.** Canonical reference: `docs/playbooks/post-delegation-review.md`.
 
@@ -54,9 +56,22 @@ Agent(
 **Pass:** reviewer reports COMPLIANT.
 **Fail** → fix loop (back to implementer) → re-run Gate 3.
 
-## Gate 4 — Quality (parallel, single message)
+## Gate 4a — Spec-compliance (BEFORE 4b)
 
-Dispatch in a SINGLE message:
+Verify the code implements **every D-doc AC and nothing extra** — read the code, don't trust the report.
+
+- List the task's AC + touched-files matrix from its design doc.
+- Read the actual code and check AC-by-AC: **missing** (an AC with no code/test), **extra/over-built** (a feature no AC requested — YAGNI, flag it), **misread** (solved a slightly different problem).
+- Cross-check the diff's files vs the agent's verification JSON `files_will_touch`.
+
+You may do this inline or dispatch a `senior-tech-lead` / `general-purpose` reviewer with a `<TASK_ID>-review` brief.
+
+**Pass:** every AC implemented, nothing extra, files match the declared matrix.
+**Fail** → `SendMessage` the implementer the specific gap → re-run 4a. Do NOT start 4b until 4a is green.
+
+## Gate 4b — Quality (parallel, single message)
+
+Only after 4a passes. Dispatch in a SINGLE message:
 
 ```
 Agent(subagent_type: "pr-review-toolkit:code-reviewer", prompt: "...")
@@ -108,12 +123,13 @@ Task: {{TASK_ID_PREFIX}}-S<N>.<NN> — <slug>
 Subagent: <type>
 Diff: <files changed count>
 
-Gate 1 — Inspect:                  ✅
-Gate 2 — Build + Test:             ✅
-Gate 3 — Architectural boundary:   ✅
-Gate 4 — Quality:                  ✅ (3-5 reviewers)
-Gate 5 — Wiring:                   ✅
-Gate 6 — Integration:              ✅
+Gate 1  — Inspect:                 ✅
+Gate 2  — Build + Test:            ✅
+Gate 3  — Architectural boundary:  ✅
+Gate 4a — Spec-compliance:         ✅ (AC built, nothing extra)
+Gate 4b — Quality:                 ✅ (3-5 reviewers)
+Gate 5  — Wiring:                  ✅
+Gate 6  — Integration:             ✅
 
 READY TO MERGE.
 ```

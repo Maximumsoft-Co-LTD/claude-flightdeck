@@ -13,6 +13,64 @@
 
 - (none yet)
 
+## v0.6.0 — 2026-05-22
+
+The **"discipline-enforcement"** release — adopts the techniques that make
+the [superpowers](https://github.com/obra/superpowers) plugin's rules stick,
+applied to flightdeck's own authored rules and gates. Flightdeck already
+*invoked* superpowers skills at the right gates; this release hardens its own
+rules with superpowers' enforcement *patterns*.
+
+### Added
+
+- **`core/docs/setup/discipline-red-flags.md`** — an "excuse → reality"
+  rationalization table for each of A001-A005 (TDD, zero-bug, verify,
+  6-gate, design-first), plus per-rule **Iron Law** and red-flag lists.
+  Adapted from superpowers' `test-driven-development` /
+  `verification-before-completion` / `systematic-debugging` skills.
+- **Gate 4a — Spec-compliance** in the 6-gate review: verify the code
+  implements every D-doc AC and **nothing extra** (read code, don't trust
+  the report) BEFORE the parallel quality reviewers (now Gate 4b). Still
+  "6 gates"; Gate 4 is now two-stage (4a → 4b). Mirrors superpowers'
+  spec-then-quality two-stage review.
+- **Structured return statuses** — dispatched agents now lead their reply
+  with `DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`, and
+  `/next-task` + `/assign` carry an orchestrator handling table
+  (re-dispatch on NEEDS_CONTEXT, assess/escalate on BLOCKED, etc.).
+- **3-strikes debugging escalation** — `fix` tasks must root-cause first
+  (`superpowers:systematic-debugging`); after 3 failed fix attempts on the
+  same bug, STOP and question the architecture. Encoded in `phase-matrix`,
+  `programming-fundamentals`, and the `fix` dispatch brief.
+- **Announce-the-discipline convention** — the discipline skills
+  (`/next-task`, `/assign`, `/post-delegation-gate`, `/dispatch-parallel`,
+  `/design-review`) open by naming the discipline they're running.
+
+### Changed
+
+- **`brain-hot.md.tmpl`** — A001-A005 each gain a one-line **Iron Law**;
+  A004 now describes the 4a/4b split; links the red-flags doc.
+- **`post-delegation-review.md`** — Gate 4 split into 4a/4b; new
+  "rationalizations for skipping a gate" table; fixed a stale `§N4` → `§N3`
+  (the 6-gate review is N3, not N4).
+- **CSO skill descriptions** — codified the rule (descriptions must be
+  trigger/symptom-based, not workflow summaries) in `CONTRIBUTING.md` +
+  the maintainer `CLAUDE.md`; tightened `/post-delegation-gate`'s
+  description to auto-trigger when a coding subagent returns. (Audit found
+  the other 18 descriptions already trigger-based.)
+- Propagated the 4a/4b split + return-status protocol across
+  `sub-agent-workflow.md`, `agent-pre-task-ritual.md`,
+  `lesson-trigger-map.md`, `CLAUDE.md.tmpl`, `INDEX.md`, and the
+  `dispatch-prompt-template`.
+
+### Why
+
+Superpowers is a discipline system: each rule pairs an **Iron Law** with a
+**rationalization table** and **structured statuses**, and reviews in two
+stages (spec then quality). Flightdeck's rules were declarative and so
+softer against the exact shortcut-taking those patterns prevent. This
+release closes that gap without bloating the auto-loaded `brain-hot.md`
+(the heavy tables live in the linked red-flags doc).
+
 ## v0.5.0 — 2026-05-22
 
 The **"file-based dispatch"** release — stops oversized inline prompts

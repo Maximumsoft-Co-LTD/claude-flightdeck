@@ -6,6 +6,8 @@ user_invocable: true
 
 # /next-task — {{PROJECT_NAME}} sprint orchestrator (design-first)
 
+> **Announce on start:** open your reply with "Using /next-task to pick and dispatch the next sprint task."
+
 Find and execute the next task from the active sprint. Every task requires a Design Doc before implementation (design-first is non-negotiable — clear ports require upfront design).
 
 ## Token budget (MANDATORY)
@@ -142,9 +144,18 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    **Write the task spec to a brief file, then dispatch with a short pointer prompt** — never paste the full spec into `prompt` (it stalls the agent). Write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md` from `references/dispatch-prompt-template.md`, then `Agent(subagent_type=..., prompt="<short pointer to the brief>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`). Full convention: `docs/setup/file-based-dispatch.md`.
 
-10. **Wait for subagent return; run the 6-gate post-delegation review** (`/post-delegation-gate`)
+10. **Wait for subagent return; act on its status, then run the 6-gate post-delegation review** (`/post-delegation-gate`)
 
-    Run gates in order; any failure → fix loop → re-run that gate.
+    The agent's reply leads with a status. Handle it BEFORE the gates:
+
+    | Status | Orchestrator action |
+    |---|---|
+    | `DONE` | Proceed to the gates. |
+    | `DONE_WITH_CONCERNS` | Read the concerns first. If about correctness/scope → resolve (or send back) before gates; if observational → note + proceed. |
+    | `NEEDS_CONTEXT` | Supply the missing context (add it to the brief file) and re-dispatch the same agent via `SendMessage`. Don't run gates yet. |
+    | `BLOCKED` | Assess: context gap → add context + re-dispatch; needs more reasoning → re-dispatch a more capable model; too large → split the task; plan is wrong → escalate to the user. Never force the same model to retry unchanged. |
+
+    Then run gates in order; any failure → fix loop → re-run that gate.
 
 11. **Close the task**
 

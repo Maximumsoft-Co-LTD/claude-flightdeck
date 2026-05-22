@@ -49,9 +49,10 @@ Every coding subagent that returns MUST pass 6 gates before merge.
    subagent's summary)
 2. **Build + Test** — real build + real test in every touched area
 3. **Boundary** — preset-specific architectural check
-4. **Quality (parallel)** — `pr-review-toolkit:{code-reviewer,
-   silent-failure-hunter, type-design-analyzer}` (+
-   `:pr-test-analyzer` if tests touched)
+4. **Spec-compliance (4a) → Quality (4b)** — 4a: code implements every
+   D-doc AC, nothing extra (read code, don't trust the report). Then 4b:
+   `pr-review-toolkit:{code-reviewer, silent-failure-hunter,
+   type-design-analyzer}` (+ `:pr-test-analyzer` if tests touched)
 5. **Wiring (L116)** — composition root has the new code; migrations
    applied; instrumentation emits
 6. **Integration smoke** — start the system, run the golden path

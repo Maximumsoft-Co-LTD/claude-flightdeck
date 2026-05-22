@@ -42,7 +42,11 @@ inside `docs/` (top level here) stays in this repo.
    live mini-retro) — not the specific lessons. Per-project lessons land
    in the consumer's `brain-hot.md` under `## Project-specific rules`.
 4. **Skill SKILL.md headers must include `name`, `description`, and
-   `## Token budget`.** No skill without a budget section.
+   `## Token budget`.** No skill without a budget section. The
+   `description` must be **trigger/symptom-based** (CSO), not a workflow
+   summary — lead with the user phrases / slash-commands / failure
+   symptoms that should auto-load it (see `CONTRIBUTING.md` "Improving a
+   skill").
 5. **Each agent file MUST reference `agent-pre-task-ritual.md` and
    `brain-hot.md` as mandatory reads** in its body — that's the contract
    between orchestrator and subagent.

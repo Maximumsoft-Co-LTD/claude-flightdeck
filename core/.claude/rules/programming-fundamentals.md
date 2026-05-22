@@ -74,6 +74,10 @@ non-negotiable version.
   3` is unreadable; `if status == STATUS_REVIEWING` is fine.
 - Public surface area added "just in case." YAGNI — every public
   symbol you add is a future maintenance bill.
+- A fix that patches a symptom without naming the root cause. Invoke
+  `superpowers:systematic-debugging` first; after **3 failed fix
+  attempts on the same bug, STOP and question the architecture** — a
+  4th attempt is a smell, not a fix.
 
 ## Tie-ins
 

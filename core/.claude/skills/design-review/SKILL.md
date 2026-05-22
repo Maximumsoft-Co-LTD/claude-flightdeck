@@ -6,6 +6,8 @@ user_invocable: true
 
 # /design-review — 3-Lens Design-Fidelity Gate
 
+> **Announce on start:** open your reply with "Using /design-review to run the 3-lens fidelity gate."
+
 Compare the **implemented UI** against its intended design (the design spec section + the project's established UI conventions). Produce a scorecard, prioritized findings, auto-logged backlog items, and a **PASS / CONDITIONAL / FIX-NOW** verdict.
 
 ## Why this gate exists (the lesson, baked in)

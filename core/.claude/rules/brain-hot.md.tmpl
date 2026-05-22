@@ -31,17 +31,24 @@ overrides can append A011+ at the bottom.
   optional. Invoke `superpowers:test-driven-development` before any
   implementation. *Why:* the failing-first step is what makes the test
   meaningful; an after-the-fact test only proves what you already wrote.
+  **Iron Law: no production code without a failing test first** — wrote
+  code first? delete it, start over. (Excuses → [`../../docs/setup/discipline-red-flags.md`](../../docs/setup/discipline-red-flags.md).)
 - **A002 — Zero-bug discipline.** Treat every task as a contract: it ships
   green or it doesn't ship. No silent failures, no "I'll fix the edge
   case in a follow-up," no commented-out tests. Edge cases identified
   during impl become tests, not TODOs. If you can't make it green, raise
-  the task back as blocked instead of merging yellow.
+  the task back as blocked instead of merging yellow. **Iron Law: it
+  ships green or it doesn't ship.**
 - **A003 — Verification before completion.** Never claim "done" without
   invoking `superpowers:verification-before-completion`. Run the actual
   build + test + smoke command; paste the **real output** into your
   report (not "tests passed"). Evidence before assertions, always.
+  **Iron Law: no completion claim without fresh verification evidence
+  in this message.**
 - **A004 — 6-gate post-delegation review (MANDATORY).** Every coding
-  subagent that returns must pass all 6 gates before merge.
+  subagent that returns must pass all 6 gates before merge. **Iron Law:
+  the subagent's "done" is an input, not evidence** — re-derive from the
+  diff + re-run commands.
   Full playbook: [`../../docs/playbooks/post-delegation-review.md`](../../docs/playbooks/post-delegation-review.md).
   1. **Inspect**: `git diff --stat` + read the diff. Never trust the
      subagent's "done" summary.
@@ -49,10 +56,12 @@ overrides can append A011+ at the bottom.
      green is the only acceptable state.
   3. **Boundary / Architecture**: project-specific architectural check
      (hex direction, FSD layers, RBAC seed, etc. — defined per preset).
-  4. **Quality (parallel reviewers)**: dispatch
+  4. **Spec-compliance (4a) → Quality (4b)**: 4a FIRST — read the code
+     against the D-doc AC list and confirm every AC is implemented and
+     nothing extra was built (over/under-build). THEN 4b — dispatch
      `pr-review-toolkit:{code-reviewer, silent-failure-hunter, type-design-analyzer}`
-     in a single message. Add `:pr-test-analyzer` if tests touched,
-     `:comment-analyzer` if comments touched.
+     in a single message (add `:pr-test-analyzer` if tests touched,
+     `:comment-analyzer` if comments touched). 4a gates 4b.
   5. **Wiring (L116)**: composition root has the new code; migrations
      applied; instrumentation emits; topics created; contracts in sync.
      Compile-green ≠ feature-wired.
@@ -62,7 +71,8 @@ overrides can append A011+ at the bottom.
 - **A005 — Design-doc-first.** Every non-trivial task needs a design doc
   in `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` MERGED before any code
   edit. Sprint file = scope; D-doc = how. Skipping this is the single
-  biggest cause of churn.
+  biggest cause of churn. **Iron Law: no code edit before the design doc
+  is merged.**
 
 ### Delegation & parallelism
 
@@ -159,6 +169,7 @@ external brain.
 
 - **First time using this template?** Run `/onboard` — the 8-stage setup wizard. See [`../../docs/setup/onboarding-guide.md`](../../docs/setup/onboarding-guide.md).
 - Mechanical "if touching X → apply Y": [`../../docs/setup/lesson-trigger-map.md`](../../docs/setup/lesson-trigger-map.md)
+- The excuses for skipping A001-A005 (and why they're wrong): [`../../docs/setup/discipline-red-flags.md`](../../docs/setup/discipline-red-flags.md)
 - End-to-end pipeline: [`../../docs/setup/workflow-master.md`](../../docs/setup/workflow-master.md)
 - Pre-task ritual (subagent reading list): [`./agent-pre-task-ritual.md`](./agent-pre-task-ritual.md)
 - 6-gate review playbook: [`../../docs/playbooks/post-delegation-review.md`](../../docs/playbooks/post-delegation-review.md)

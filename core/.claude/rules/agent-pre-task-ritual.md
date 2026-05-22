@@ -59,7 +59,9 @@ time you need to re-check a detail. See
    domain.
 6. Open **`docs/setup/lesson-trigger-map.md`** — the mechanical mapping
    of "if touching X → apply L###". For every file you plan to read or
-   write, mentally tag the applicable rules.
+   write, mentally tag the applicable rules. If you feel the urge to skip
+   a discipline (TDD, verify, the gates, the design doc), read
+   **`docs/setup/discipline-red-flags.md`** — that urge is on the list.
 7. In your final report, include an `## Applied Rules` section listing
    the A### / L### rules you actively applied.
 
@@ -116,7 +118,12 @@ time you need to re-check a detail. See
     Do not leave changes uncommitted in the worktree.
 19. Run `git status -s` and confirm a clean tree before reporting "done".
 20. Push the feature branch + open a PR targeting the integration base.
-21. **Final output summary MUST include:**
+21. **Final output summary MUST LEAD with a status, then include:**
+    - **Status** — `DONE` | `DONE_WITH_CONCERNS` | `BLOCKED` | `NEEDS_CONTEXT`.
+      `DONE_WITH_CONCERNS` = complete but you have doubts (state them);
+      `NEEDS_CONTEXT` = missing info the brief didn't provide (say what);
+      `BLOCKED` = you can't complete (say what you tried + help needed). It
+      is ALWAYS OK to escalate — bad work is worse than no work.
     - **Files touched** — paths + line counts
     - **Rules applied** — bulleted A### / L### list
     - **Skills invoked** — list (e.g. `test-driven-development`,
