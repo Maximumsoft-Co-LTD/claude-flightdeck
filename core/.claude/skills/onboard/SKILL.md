@@ -63,6 +63,17 @@ Read the JSON output. Branch on:
 - `presets_recommended` vs installed → if a recommendation isn't
   installed, suggest re-running `install.sh` with the missing
   preset BEFORE continuing.
+- **`arch_fit` per preset** → a preset is recommended on a *language*
+  signal (a `go.mod`, a `"next"` dep). `arch_fit: "low"` means the repo
+  does NOT actually follow that preset's architecture (no
+  `internal/{domain,ports,usecase}` for go-hex; no `features/entities` +
+  `eslint-plugin-boundaries` for nextjs-fsd; etc.). **Warn the operator
+  explicitly** — installing the preset doesn't make the project
+  hexagonal/FSD, and its engineer agent will *conform to your existing
+  layout and ask* rather than impose the architecture (per
+  `docs/setup/conform-to-codebase.md`). Offer: keep the preset for its
+  rules/agents but expect conform-not-impose behaviour, OR re-install
+  without it if it's the wrong fit.
 
 Report Stage 0 summary as the first interactive checkpoint:
 
@@ -73,7 +84,10 @@ Languages: go, typescript
 Git: 247 commits in last 6 months
 Existing install: no
 Sibling installs: ../service-billing (1 found)
-Presets recommended: go-hex, nextjs-fsd
+Presets recommended: go-hex (arch_fit: LOW ⚠), nextjs-fsd (arch_fit: high)
+  ⚠ go-hex: this repo has no hexagonal layout — the engineer will conform
+    to your actual structure and ask before introducing hex. Keep it, or
+    re-install without go-hex if it's the wrong fit.
 Presets installed: go-hex ✓ · nextjs-fsd ✗ ← missing
 Proceed? [Y/n]
 ```

@@ -13,6 +13,55 @@
 
 - (none yet)
 
+## v0.7.0 — 2026-05-22
+
+The **"conform, don't impose"** release — fixes the failure mode where a
+preset installed on a *language* signal (a `go.mod` → `go-hex`) made the
+engineer agent impose its architecture (hexagonal / FSD / Pinia / Helm) on
+a project that doesn't actually follow it, producing wrongly-shaped code.
+
+### Added
+
+- **`core/docs/setup/conform-to-codebase.md`** — the detect → conform → ask
+  discipline. A preset's architecture is a **default, not a mandate**: read
+  the project's real layout first, conform to it, and STOP-and-ask
+  (`NEEDS_CONTEXT`) before introducing the preset's architecture into a
+  project that doesn't use it.
+- **`arch_fit` probe** in `detect-topology.sh` — for each recommended preset
+  it now checks the architecture's signature dirs/tooling (go-hex:
+  `internal/{domain,ports,usecase}` or `verify-isolation`; nextjs-fsd:
+  `features`+`entities` or `eslint-plugin-boundaries`; vue-pinia: `pinia` +
+  `stores/`; k8s-helm: `Chart.yaml`) and emits `"arch_fit": {"go-hex":
+  "high|low", …}`.
+- **`/onboard` Stage 0 warning** — when a recommended preset has
+  `arch_fit: low`, the wizard warns the operator that installing it won't
+  make the project hex/FSD and the engineer will conform-not-impose.
+
+### Changed
+
+- **`agent-pre-task-ritual.md`** — new Step 1.5 "Detect & conform to the
+  project's ACTUAL conventions" (read representative files; preset
+  architecture yields to the codebase's reality; ask on mismatch). All
+  coding agents inherit it.
+- **All 6 preset engineers** (`go-hexagonal-engineer`,
+  `kafka-pipeline-engineer`, `observability-engineer`,
+  `frontend-fsd-engineer`, `vue-engineer`, `k8s-engineer`) — reframed from
+  "strict / non-negotiable architecture" to "this preset's **default**;
+  confirm the project follows it (a Step 0.5 detection), conform to the
+  real layout otherwise, and report `NEEDS_CONTEXT` before imposing".
+  Boundary tooling (`verify-isolation`, `eslint-plugin-boundaries`) is now
+  conditional on the project actually using it.
+- **`hexagonal-reviewer`** — reports `NOT-APPLICABLE` instead of flagging
+  "violations" against a service that isn't hexagonal.
+
+### Why
+
+Presets are recommended on language signals, which don't prove architecture
+fit. The engineer agents previously treated the preset architecture as
+absolute and imposed it. Now the codebase's observed reality wins, and
+introducing a new architecture is an explicit, asked-for design decision
+(A005) — not a side effect of a feature task.
+
 ## v0.6.0 — 2026-05-22
 
 The **"discipline-enforcement"** release — adopts the techniques that make

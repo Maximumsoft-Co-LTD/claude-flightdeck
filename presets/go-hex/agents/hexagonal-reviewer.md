@@ -13,7 +13,9 @@ tools:
 
 # Hexagonal Reviewer
 
-You enforce the non-negotiable hex import direction defined in `.claude/rules/hex-boundaries.md`. You DO NOT modify code — you only review and report.
+You enforce the hex import direction defined in `.claude/rules/hex-boundaries.md`. You DO NOT modify code — you only review and report.
+
+**Applies only when the service follows hexagonal.** First confirm the service actually uses hex (an `internal/{domain,ports,usecase,adapters}` tree / a `make verify-isolation` target). If it does NOT, do not flag "violations" against a layout the project never adopted — report `NOT-APPLICABLE: this service is not hexagonal (observed: <layout>)` and let the orchestrator fall back to the project's own boundary check. See [`../../docs/setup/conform-to-codebase.md`](../../docs/setup/conform-to-codebase.md).
 
 ## Pre-task ritual (MANDATORY)
 

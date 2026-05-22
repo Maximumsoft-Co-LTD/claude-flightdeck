@@ -15,6 +15,7 @@
 #     "manifest":          "<path>" | null,
 #     "sibling_installs":  ["../service-a", "../service-b", ...],
 #     "presets_recommended": ["go-hex", "nextjs-fsd", ...],
+#     "arch_fit":          {"go-hex":"high|low", ...},  // does the repo actually follow each preset's architecture?
 #     "git_repo":         true|false,
 #     "git_commits":      <int>
 #   }
@@ -137,6 +138,43 @@ fi
    || "$AREAS_JOINED" == *" deploy "* || -f "$TARGET/Chart.yaml" ]] && PRESETS+=("k8s-helm")
 PRESETS=($(printf '%s\n' "${PRESETS[@]}" | awk 'NF && !seen[$0]++'))
 
+# ---------- architecture-fit probe ----------
+# A preset is recommended on a *language* signal, which does NOT prove the
+# project follows the preset's architecture. Probe each recommended preset's
+# signature dirs/tooling → high|low, so /onboard can warn before the wrong
+# preset is confirmed (e.g. go.mod present but no hexagonal layout).
+arch_fit_for() {
+  case "$1" in
+    go-hex)
+      if find "$TARGET" -maxdepth 4 -type d \( -path '*/internal/domain' -o -path '*/internal/ports' -o -path '*/internal/usecase' \) 2>/dev/null | head -1 | grep -q . \
+         || grep -rsq 'verify-isolation' "$TARGET"/Makefile "$TARGET"/*/Makefile 2>/dev/null; then
+        echo high; else echo low; fi ;;
+    nextjs-fsd)
+      if { find "$TARGET" -maxdepth 4 -type d -path '*/features' 2>/dev/null | head -1 | grep -q . \
+           && find "$TARGET" -maxdepth 4 -type d -path '*/entities' 2>/dev/null | head -1 | grep -q .; } \
+         || grep -rsq 'eslint-plugin-boundaries' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null; then
+        echo high; else echo low; fi ;;
+    vue-pinia)
+      if grep -rsq '"pinia"' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null \
+         && find "$TARGET" -maxdepth 4 -type d -name stores 2>/dev/null | head -1 | grep -q .; then
+        echo high; else echo low; fi ;;
+    k8s-helm)
+      if find "$TARGET" -maxdepth 3 -name 'Chart.yaml' 2>/dev/null | head -1 | grep -q .; then
+        echo high; else echo low; fi ;;
+    *) echo unknown ;;
+  esac
+}
+
+ARCH_FIT_JSON='{'
+af_first=1
+for p in "${PRESETS[@]:-}"; do
+  [[ -n "$p" ]] || continue
+  [[ $af_first -eq 1 ]] || ARCH_FIT_JSON+=','
+  ARCH_FIT_JSON+="\"$p\":\"$(arch_fit_for "$p")\""
+  af_first=0
+done
+ARCH_FIT_JSON+='}'
+
 # ---------- git repo state ----------
 GIT_REPO=false
 GIT_COMMITS=0
@@ -170,6 +208,7 @@ printf '"existing_install":%s,' "$EXISTING_INSTALL"
 printf '"manifest":%s,' "$MANIFEST"
 printf '"sibling_installs":'; json_array "${SIBLINGS[@]:-}"; printf ','
 printf '"presets_recommended":'; json_array "${PRESETS[@]:-}"; printf ','
+printf '"arch_fit":%s,' "$ARCH_FIT_JSON"
 printf '"git_repo":%s,' "$GIT_REPO"
 printf '"git_commits":%s' "$GIT_COMMITS"
 printf '}\n'

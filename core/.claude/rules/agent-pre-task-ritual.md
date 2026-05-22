@@ -45,6 +45,23 @@ time you need to re-check a detail. See
 > and **report the missing file in your output summary** so the
 > orchestrator can scaffold it.
 
+### Step 1.5 — Detect & conform to the project's ACTUAL conventions
+
+Before writing, learn how *this* project really organizes code — don't
+assume the preset's architecture is in place:
+
+- **Glob the area you'll touch + Read 2-3 representative existing files**
+  (a handler, a model, a test). Match the project's real layout, naming,
+  and wiring.
+- A preset's architecture (hexagonal, FSD, Pinia, Helm) is a **default,
+  not a mandate.** If the project follows it → enforce it strictly. If the
+  project follows a different but consistent pattern → **conform to the
+  project's pattern** (its reality wins). If the task would force you to
+  *introduce* the preset's architecture into a project that doesn't use it,
+  or the layout is ambiguous → **STOP and report `NEEDS_CONTEXT`** with what
+  you observed + the options. Do NOT impose an architecture unasked.
+- Full procedure: [`../../docs/setup/conform-to-codebase.md`](../../docs/setup/conform-to-codebase.md).
+
 ### Step 2 — Rule + lesson scan
 
 4. Read **`.claude/rules/phase-matrix.md`** (type × phase lookup),
