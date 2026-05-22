@@ -13,6 +13,49 @@
 
 - (none yet)
 
+## v0.4.1 — 2026-05-22
+
+The **"self-containment"** release — makes every rule and lesson
+reference resolve **in-repo**, so adopters who don't have the original
+external "second brain" never hit a dangling pointer. Also reconciles a
+two-scheme A-rule numbering collision inherited from the source repos.
+
+### Fixed
+
+- **Dangling lesson references (17)** — `L005, L008, L021, L022, L023,
+  L026, L030, L033, L036, L040, L041, L042, L049, L058, L063, L102,
+  L109` were cited in the design templates / workflow docs but defined
+  nowhere in-repo. All now have a one-line definition in the
+  `lesson-trigger-map.md` `L###` reference table.
+- **A-rule numbering collision** — two conflicting schemes
+  (`brain-hot.md`'s global A001-A010 vs. an older domain scheme where
+  A013=LSP, A015=design-first, A016=mini-retro, A017=backlog-audit, and
+  A001-A011 carried domain meanings). Canonicalized to **one** meaning:
+  A001-A010 = the global always-apply rules; A011+ = project-local.
+  Stale `A013/A015/A016/A017` references remapped to `A010/A005/A009/A008`
+  across `workflow-master.md`, `getting-started-tour.md`,
+  `zero-fix-task-template.md`, `compliance-mapping.md`, and both
+  playbooks.
+- **Dangling file reference** — `.claude/rules/project-local.md` (never
+  shipped) was referenced by the two playbooks and several docs;
+  re-pointed to `brain-hot.md` (A011+) + `lesson-trigger-map.md`.
+- **6-gate cross-refs** — several docs cited `§N4` for the 6-gate review;
+  corrected to `§N3` (N4 is parallel-conflict-prevention).
+
+### Changed
+
+- **`lesson-trigger-map.md`** — de-domain-specified: backend/frontend
+  tables now use stack-neutral `N1`/`N2` + defined `L###` instead of
+  colliding domain `A###`; removed hardcoded RBAC / Kafka / framework
+  paths; dropped the "full lesson detail lives in your brain / MemPalace"
+  framing (the table **is** the detail now).
+- **`brain-hot.md.tmpl`** — `BRAIN_PATH` framed as explicitly optional;
+  header states the template is fully self-contained without an external
+  brain.
+- **De-domain-specifying** — removed leftover source-repo names
+  (`idip-platform`, `aggegator`, `claude-foundation`) and example task
+  IDs (`IDIP-`, `AGG-`) from `core/` per the template's own ground rules.
+
 ## v0.4.0 — 2026-05-22
 
 The **"feedback loop"** release — closes the distributed-template gap:

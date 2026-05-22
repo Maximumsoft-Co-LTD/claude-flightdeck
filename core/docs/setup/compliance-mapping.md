@@ -52,14 +52,14 @@
 | Control | What it asks | Evidence | Where it lives |
 |---|---|---|---|
 | **§164.308(a)(1)(ii)(A)** | Risk analysis | Sprint retro + FOLLOWUPS register | `docs/spec/retros/sprint-S*.md`; `docs/spec/FOLLOWUPS.md` |
-| **§164.308(a)(1)(ii)(B)** | Risk management | Live mini-retros (A009) + sprint close audit (A017) | `docs/spec/retros/sprint-S*-tasks.md` |
+| **§164.308(a)(1)(ii)(B)** | Risk management | Live mini-retros (A009) + sprint close audit (A008) | `docs/spec/retros/sprint-S*-tasks.md` |
 | **§164.308(a)(2)** | Assigned security responsibility | CODEOWNERS + agent role definitions | `.github/CODEOWNERS`; `.claude/agents/*.md` |
 | **§164.308(a)(3)** | Workforce security | Permission profiles + Separation of Duties (N6) | `docs/setup/permission-profiles.md`; `docs/setup/separation-of-duties.md` |
 | **§164.308(a)(4)** | Information access management | Permission profiles allow-list | `.claude/settings.json` |
 | **§164.308(a)(5)** | Security awareness & training | Onboarding tour + rules auto-load | `docs/getting-started-tour.md`; `.claude/rules/brain-hot.md` |
 | **§164.308(a)(6)** | Security incident procedures | Failure paths in 6-gate playbook | `docs/playbooks/post-delegation-review.md` |
 | **§164.308(a)(7)** | Contingency plan | Integration-branch strategy + backup-on-install behavior | `docs/setup/integration-branch-strategy.md`; `install.sh` (backup logic) |
-| **§164.308(a)(8)** | Evaluation | Sprint retro audit step (A017) | `docs/spec/retros/sprint-S*.md` |
+| **§164.308(a)(8)** | Evaluation | Sprint retro audit step (A008) | `docs/spec/retros/sprint-S*.md` |
 | **§164.310(a)** | Physical safeguards — facility access | — _(out of scope — physical infra)_ |
 | **§164.310(c)** | Workstation security | Permission profiles + secret redaction enforce least privilege at the workstation | `.claude/settings.json`; `.claude/hooks/secret-redact.sh` |
 | **§164.310(d)** | Device & media controls | Secret redaction + `.gitignore` discipline | `docs/setup/secret-handling.md` |

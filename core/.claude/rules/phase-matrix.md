@@ -2,7 +2,8 @@
 
 > When `/next-task` (or any orchestrator) picks up a task, the type of
 > work changes which phases run, run lightly, or skip. This file is
-> the mechanical lookup. Adapted from `claude-foundation/WORKFLOW.md`.
+> the mechanical lookup. Adapted from battle-tested multi-project
+> workflow conventions.
 >
 > **Read this BEFORE writing a design doc** so you don't drag a typo
 > fix through a 500-line zero-fix template, and don't ship a feature

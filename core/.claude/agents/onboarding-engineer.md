@@ -81,8 +81,8 @@ becomes binding.
   signals — no "this is best practice in general."
 - Write rules in passive voice. "Use X; never Y" not "X should be
   used."
-- Cargo-cult from the source repos (`idip-platform`, `aggegator`,
-  `claude-foundation`). Lift only what fits THIS project's evidence.
+- Cargo-cult generic rules that don't fit. Lift only what fits THIS
+  project's evidence.
 - Fill in placeholder text in `CLAUDE.md` you can't justify from
   signals. If interview answers don't cover a section (e.g. the
   user didn't describe the deployment workflow), leave the N-rule

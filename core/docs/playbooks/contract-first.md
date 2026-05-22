@@ -1,6 +1,6 @@
-# Playbook — Contract-First for Cross-Service Changes (A003 / N3)
+# Playbook — Contract-First for Cross-Service Changes (N2)
 
-> Operator playbook. The deep-dive that [`CLAUDE.md`](../../CLAUDE.md) §N3 and [`.claude/rules/project-local.md`](../../.claude/rules/project-local.md) A003 point to. Execute it whenever a change touches an **inter-service interface**: an event / message shape or a REST / RPC API shape.
+> Operator playbook. The deep-dive that [`CLAUDE.md`](../../CLAUDE.md) §N2 (contract-first) points to. Execute it whenever a change touches an **inter-service interface**: an event / message shape or a REST / RPC API shape.
 >
 > **Core principle**: the contract is the single source of truth that both sides of the interface consume. **Contracts change first, in their own commit. Code follows contracts — never the reverse.**
 
@@ -125,7 +125,7 @@ Contract-first — <topic-or-service>  (event | REST)
 
 ## Related
 
-- [`../../CLAUDE.md`](../../CLAUDE.md) §N3 — the contract-first skeleton this expands.
-- [`../../.claude/rules/project-local.md`](../../.claude/rules/project-local.md) A003 (contract-first), A002 (provider port).
+- [`../../CLAUDE.md`](../../CLAUDE.md) §N2 — the contract-first skeleton this expands.
+- [`../../docs/setup/lesson-trigger-map.md`](../setup/lesson-trigger-map.md) — N2 (contract-first) + N1 (boundary) triggers, plus L117 (producer struct matches contract).
 - [`post-delegation-review.md`](post-delegation-review.md) Gate 5 — where the pre-PR contract check runs.
 - [`parallel-conflict-prevention.md`](parallel-conflict-prevention.md) Layer 3 — land the contract commit before parallel producer/consumer agents.

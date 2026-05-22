@@ -53,7 +53,7 @@ DURATION_MS="$(printf '%s' "$EVENT_JSON" | jq -r '.duration_ms // .tool_response
 
 # Extract task ID from the dispatched prompt — pattern: any
 # UPPERCASE-PREFIX with an optional sprint segment, e.g. PROJ-S03.04 or
-# IDIP-042. Best-effort; empty if not found.
+# PROJ-042. Best-effort; empty if not found.
 PROMPT_TEXT="$(printf '%s' "$EVENT_JSON" | jq -r '.tool_input.prompt // empty' 2>/dev/null)"
 TASK_ID="$(printf '%s' "$PROMPT_TEXT" | grep -oE '[A-Z][A-Z0-9]+-(S[0-9]+\.[0-9]+|[0-9]+)' | head -1 || true)"
 

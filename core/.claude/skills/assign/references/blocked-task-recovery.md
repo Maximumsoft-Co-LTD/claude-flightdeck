@@ -147,8 +147,8 @@ But .claude/agents/go-hexagonal-engineer.md does not exist
 
 **Recovery:**
 1. Surface the missing agent to the user.
-2. Suggest installing the preset: `claude-foundation install
-   --preset=go-hex`.
+2. Suggest installing the preset by re-running the template installer
+   with the preset added: `install.sh <this-project> --preset go-hex --force`.
 3. Or, as a fallback, dispatch `general-purpose` WITH the preset's
    rules manually listed in [MANDATORY READS]:
    ```

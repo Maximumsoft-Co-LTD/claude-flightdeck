@@ -53,7 +53,7 @@ deprecated entries train the agent to ignore the file.
 Each `<agent>/MEMORY.md` is a flat index (~1 line per entry):
 
 ```markdown
-- [Topic title](./feedback/2026-05-task-AGG-S03.04.md) — one-line hook
+- [Topic title](./feedback/2026-05-task-PROJ-S03.04.md) — one-line hook
 ```
 
 Keep MEMORY.md ≤ 200 lines. If it grows beyond that, factor into

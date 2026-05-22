@@ -37,15 +37,15 @@ This design doc is the specification. Every AC, API contract, business rule, and
 
 ## 5. Project Rules Recap (applicable subset)
 
-- **A001** Architectural boundary — domain imports nothing outside domain; layers respect direction
-- **A003** Contract-first — interface schema commits BEFORE producer / consumer code
-- **A004** Idempotent migration — every migration is `IF NOT EXISTS` / additive
-- **A005** Idempotency-Key on write endpoints with side-effects
-- **A008** Observability — every new handler emits a span; every worker emits a heartbeat
-- **A009** RBAC — protected-route wrapper + policy seed
-- **A015** Design-First — D-doc exists for this task (this file references it)
+- **N1** Architectural boundary — domain imports nothing outward; layers respect direction (per preset)
+- **N2** Contract-first — interface schema commits BEFORE producer / consumer code
+- **A001** TDD-first — failing test before implementation
+- **A005** Design-First — D-doc exists for this task (this file references it)
+- **L007** Idempotency-Key on write endpoints with side-effects
+- **L227** Idempotent migrations (`IF NOT EXISTS` / additive), auto-applied on bootstrap
 - **L076** Task design under 500 lines = under-specified — make sure the design doc is rich enough before delegating
 - **L116** Composition root wired — every new use-case / adapter / route appears in `main`
+- _Project-local:_ observability (span per handler, heartbeat per worker) + authz (protected-route wrapper + policy seed) where your stack requires them
 
 ## 5.1 Estimate-label discipline
 

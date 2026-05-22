@@ -71,7 +71,7 @@ writes the detail file.
 - `docs/spec/discovery/D007-operator-status-filter.md` (the detail)
 - new row in `docs/spec/discovery.md` (the index)
 
-**Cross-links**: A012 (discovery state machine), workflow stage S1
+**Cross-links**: A008 (discovery → backlog state), workflow stage S1
 ([`./setup/workflow-master.md`](./setup/workflow-master.md))
 
 **If it goes wrong**:
@@ -92,7 +92,7 @@ passes, an enriched row lands on the backlog.
 - new row in `docs/spec/backlog.md` referencing `D007`
 - D007's state → `promoted` in `docs/spec/discovery.md`
 
-**Cross-links**: A012; backlog index ([`./setup/index-discipline.md`](./setup/index-discipline.md))
+**Cross-links**: A008; backlog index ([`./setup/index-discipline.md`](./setup/index-discipline.md))
 
 **If it goes wrong**:
 - DoR gate fails → `/discover refine D007` to fill the missing slot,
@@ -124,14 +124,14 @@ row, and confirms with you. It then either runs the design-doc gate
 **Written**: nothing yet (this is the read + decide step).
 
 **Cross-links**: A005 (design-doc-first), A008 (STATUS source-of-truth),
-A012 (sprint state machine), Phase Matrix
+A008 (sprint state via STATUS), Phase Matrix
 ([`../.claude/rules/phase-matrix.md`](../.claude/rules/phase-matrix.md))
 
 **If it goes wrong**:
 - "no eligible tasks" → check the sprint file for unblocked `[ ] Not
   Started` rows; verify dependencies are met
 - "STATUS not pointing at a sprint" → fix STATUS.md to mark the
-  active sprint (per A012)
+  active sprint (per A008)
 
 ---
 
@@ -152,7 +152,7 @@ mentions (L149), and writes a ≥500-line zero-fix D-doc using
 
 **Written**: `docs/designs/sprint-S<N>/D###-<slug>.md` (the design doc).
 
-**Cross-links**: A005, A015, L076 (≥500L threshold), L149 + L156
+**Cross-links**: A005 (design-doc-first), L076 (≥500L threshold), L149 + L156
 (type verification), agent pre-task ritual
 ([`../.claude/rules/agent-pre-task-ritual.md`](../.claude/rules/agent-pre-task-ritual.md))
 
@@ -249,7 +249,7 @@ spent vs estimate / lessons / followups / done state).
 
 **Written**: append-only block in `docs/spec/retros/sprint-S<N>-tasks.md`
 
-**Cross-links**: A009, L036, A017 (sprint close aggregates these)
+**Cross-links**: A009, L036, A008 (sprint close aggregates these)
 
 **If it goes wrong**:
 - you defer the retro to "Friday" → DON'T. The learning evaporates.
@@ -293,7 +293,7 @@ for waves of independent tasks (run the Conflict Radar first —
 skill dispatches the
 [`sprint-retro-author`](../.claude/agents/sprint-retro-author.md)
 agent. It aggregates the live mini-retros, runs the **backlog audit**
-(HARD gate — mismatch ≠ 0 is blocker per A017), classifies findings
+(HARD gate — mismatch ≠ 0 is blocker per A008), classifies findings
 into fix-now vs defer, fixes the process bugs immediately, and writes
 the full retro file.
 
@@ -302,15 +302,15 @@ the full retro file.
 - updates to `docs/spec/FOLLOWUPS.md` (deferred items + their
   severity + `PR-APPROVER` ack per N6 if any)
 - STATUS prose moved to `docs/spec/STATUS-archive.md` **in the same
-  commit** (per A012)
+  commit** (per A008)
 
 **Cross-links**: A009 / L036 (live retros aggregated here),
-A017 (backlog audit), A012 (STATUS lifecycle), workflow stage S7
+A008 (backlog audit + STATUS lifecycle), workflow stage S7
 ([`./setup/workflow-master.md`](./setup/workflow-master.md))
 
 **If it goes wrong**:
 - backlog audit shows mismatch ≠ 0 → STOP. Reconcile the rows
-  before closing. A017 is non-negotiable.
+  before closing. A008 is non-negotiable.
 - mini-retros missing for some tasks → write them retroactively
   (best effort; the lesson is "don't defer next time")
 

@@ -93,9 +93,9 @@ make -C <module> docker-build
 - If you installed the **`nextjs-fsd`** preset → run the FSD lint (`eslint-plugin-boundaries`) enforcing `app → widgets → features → entities → shared`.
 - If you installed the **`vue-pinia`** preset → run the project's component / store boundary lint (e.g. forbid component → store cycle; forbid feature → other-feature import).
 - If you installed the **`k8s-helm`** preset → run `helm lint` + a kustomize-overlay drift check.
-- If your project has its own architecture → define your own Gate 3 in `.claude/rules/project-local.md` and reference here.
+- If your project has its own architecture → define your own Gate 3 as an A011+ rule in `.claude/rules/brain-hot.md` (or a `<slug>-local.md` rules file) and reference here.
 
-Full rule for the active boundary: `.claude/rules/project-local.md` + the preset's `BOUNDARY.md` (if shipped by the preset).
+Full rule for the active boundary: your project's N1 rule in `.claude/rules/brain-hot.md` + the preset's `BOUNDARY.md` (if shipped by the preset).
 
 **Generic dispatch shape** (replace `<reviewer>` with the preset-provided reviewer name):
 
@@ -104,7 +104,7 @@ Agent(
   description: "Boundary review for {{TASK_ID_PREFIX}}-S0X.YY",
   subagent_type: "<reviewer>",
   prompt: "Review the diff in <module> (branch feat/...). Enforce the project boundary
-           per .claude/rules/project-local.md. Report any forbidden import with file:line."
+           per the N1 rule in .claude/rules/brain-hot.md. Report any forbidden import with file:line."
 )
 ```
 
@@ -222,8 +222,8 @@ Any RED → fix → re-run THAT gate → continue. Never skip. Never merge on re
 
 ## Related
 
-- [`../../CLAUDE.md`](../../CLAUDE.md) §N4 — the 6-gate skeleton this expands.
+- [`../../CLAUDE.md`](../../CLAUDE.md) §N3 — the 6-gate skeleton this expands.
 - [`../../.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) §4 (gates), §5 (never-do).
-- [`../../.claude/rules/project-local.md`](../../.claude/rules/project-local.md) — A001 / A003 / A004 / A006 / A008 referenced by the gates.
+- [`../../.claude/rules/brain-hot.md`](../../.claude/rules/brain-hot.md) — A002 (zero-bug), A003 (verify), A004 (6-gate), N1 (boundary), L116 (wiring) referenced by the gates.
 - [`parallel-conflict-prevention.md`](parallel-conflict-prevention.md) — when the work was dispatched as parallel subagents.
-- [`contract-first.md`](contract-first.md) — the A003 detail Gate 5 checks.
+- [`contract-first.md`](contract-first.md) — the N2 contract-first detail Gate 5 checks.

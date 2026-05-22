@@ -151,10 +151,9 @@ ships its own area-scoped `CLAUDE.md` + its own code.
    case of Scenario 2) and offers to inherit from the meta's
    `brain-hot.md`.
 
-The aggegator-style pattern (referenced in this template's source
-notes): treat the meta-repo as the sprint hub + each submodule as a
-service that pulls rules from the hub. The meta's `brain-hot.md` is
-canonical; submodules inherit, never the reverse.
+The meta-repo hub pattern: treat the meta-repo as the sprint hub +
+each submodule as a service that pulls rules from the hub. The meta's
+`brain-hot.md` is canonical; submodules inherit, never the reverse.
 
 **Submodule onboarding tips:**
 

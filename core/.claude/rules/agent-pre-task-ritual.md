@@ -159,7 +159,6 @@
 
 ## Origin
 
-Synthesized from `idip-platform/.claude/rules/agent-pre-task-ritual.md`
-(richer 6-step structure) and
-`aggegator/.claude/rules/agent-pre-task-ritual.md` (cleaner multi-repo
-handling). De-domain-specified for use across projects.
+Synthesized from battle-tested pre-task ritual conventions across
+multiple production repos (a rich step-structure merged with clean
+multi-repo handling). De-domain-specified for use across projects.

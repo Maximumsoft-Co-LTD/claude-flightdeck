@@ -11,7 +11,10 @@
 > file before guessing.
 
 > **Stack:** {{TECH_STACK_DESC}}
-> **Brain:** {{BRAIN_PATH}}  (deeper lessons + retros live here)
+> **Brain (optional):** {{BRAIN_PATH}} — if you configured an external
+> brain, deeper notes + retros live there. **This template is fully
+> self-contained without it**: every rule and lesson below is defined
+> in-repo (here + [`../../docs/setup/lesson-trigger-map.md`](../../docs/setup/lesson-trigger-map.md)).
 
 ---
 
@@ -87,7 +90,7 @@ overrides can append A011+ at the bottom.
   `docs/spec/retros/sprint-S<N>-tasks.md` BEFORE moving on. `/retro`
   aggregates these at sprint close. Deferring retros = losing the
   learning.
-- **A010 — LSP-first navigation** (A013/L147 in source repos). For
+- **A010 — LSP-first navigation** (see L147 below). For
   *semantic* questions (what is this symbol, where is it defined, who
   calls it) → built-in LSP (`documentSymbol`, `hover`, `findReferences`,
   `goToDefinition`). For *text* search (regex in YAML, cross-language
@@ -97,7 +100,10 @@ overrides can append A011+ at the bottom.
 
 ## Cross-cutting lessons (L###) that bite often
 
-These come from the source codebases; keep applying them.
+The highest-leverage few are summarized here; the full registry (with
+trigger conditions) is [`../../docs/setup/lesson-trigger-map.md`](../../docs/setup/lesson-trigger-map.md).
+Each lesson carries its own one-line summary — applying them needs no
+external brain.
 
 - **L020 — Selector contract.** Every `data-testid` ships in the D-doc
   selector map BEFORE UI + E2E impl. Mismatch class kills hours.
