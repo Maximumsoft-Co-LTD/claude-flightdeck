@@ -199,6 +199,30 @@ $EDITOR template.config
 for either `install.ps1` (native PowerShell, no WSL required) or running
 the bash `install.sh` under WSL. Both paths are supported.
 
+### After install — run `/onboard` (the setup wizard)
+
+Installing puts the templates in place. To **make Claude Code
+understand your project** — populate `CLAUDE.md` with real content,
+mine your git history for project-local A-rules, draft per-area
+`CLAUDE.md` for monorepos, seed `STATUS.md` / `backlog.md` /
+`FOLLOWUPS.md` — open the target project in Claude Code and run:
+
+```
+/onboard
+```
+
+The 8-stage hybrid wizard (auto for scan + mining + drafting,
+interactive for the team interview + A-rule ratification) takes
+**~4-6 hours** for a real project and leaves you with a control
+plane filled in from your project's actual evidence, not template
+placeholders. See [`core/docs/setup/onboarding-guide.md`](core/docs/setup/onboarding-guide.md)
+(after install: `docs/setup/onboarding-guide.md` in your project)
+for the operator companion.
+
+Multi-repo aware — if you run `/onboard` in a project next to a
+sibling that already has flightdeck installed, the wizard offers
+to inherit ratified A-rules from the sibling.
+
 ## What the installer does
 
 1. **Prompts (or loads `--config`)** for: `PROJECT_NAME`, `PROJECT_SLUG`,

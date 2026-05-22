@@ -13,6 +13,70 @@
 
 - (none yet)
 
+## v0.3.0 — 2026-05-22
+
+The **"adopter onboarding"** release — adds an 8-stage setup wizard
+that takes a fresh install from `template files in place` to
+`Claude Code understands this project`. Multi-repo aware: detects
+sibling installs and offers soft inheritance of project-local
+A-rules.
+
+### Added
+
+- **`/onboard` skill** (`core/.claude/skills/onboard/SKILL.md`,
+  ~330 lines) — user-invocable 8-stage hybrid wizard. Auto-does
+  mechanical work (topology detection, codebase scan, git history
+  mining, document drafting); prompts the operator only for context
+  Claude can't infer (team interview, A-rule ratification, sprint
+  state). Subcommands: `refresh` / `scan` / `rules` / `retro`.
+- **`onboarding-engineer` agent**
+  (`core/.claude/agents/onboarding-engineer.md`) — doc-drafting
+  specialist for Stage 4. Reads codebase scan + interview answers
+  + git-mining signals; writes root + per-area `CLAUDE.md`, polished
+  `codebase-orientation.md`, `team-conventions.md`, and **drafts**
+  (never auto-applies) A011+ rule candidates for operator
+  ratification.
+- **3 helper scripts** under
+  `core/.claude/skills/onboard/scripts/`:
+  - `detect-topology.sh` — JSON output of repo type (single /
+    monorepo / meta), languages, areas, sibling installs, preset
+    recommendations
+  - `mine-git-history.sh` — fix-class commit aggregation → JSONL
+    of hotspot files / keyword frequency / revert hotspots
+  - `extract-pr-comments.sh` — `gh`-based recent PR review-comment
+    extractor for convention sniffing (fail-open if `gh` missing)
+- **5 reference deep-dives** under
+  `core/.claude/skills/onboard/references/`:
+  `repo-topology-detection.md`, `interview-questions.md`,
+  `pattern-mining-prompts.md`, `draft-templates.md`,
+  `multi-repo-coordination.md`.
+- **`docs/setup/onboarding-guide.md`** (~330 lines) — operator
+  companion for `/onboard`. Walks the 8 stages with what-to-expect
+  per stage, multi-repo decision tree, common stumbles, FAQ.
+- **`docs/setup/sibling-repos.md.tmpl`** — lands when `/onboard`
+  detects multi-repo inheritance; documents the soft-inheritance
+  link + conflict-resolution protocol.
+- **`docs/setup/retention-policy.md`** (extracted from
+  `audit-trail.md`) — full retention policy across all artifact
+  classes (audit logs, sprints, retros, design docs).
+
+### Changed
+
+- **Root `CLAUDE.md.tmpl`** — new dispatch-routing row for
+  first-time setup ("→ `/onboard`").
+- **`.claude/rules/brain-hot.md.tmpl`** — `## Where to look next`
+  now leads with "First time? Run `/onboard`".
+- **`README.md`** — new "After install — run `/onboard`" section
+  promoting the wizard right after the install command.
+- **`getting-started-tour.md`** — new **Step 0** at the top:
+  "Run `/onboard` first."
+- **`audit-trail.md`** — Retention section now points at
+  `retention-policy.md` for the full policy (deduplication).
+
+### Fixed
+
+- (none — `v0.3.0` is purely additive)
+
 ## v0.2.0 — 2026-05-22
 
 The "operational tier" release — adds drift control, audit trail, CI

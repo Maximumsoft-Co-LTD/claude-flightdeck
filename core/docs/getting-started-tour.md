@@ -9,6 +9,31 @@
 > map until the cadence is muscle memory — most teams need 2-3 sprints
 > before the workflow runs without consulting it.
 
+## Step 0 — Run `/onboard` (one-time setup wizard)
+
+After `install.sh` lays down the templates, the next step is to make
+Claude Code **understand your project**. Don't try to fill in
+`CLAUDE.md` / A-rules / `STATUS.md` by hand — open Claude Code and
+run:
+
+```
+/onboard
+```
+
+The 8-stage hybrid wizard takes ~4-6 hours interactive (most stages
+auto-do mechanical work — codebase scan, git history mining, draft
+documentation; you only intervene for the team interview, A-rule
+ratification, and first-sprint state). Full operator doc:
+[`./setup/onboarding-guide.md`](./setup/onboarding-guide.md).
+
+After it finishes you'll have:
+- `CLAUDE.md` filled from real evidence (not placeholders)
+- Per-area `CLAUDE.md` for monorepos
+- `.claude/rules/brain-hot.md` with project-local A011+ rules drafted
+  from git history (you choose which to keep)
+- `docs/setup/codebase-orientation.md` + `team-conventions.md`
+- `docs/spec/STATUS.md` + `backlog.md` + `FOLLOWUPS.md` seeded
+
 ## Pre-flight (one-time, before the sprint starts)
 
 You've already run:
@@ -17,7 +42,7 @@ You've already run:
 ./install.sh ~/code/{{PROJECT_SLUG}} --preset <yours> --profile standard
 ```
 
-Open the project in Claude Code. Confirm:
+…and `/onboard` (above). Open the project in Claude Code. Confirm:
 
 - `CLAUDE.md` non-negotiables (N1-N6) read sensible
 - `docs/spec/STATUS.md` shows your first sprint (or you're about to author it)
@@ -25,8 +50,8 @@ Open the project in Claude Code. Confirm:
 - `.claude/settings.json` exists and matches the profile you chose
   ([`./setup/permission-profiles.md`](./setup/permission-profiles.md))
 
-If any of those are wrong → re-run the installer with `--force` after
-backing up, or hand-fix.
+If any of those are wrong → re-run `/onboard refresh`, OR re-run the
+installer with `--force` after backing up, or hand-fix.
 
 ---
 
