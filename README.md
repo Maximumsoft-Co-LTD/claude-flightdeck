@@ -300,6 +300,17 @@ get the update. There is no `install.sh upgrade` yet — that's deliberate
 `CLAUDE.md` in this repo (not in `core/`) is the meta-manual for editing
 the template.
 
+## See the template in action
+
+A filled-in sample project lives at
+[`examples/url-shortener-go-hex/`](examples/url-shortener-go-hex/) —
+3 simulated sprints of artifacts (STATUS, sprint files, retros,
+follow-ups, design docs across all four size tiers) so you can see
+what the template looks like *after* a real adoption cycle, not
+just as `.tmpl` files. Start at
+[`examples/url-shortener-go-hex/docs/spec/STATUS.md`](examples/url-shortener-go-hex/docs/spec/STATUS.md)
+and follow the README's suggested reading order (≈20 min walkthrough).
+
 ## Source
 
 - `idip-platform` — Go/Gin + Vue 3 + K8s + Obsidian Brain; richer hot rules
