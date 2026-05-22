@@ -9,6 +9,42 @@ workflow.
 Run one script and your new project starts with the same battle-tested
 infrastructure — no re-building from scratch.
 
+## Quick start
+
+```bash
+# 1. Clone the template (the control-plane source)
+git clone https://github.com/Maximumsoft-Co-LTD/claude-flightdeck.git ~/code/claude-flightdeck
+
+# 2. Install into your project — pick the preset(s) for your stack
+#    presets: go-hex · nextjs-fsd · vue-pinia · k8s-helm  (comma-separated)
+#    profiles: restricted · standard (default) · permissive
+~/code/claude-flightdeck/install.sh ~/code/my-project --preset go-hex --profile standard
+
+# 3. Open ~/code/my-project in Claude Code, then run the setup wizard:
+#    /onboard
+#    → scans the codebase, mines git history for project rules, drafts
+#      CLAUDE.md + per-area rules, seeds STATUS/backlog/FOLLOWUPS
+#      (~4-6 hr interactive; you ratify what it drafts)
+
+# 4. Start working:
+#    /next-task        → orchestrator picks the next task and dispatches it
+#    /post-delegation-gate → 6-gate review before merge
+#    /retro            → sprint close + audit
+```
+
+**Prereqs:** `bash` + `git` (installer) · `jq` (hooks — `brew install jq` /
+`apt install jq`) · optional `gh` (CI gate + `/flightdeck-feedback`).
+**Windows:** use `install.ps1` (PowerShell) or WSL — see
+[`docs/windows-install.md`](docs/windows-install.md).
+
+**Try without committing:** add `--dry-run` to step 2 to preview every
+file the installer would write.
+
+> New here? The fastest way to understand what you get is the filled-in
+> sample at [`examples/url-shortener-go-hex/`](examples/url-shortener-go-hex/)
+> — 3 sprints of real artifacts (STATUS, design docs across all size
+> tiers, retros, FOLLOWUPS). Start at its `docs/spec/STATUS.md`.
+
 ## The workflow at a glance
 
 The control plane drives a feature from **idea → ship → retro** through
@@ -174,11 +210,14 @@ Opt-in presets (selected via `--preset`):
 | `vue-pinia` | `vue-engineer` agent + `vue-patterns.md` rule |
 | `k8s-helm` | `k8s-engineer` agent + `docs/setup/production-infrastructure.md` |
 
-## Quick install
+## Install reference — all options
+
+> The [Quick start](#quick-start) above is the 4-command path. This
+> section documents every installer flag for when you need them.
 
 ```bash
-git clone <this-repo> ~/code/ai-workflows
-cd ~/code/ai-workflows
+git clone https://github.com/Maximumsoft-Co-LTD/claude-flightdeck.git ~/code/claude-flightdeck
+cd ~/code/claude-flightdeck
 
 # Interactive (prompts for values)
 ./install.sh ~/code/my-new-service --preset go-hex,nextjs-fsd
