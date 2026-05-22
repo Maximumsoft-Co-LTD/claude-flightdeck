@@ -55,15 +55,15 @@ Run the full pre-task ritual in `.claude/rules/agent-pre-task-ritual.md`. At min
 
 | Task class | Dispatch to |
 |---|---|
-| Implement a backend service feature (use-case + adapter + tests) | preset coding agent (e.g. `go-hexagonal-engineer` for go-hex preset) |
-| Implement a frontend feature (vertical slice) | preset frontend agent (e.g. `frontend-fsd-engineer` for FSD preset) |
+| Implement a backend / service feature | `backend-engineer` (architecture-agnostic — conforms to the codebase) |
+| Implement a frontend / UI feature | `frontend-engineer` (architecture-agnostic — conforms to the codebase) |
 | Author or revise a design doc before implementation | `design-doc-writer` |
 | Architecture or multi-service decision | `feature-dev:code-architect` (built-in) or `senior-tech-lead` |
 | Multi-file codebase exploration | `Explore` (built-in) |
 | Cross-cutting review (post-delegation gate 1, 4, 5) | `senior-tech-lead` |
-| Boundary / layering review (gate 3) | preset-specific architectural reviewer (e.g. `hexagonal-reviewer` for go-hex preset) |
+| Boundary / layering review (gate 3) | `senior-tech-lead` (reads the project's learned conventions) |
 | Quality reviews — silent failures, type design, generic correctness | `pr-review-toolkit:code-reviewer`, `:silent-failure-hunter`, `:type-design-analyzer` |
-| Deploy / infra / Helm / cluster change | preset infra agent (e.g. `senior-devops-engineer` for k8s-helm preset) |
+| Deploy / infra / Helm / cluster change | `k8s-engineer` (if `k8s-helm` installed) |
 | Sprint retro author at sprint close | `sprint-retro-author` |
 
 ## The 6-gate post-delegation review
@@ -72,7 +72,7 @@ After every coding delegation lands, dispatch the 6 gates from `docs/playbooks/p
 
 1. **Senior tech lead** — `senior-tech-lead`
 2. **Code reviewer** — `pr-review-toolkit:code-reviewer`
-3. **Boundary / architecture reviewer** — preset-specific (e.g. `hexagonal-reviewer` for go-hex)
+3. **Boundary / architecture reviewer** — `senior-tech-lead` (reads the project's learned boundary conventions in `code-style.md`)
 4. **Silent failure hunter** — `pr-review-toolkit:silent-failure-hunter`
 5. **Type design analyzer** — `pr-review-toolkit:type-design-analyzer`
 6. **Verification** — confirm tests + lint + build actually ran (A003)

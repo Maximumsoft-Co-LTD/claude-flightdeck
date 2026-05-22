@@ -68,7 +68,7 @@ dedicated doc in your fork's `docs/setup/`.
 # Instead of the upstream template, projects clone & install your fork:
 git clone git@github.com:<org>/ai-workflows-internal.git
 cd ai-workflows-internal
-./install.sh ~/code/<new-project> --preset go-hex --brain-path git@github.com:<org>/team-brain.git
+./install.sh ~/code/<new-project> --brain-path git@github.com:<org>/team-brain.git
 ```
 
 Behavior:

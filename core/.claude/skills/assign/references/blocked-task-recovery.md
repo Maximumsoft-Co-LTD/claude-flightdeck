@@ -136,26 +136,25 @@ simultaneous edits to the same file will conflict on merge.
 - Or pick a different task that doesn't overlap.
 - Or split the new task so it touches different files.
 
-### Reason 7 — Required preset agent doesn't exist
+### Reason 7 — A custom-preset agent is referenced but not installed
 
 ```
-Task TG-S04.12 maps to `go-hexagonal-engineer` per repo-to-agent-mapping.md
-But .claude/agents/go-hexagonal-engineer.md does not exist
+Task TG-S04.12 maps to `<custom-preset-engineer>` per repo-to-agent-mapping.md
+But .claude/agents/<custom-preset-engineer>.md does not exist
 ```
 
-**Decision:** the preset isn't installed.
+**Decision:** the custom preset isn't installed. (The core engineers —
+`backend-engineer` / `frontend-engineer` — are always present, so this only
+happens when a task is mapped to a preset agent that wasn't installed.)
 
 **Recovery:**
 1. Surface the missing agent to the user.
-2. Suggest installing the preset by re-running the template installer
-   with the preset added: `install.sh <this-project> --preset go-hex --force`.
-3. Or, as a fallback, dispatch `general-purpose` WITH the preset's
-   rules manually listed in [MANDATORY READS]:
-   ```
-   - .claude/rules/hex-boundaries.md
-   - .claude/rules/go-style.md
-   ```
-   This is a degraded path; flag it in the dispatch report.
+2. Suggest re-running the installer with the preset added:
+   `install.sh <this-project> --preset <name> --force`.
+3. Or, as a fallback, dispatch the matching **core** engineer
+   (`backend-engineer` / `frontend-engineer`) — it reads
+   `.claude/rules/code-style.md` and conforms to the codebase anyway.
+   Flag the substitution in the dispatch report.
 
 ### Reason 8 — Migration referenced but not committed
 

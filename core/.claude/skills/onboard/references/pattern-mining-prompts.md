@@ -205,6 +205,46 @@ Token budget: ≤ 18k tokens. Use LSP where possible (cheaper); grep
 fallback OK when LSP returns empty.
 ```
 
+> Drift is judged against the project's OWN declared boundaries (from
+> `codebase-orientation.md` / `code-style.md`), not a prescribed architecture.
+> If the project has no clear boundary, report "no declared boundary to check"
+> rather than inventing one.
+
+## Agent D — Code-style sampler
+
+Read-only Explore. Goal: derive how THIS project actually writes code so the
+`backend-engineer` / `frontend-engineer` can match it. **Describe what the
+code does — never prescribe an architecture.**
+
+### Prompt
+
+```
+You are Stage 3 Agent D of the /onboard wizard — code-style sampler.
+Read-only. Do NOT propose an architecture or "better" structure — only
+document what's actually there.
+
+Using the detected languages + frameworks (from Stage 0 topology), for EACH
+area (backend / frontend / etc.):
+1. Pick 2-4 representative files: an entrypoint/handler, a core-logic file,
+   a test, and (frontend) a component. Prefer any files the operator named
+   in the Round-2 interview as "how we write code here".
+2. Read them and extract, with a concrete file:path example per point:
+   - File layout — where each kind of file lives; one file per X? colocation?
+   - Naming — function/type/file naming patterns actually used.
+   - Error handling — how errors are created/wrapped/surfaced; any swallowing.
+   - Tests — framework, location, assertion style, table-driven? mocks where?
+   - Framework idioms — which libs are idiomatic (state, HTTP, i18n, styling);
+     how dependencies are wired.
+3. Flag any INCONSISTENCY (two patterns for the same thing) so the engineer
+   asks rather than guesses.
+
+Output → docs/setup/_onboard-staging/code-style-signals.md, organized per
+area → per aspect, observation + example path each. No aspirational rules.
+
+Token budget: ≤ 12k tokens. Sampling only — read a handful of files per
+area, don't walk the whole tree.
+```
+
 ### Empty-input fallback
 
 If `codebase-orientation.md` is missing (Stage 1 failed or returned
@@ -222,7 +262,7 @@ to git-signals + PR comments only).
 ## Dispatch shape (paste into the main session)
 
 ```
-[Single message containing 3 Agent tool calls]
+[Single message containing 4 Agent tool calls]
 
 Agent(
   description: "Stage 3-A: bug postmortem miner",
@@ -239,10 +279,15 @@ Agent(
   subagent_type: "Explore",
   prompt: "<Agent C prompt block above>"
 )
+Agent(
+  description: "Stage 3-D: code-style sampler",
+  subagent_type: "Explore",
+  prompt: "<Agent D prompt block above>"
+)
 ```
 
-All three are read-only (`Explore`) — no worktree isolation needed.
-Wait for all three to return before proceeding to Stage 4.
+All four are read-only (`Explore`) — no worktree isolation needed.
+Wait for all four to return before proceeding to Stage 4.
 
 ## Failure handling
 

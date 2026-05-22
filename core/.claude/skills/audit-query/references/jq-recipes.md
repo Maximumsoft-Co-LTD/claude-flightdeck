@@ -110,7 +110,7 @@ jq -c 'select(.reason != null and .reason != "")' \
 **When:** trace exactly what one specialist did across a sprint, in order.
 
 ```bash
-jq -c 'select(.subagent_type == "go-hexagonal-engineer")' \
+jq -c 'select(.subagent_type == "backend-engineer")' \
   docs/spec/audit/*.jsonl \
   | jq -s 'sort_by(.ts) | .[] | {ts, task_id, ms: .duration_ms, files: (.files_touched // [] | length)}'
 ```

@@ -60,35 +60,26 @@ Read the JSON output. Branch on:
   candidates; greenfield projects benefit less from Stage 3.
 - `sibling_installs: [...]` non-empty → flag for Stage 4
   inheritance prompt (see `references/multi-repo-coordination.md`).
-- `presets_recommended` vs installed → if a recommendation isn't
-  installed, suggest re-running `install.sh` with the missing
-  preset BEFORE continuing.
-- **`arch_fit` per preset** → a preset is recommended on a *language*
-  signal (a `go.mod`, a `"next"` dep). `arch_fit: "low"` means the repo
-  does NOT actually follow that preset's architecture (no
-  `internal/{domain,ports,usecase}` for go-hex; no `features/entities` +
-  `eslint-plugin-boundaries` for nextjs-fsd; etc.). **Warn the operator
-  explicitly** — installing the preset doesn't make the project
-  hexagonal/FSD, and its engineer agent will *conform to your existing
-  layout and ask* rather than impose the architecture (per
-  `docs/setup/conform-to-codebase.md`). Offer: keep the preset for its
-  rules/agents but expect conform-not-impose behaviour, OR re-install
-  without it if it's the wrong fit.
+- `frameworks: [...]` → these (next / vue / react / …) tell the Stage 3
+  code-style sampler which UI files to sample. No architecture is chosen
+  from them — the core engineers conform to whatever the code does.
+- `presets_recommended` → only the shipped infra preset (`k8s-helm`) is
+  ever recommended, and only when Chart.yaml/charts are present. If it's
+  recommended but not installed, suggest re-running `install.sh --preset
+  k8s-helm`. There is no backend/frontend architecture preset to pick — the
+  core `backend-engineer` / `frontend-engineer` handle those by reading the
+  codebase (see Stage 3 + `docs/setup/conform-to-codebase.md`).
 
 Report Stage 0 summary as the first interactive checkpoint:
 
 ```
 == Stage 0: Pre-flight ==
 Topology: monorepo (areas: backend, frontend)
-Languages: go, typescript
+Languages: go, typescript    Frameworks: next
 Git: 247 commits in last 6 months
 Existing install: no
 Sibling installs: ../service-billing (1 found)
-Presets recommended: go-hex (arch_fit: LOW ⚠), nextjs-fsd (arch_fit: high)
-  ⚠ go-hex: this repo has no hexagonal layout — the engineer will conform
-    to your actual structure and ask before introducing hex. Keep it, or
-    re-install without go-hex if it's the wrong fit.
-Presets installed: go-hex ✓ · nextjs-fsd ✗ ← missing
+Presets: none required (core is architecture-agnostic; k8s-helm only if you deploy via Helm)
 Proceed? [Y/n]
 ```
 
@@ -129,6 +120,9 @@ See `references/interview-questions.md` for the full bank. Each round
 - Commit message convention
 - Test policy (TDD strict / test-after / case-by-case)
 - Deploy workflow (CI provider + flow)
+- **Exemplary files** — point at 1-2 files that best represent "how we
+  write code here" (a model handler, a model component/test). Stage 3-D
+  samples these first when seeding `code-style.md`.
 
 **Round 3 — First-sprint state** (always run):
 - Currently in a sprint? (yes/no + sprint name)
@@ -139,9 +133,9 @@ Stage answers as a single markdown file at
 `docs/setup/_onboard-staging/interview-answers.md` for the drafting
 agent to read.
 
-## Stage 3 — Pattern mining (3 parallel Explore agents)
+## Stage 3 — Pattern mining (4 parallel Explore agents)
 
-Dispatch all THREE in a single message:
+Dispatch all FOUR in a single message:
 
 **Agent A — Bug postmortem miner:**
 ```bash
@@ -165,6 +159,15 @@ boundary violations (handlers calling DB directly, infrastructure
 leaking into domain, layer crossings). Output →
 `_onboard-staging/drift-findings.md`.
 
+**Agent D — Code-style sampler (the key input for the engineers):**
+Read-only Explore. Using `languages` + `frameworks` from Stage 0, samples
+**2-4 representative files per area+language** — a handler/entrypoint, a
+core-logic file, a test, and (frontend) a component. Extracts the project's
+**actual** conventions: file layout, naming, error handling, test structure,
+state/styling/i18n idioms (frontend), and which libraries are idiomatic.
+Output → `_onboard-staging/code-style-signals.md`. This is what makes
+`backend-engineer` / `frontend-engineer` write code that looks like the repo.
+
 See `references/pattern-mining-prompts.md` for the full prompts.
 
 ## Stage 4 — Draft documentation (onboarding-engineer agent)
@@ -179,16 +182,21 @@ Inputs staged:
   docs/setup/_onboard-staging/pr-comments.jsonl     (Stage 3-B)
   docs/setup/_onboard-staging/conventions-raw.md    (Stage 3-B)
   docs/setup/_onboard-staging/drift-findings.md     (Stage 3-C)
+  docs/setup/_onboard-staging/code-style-signals.md (Stage 3-D)
 
 Produce:
   CLAUDE.md (root) — filled from interview + scan
   <area>/CLAUDE.md per area — filled from scan
   docs/setup/codebase-orientation.md — polished
   docs/setup/team-conventions.md — from conventions-raw + drift
+  .claude/rules/code-style.md — fill the stub from code-style-signals.md
+       (per area → per aspect: layout, naming, error handling, tests,
+        framework idioms). This is the style contract the engineers read.
   docs/setup/_onboard-staging/a-rule-candidates.md — 10 ranked drafts
 
 Do NOT write A-rules into brain-hot.md directly. Ratification is the
-operator's job at Stage 5.
+operator's job at Stage 5. (code-style.md is descriptive, not a hard rule —
+write it directly, then have the operator skim it in Stage 5.)
 ```
 
 Wait for return. Confirm output files exist before Stage 5.

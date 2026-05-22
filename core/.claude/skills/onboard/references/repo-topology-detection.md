@@ -13,11 +13,11 @@ The `type` field is the headline. Everything downstream gates on it.
 
 | `type` | When it fires | What changes downstream |
 |---|---|---|
-| `single-go` | Exactly one language detected (`go`), no per-area manifests at depth 1 | Stage 1 scan focuses on `cmd/` + `internal/`; Stage 4 drafts ONE root `CLAUDE.md`, no per-area files; recommends `go-hex` preset |
-| `single-node` | Exactly one language (`typescript` or `javascript`), no per-area manifests | Stage 1 looks for `src/` + `app/` (Next.js) or `pages/`; recommends `nextjs-fsd` or `vue-pinia` based on `package.json` `dependencies` grep |
-| `single-python` | Exactly one language (`python`), no per-area manifests | Stage 1 looks for `<pkg>/` + `tests/`; no preset auto-recommended yet (Python preset is on the roadmap, not shipped) |
-| `single-other` | Single-language but not Go/Node/Python (`rust`, `java`, `ruby`, …) OR multi-language with no clear area dirs | Stage 1 falls back to generic structural scan; no preset recommendation; Stage 4 leaves per-area section blank |
-| `monorepo` | ≥2 top-level dirs each carrying their own manifest, no `.gitmodules` | Stage 1 walks per-area; Stage 4 drafts ONE root `CLAUDE.md` PLUS one per-area `CLAUDE.md`; presets recommended per area (go-hex for `backend/`, nextjs-fsd for `frontend/`, etc.) |
+| `single-go` | Exactly one language detected (`go`), no per-area manifests at depth 1 | Stage 1 scan focuses on `cmd/` + `internal/` (or whatever layout exists); Stage 4 drafts ONE root `CLAUDE.md`, no per-area files; the code-style sampler seeds `code-style.md` from the Go files |
+| `single-node` | Exactly one language (`typescript` or `javascript`), no per-area manifests | Stage 1 looks for `src/` + `app/`/`pages/`; `frameworks` (next/vue/react) tell the code-style sampler which UI files to read |
+| `single-python` | Exactly one language (`python`), no per-area manifests | Stage 1 looks for `<pkg>/` + `tests/`; code-style sampler seeds `code-style.md` from the Python files |
+| `single-other` | Single-language but not Go/Node/Python (`rust`, `java`, `ruby`, …) OR multi-language with no clear area dirs | Stage 1 falls back to generic structural scan; code-style sampler still derives conventions from whatever files exist |
+| `monorepo` | ≥2 top-level dirs each carrying their own manifest, no `.gitmodules` | Stage 1 walks per-area; Stage 4 drafts ONE root `CLAUDE.md` PLUS one per-area `CLAUDE.md`; the code-style sampler runs per area so `code-style.md` has a section each |
 | `meta-repo` | ≥2 areas detected AND `.gitmodules` present | Same per-area drafting as `monorepo`, plus offers Scenario 4 from `multi-repo-coordination.md` (onboard meta first, optionally onboard each submodule with inheritance) |
 | `empty` | No languages AND no areas detected | Wizard warns + suggests committing the initial codebase before continuing. Stage 3 mining will return zero signals; Stage 5 ratification will be a no-op |
 
@@ -136,21 +136,22 @@ elsewhere. The script handles this: `git_repo: true`, `git_commits`
 populated. Rare in onboarding (bare clones aren't working trees), but
 won't hard-fail.
 
-## Preset recommendation table
+## Framework detection + preset recommendation
 
-The `presets_recommended` array is derived deterministically:
+The core engineers are architecture-agnostic, so language/framework
+detection drives the **code-style sampler**, not an architecture choice.
 
-| Detected | Recommended preset |
+| Detected | Effect |
 |---|---|
-| `go` in languages | `go-hex` |
-| `typescript`/`javascript` + `"next"` in any `package.json` | `nextjs-fsd` |
-| `typescript`/`javascript` + `"vue"` in any `package.json` | `vue-pinia` |
-| Area named `k8s`/`charts`/`deploy`, OR `Chart.yaml` at root | `k8s-helm` |
+| `"next"` / `"vue"` / `"react"` in any `package.json` | Added to `frameworks` → tells Stage 3-D which UI files to sample |
+| Area named `k8s`/`charts`/`deploy`, OR `Chart.yaml` at root | Recommends the `k8s-helm` preset (the only shipped preset) |
 
-If `presets_recommended` contains a preset that `existing_install`
-shows is NOT installed, Stage 0 surfaces a "missing preset" warning
-and offers to abort + re-run `install.sh --preset ...` before
-continuing.
+The `presets_recommended` array only ever contains `k8s-helm`. If it's
+recommended but `existing_install` shows it's NOT installed, Stage 0
+surfaces a "missing preset" note and offers to re-run `install.sh
+--preset k8s-helm`. (Opinionated backend/frontend architecture presets
+are no longer shipped — author one as a custom preset if your team wants
+it; see `docs/adding-new-preset.md`.)
 
 ## Sibling-install detection
 

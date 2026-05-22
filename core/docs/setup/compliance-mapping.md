@@ -102,7 +102,7 @@
 | **A.8.24** | Use of cryptography | sops + age recipe | `docs/setup/secret-handling.md` |
 | **A.8.25** | Secure development life cycle | Workflow-master pipeline + Phase Matrix | `docs/setup/workflow-master.md`; `.claude/rules/phase-matrix.md` |
 | **A.8.26** | Application security requirements | Phase Matrix Phase 7 (Security review trigger) | `.claude/rules/phase-matrix.md` |
-| **A.8.27** | Secure system architecture | Preset boundary rules (e.g. hex direction, FSD layers) | `presets/<name>/rules/` |
+| **A.8.27** | Secure system architecture | The project's own boundary conventions (learned at onboard) + N1 | `.claude/rules/code-style.md`; root `CLAUDE.md` §N1 |
 | **A.8.28** | Secure coding | Programming-fundamentals + brain-hot A001/A002/A010 | `.claude/rules/programming-fundamentals.md`; `.claude/rules/brain-hot.md` |
 | **A.8.29** | Security testing | Phase Matrix Phase 4 (TDD) + Phase 7 (security review) | `.claude/rules/phase-matrix.md` |
 | **A.8.30** | Outsourced development | — _(contract — outside template)_ |

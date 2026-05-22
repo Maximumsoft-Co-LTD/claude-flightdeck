@@ -15,7 +15,7 @@
 # Examples:
 #   ./install.sh ~/code/my-new-service
 #   ./install.sh ./target --profile restricted
-#   ./install.sh ./target --preset go-hex,nextjs-fsd --brain-path ~/Obsidian/brain
+#   ./install.sh ./target --preset k8s-helm --brain-path ~/Obsidian/brain
 #   ./install.sh ./target --config template.config --force
 #   ./install.sh ./target --dry-run                 # show what would happen
 #   ./install.sh diff ~/code/my-new-service         # drift report

@@ -9,13 +9,14 @@
 #     "type": "single-go" | "single-node" | "single-python" | "single-other"
 #           | "monorepo"  | "meta-repo"   | "empty",
 #     "languages": ["go", "typescript", ...],
+#     "frameworks": ["next", "vue", "react", ...],   // hints for the code-style sampler (NOT an architecture choice)
 #     "areas":     ["backend", "frontend", "k8s", ...],
 #     "has_submodules":    true|false,
 #     "existing_install":  true|false,
 #     "manifest":          "<path>" | null,
 #     "sibling_installs":  ["../service-a", "../service-b", ...],
-#     "presets_recommended": ["go-hex", "nextjs-fsd", ...],
-#     "arch_fit":          {"go-hex":"high|low", ...},  // does the repo actually follow each preset's architecture?
+#     "presets_recommended": ["k8s-helm"],            // only the shipped infra preset; core is architecture-agnostic
+#     "arch_fit":          {"k8s-helm":"high|low"},   // does the repo actually use this preset?
 #     "git_repo":         true|false,
 #     "git_commits":      <int>
 #   }
@@ -120,44 +121,27 @@ else
   TYPE="single-other"
 fi
 
-# ---------- preset recommendation ----------
+# ---------- framework detection (informs the code-style sampler, NOT an architecture choice) ----------
 LANGS_JOINED=" ${LANGS[*]:-} "
 AREAS_JOINED=" ${AREAS[*]:-} "
 
-[[ "$LANGS_JOINED" == *" go "* ]] && PRESETS+=("go-hex")
-if [[ "$LANGS_JOINED" == *" typescript "* || "$LANGS_JOINED" == *" javascript "* ]]; then
-  # Next.js signal? Vue signal?
-  if grep -lq '"next"' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null; then
-    PRESETS+=("nextjs-fsd")
-  fi
-  if grep -lq '"vue"' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null; then
-    PRESETS+=("vue-pinia")
-  fi
-fi
+# Frameworks present — used by /onboard Stage 3 to know which files to sample
+# for code-style. The template imposes NO architecture; these are hints only.
+declare -a FRAMEWORKS=()
+grep -lsq '"next"'  "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null && FRAMEWORKS+=("next")
+grep -lsq '"vue"'   "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null && FRAMEWORKS+=("vue")
+grep -lsq '"react"' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null && FRAMEWORKS+=("react")
+
+# Preset recommendation — only the infra preset is shipped; everything else is
+# handled by the architecture-agnostic core engineers + onboarding-learned
+# code-style.md. (Opinionated-architecture presets are now custom/opt-in.)
 [[ "$AREAS_JOINED" == *" k8s "* || "$AREAS_JOINED" == *" charts "* \
    || "$AREAS_JOINED" == *" deploy "* || -f "$TARGET/Chart.yaml" ]] && PRESETS+=("k8s-helm")
-PRESETS=($(printf '%s\n' "${PRESETS[@]}" | awk 'NF && !seen[$0]++'))
+PRESETS=($(printf '%s\n' "${PRESETS[@]:-}" | awk 'NF && !seen[$0]++'))
 
-# ---------- architecture-fit probe ----------
-# A preset is recommended on a *language* signal, which does NOT prove the
-# project follows the preset's architecture. Probe each recommended preset's
-# signature dirs/tooling → high|low, so /onboard can warn before the wrong
-# preset is confirmed (e.g. go.mod present but no hexagonal layout).
+# ---------- architecture-fit probe (k8s-helm only — the one shipped preset) ----------
 arch_fit_for() {
   case "$1" in
-    go-hex)
-      if find "$TARGET" -maxdepth 4 -type d \( -path '*/internal/domain' -o -path '*/internal/ports' -o -path '*/internal/usecase' \) 2>/dev/null | head -1 | grep -q . \
-         || grep -rsq 'verify-isolation' "$TARGET"/Makefile "$TARGET"/*/Makefile 2>/dev/null; then
-        echo high; else echo low; fi ;;
-    nextjs-fsd)
-      if { find "$TARGET" -maxdepth 4 -type d -path '*/features' 2>/dev/null | head -1 | grep -q . \
-           && find "$TARGET" -maxdepth 4 -type d -path '*/entities' 2>/dev/null | head -1 | grep -q .; } \
-         || grep -rsq 'eslint-plugin-boundaries' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null; then
-        echo high; else echo low; fi ;;
-    vue-pinia)
-      if grep -rsq '"pinia"' "$TARGET"/package.json "$TARGET"/*/package.json 2>/dev/null \
-         && find "$TARGET" -maxdepth 4 -type d -name stores 2>/dev/null | head -1 | grep -q .; then
-        echo high; else echo low; fi ;;
     k8s-helm)
       if find "$TARGET" -maxdepth 3 -name 'Chart.yaml' 2>/dev/null | head -1 | grep -q .; then
         echo high; else echo low; fi ;;
@@ -202,6 +186,7 @@ json_array() {
 printf '{'
 printf '"type":"%s",' "$TYPE"
 printf '"languages":'; json_array "${LANGS[@]:-}"; printf ','
+printf '"frameworks":'; json_array "${FRAMEWORKS[@]:-}"; printf ','
 printf '"areas":';     json_array "${AREAS[@]:-}"; printf ','
 printf '"has_submodules":%s,' "$HAS_SUBMODULES"
 printf '"existing_install":%s,' "$EXISTING_INSTALL"

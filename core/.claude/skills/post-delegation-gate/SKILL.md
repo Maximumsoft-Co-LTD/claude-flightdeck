@@ -48,7 +48,7 @@ For multi-package repos: run the umbrella target.
 
 ```
 Agent(
-  subagent_type: "<your boundary reviewer>",   # e.g. hexagonal-reviewer from the go-hex preset
+  subagent_type: "senior-tech-lead",   # reads code-style.md; or a custom preset's boundary reviewer
   prompt: "Review architectural boundary on this diff: <BASE_SHA>..<HEAD_SHA> in <component>. Required reads: .claude/rules/<your-boundary-rule>.md."
 )
 ```

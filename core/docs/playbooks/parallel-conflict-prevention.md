@@ -54,7 +54,7 @@ printf '%s\n' \
 
 ```text
 [Single message — N Agent calls dispatched together]
-Agent(description: "W1 ...", subagent_type: "observability-engineer", isolation: "worktree", prompt: "...")
+Agent(description: "W1 ...", subagent_type: "backend-engineer", isolation: "worktree", prompt: "...")
 Agent(description: "W4 ...", subagent_type: "senior-devops-engineer", isolation: "worktree", prompt: "...")
 ```
 

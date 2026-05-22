@@ -26,12 +26,12 @@ The audit hook produces a high-fidelity but raw JSONL stream. Operators want fas
 | `/audit-query --since 2026-05-01` | From a specific date through today |
 | `/audit-query --since 2026-05-01 --until 2026-05-15` | Closed window |
 | `/audit-query --sprint S03` | Only dispatches whose `task_id` matches `*-S03.*` |
-| `/audit-query --agent go-hexagonal-engineer` | Filter by `subagent_type` |
+| `/audit-query --agent backend-engineer` | Filter by `subagent_type` |
 | `/audit-query --task URLSH-S03.04` | All dispatches against one task ID |
 | `/audit-query --top files` | Emphasize the file-touch hotspot section |
 | `/audit-query --top tasks` | Emphasize recurring / multi-dispatch task IDs |
 
-Flags are additive — combine `--sprint S03 --agent go-hexagonal-engineer` to slice both ways.
+Flags are additive — combine `--sprint S03 --agent backend-engineer` to slice both ways.
 
 ## Steps
 
@@ -65,8 +65,8 @@ A real example (last 7 days on a small project):
 ## By agent
 | Agent                     | Count | p50 dur (ms) | p95 dur (ms) |
 |---------------------------|-------|--------------|--------------|
-| go-hexagonal-engineer     | 14    | 18420        | 41200        |
-| hexagonal-reviewer        |  9    |  6210        | 12800        |
+| backend-engineer     | 14    | 18420        | 41200        |
+| senior-tech-lead        |  9    |  6210        | 12800        |
 | design-doc-writer         |  6    | 22100        | 38500        |
 | pr-review-toolkit:...     |  5    |  4800        |  9100        |
 | Explore                   |  4    |  2100        |  5300        |
@@ -76,10 +76,10 @@ A real example (last 7 days on a small project):
 | Agent                  | Task           | Duration (ms) | Files touched |
 |------------------------|----------------|---------------|---------------|
 | design-doc-writer      | URLSH-S03.04   | 51200         | 1             |
-| go-hexagonal-engineer  | URLSH-S03.04   | 47800         | 6             |
-| go-hexagonal-engineer  | URLSH-S03.05   | 41200         | 4             |
+| backend-engineer  | URLSH-S03.04   | 47800         | 6             |
+| backend-engineer  | URLSH-S03.05   | 41200         | 4             |
 | design-doc-writer      | URLSH-S03.05   | 38500         | 1             |
-| go-hexagonal-engineer  | URLSH-S03.03   | 33100         | 5             |
+| backend-engineer  | URLSH-S03.03   | 33100         | 5             |
 
 ## Top 10 most-touched files
 | File                                         | Touches | Last touched         |
@@ -108,7 +108,7 @@ A real example (last 7 days on a small project):
 | Weekly retro starter | (none — default) | Where the week went, by agent + file |
 | Sprint close digest | `--sprint S03` | Sprint-wide dispatch shape + retries |
 | Hot-file scan | `--top files --since 2026-05-01` | Which files have been agent-touched repeatedly (refactor candidates) |
-| One agent's footprint | `--agent go-hexagonal-engineer` | Latency profile + tasks owned by one specialist |
+| One agent's footprint | `--agent backend-engineer` | Latency profile + tasks owned by one specialist |
 | Single-task forensics | `--task URLSH-S03.04` | Every dispatch + reviewer touch for one task ID |
 | Slow-down diagnosis | (default) — read the "Top 5 longest" | Which dispatches dominated wall time |
 | Multi-team comparison | `--since 2026-05-01 --until 2026-05-31` | Lifetime month roll-up; compare vs prior month manually |

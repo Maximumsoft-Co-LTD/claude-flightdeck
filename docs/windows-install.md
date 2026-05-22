@@ -12,8 +12,8 @@ matches your shell.
 git clone <this-repo> C:\code\ai-workflows
 cd C:\code\ai-workflows
 
-# Interactive (prompts for values)
-.\install.ps1 C:\code\my-new-service -Preset go-hex,nextjs-fsd
+# Interactive (prompts for values) — no preset needed; core is architecture-agnostic
+.\install.ps1 C:\code\my-new-service
 
 # Or from a config file
 Copy-Item template.config.example template.config
@@ -21,7 +21,7 @@ notepad template.config
 .\install.ps1 C:\code\my-new-service -Config template.config
 
 # See what would happen without writing anything
-.\install.ps1 C:\code\my-new-service -Preset go-hex -DryRun
+.\install.ps1 C:\code\my-new-service -DryRun
 
 # Force-overwrite an existing .claude/ (otherwise it backs up first)
 .\install.ps1 C:\code\my-new-service -Force
@@ -53,7 +53,7 @@ Parity with `install.sh`:
 |---|---|
 | `./install.sh target` | `.\install.ps1 target` |
 | `--profile standard` | `-Profile standard` |
-| `--preset go-hex,nextjs-fsd` | `-Preset go-hex,nextjs-fsd` |
+| `--preset k8s-helm` | `-Preset k8s-helm` |
 | `--config template.config` | `-Config template.config` |
 | `--brain-path PATH` | `-BrainPath PATH` |
 | `--dry-run` | `-DryRun` |
@@ -105,7 +105,7 @@ WSL against the same path:
 
 ```bash
 # inside WSL
-./install.sh /mnt/c/code/my-new-service --preset go-hex
+./install.sh /mnt/c/code/my-new-service
 ```
 
 This avoids any line-ending or path-translation surprises and uses the

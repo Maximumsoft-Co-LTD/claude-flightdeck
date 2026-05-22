@@ -1,0 +1,71 @@
+# Code Style — {{PROJECT_NAME}} (learned conventions)
+
+> **STUB — populate this by running `/onboard` (or `/onboard scan`).**
+> The onboarding wizard samples representative source files across your
+> codebase and fills the sections below with *your project's actual*
+> conventions. Until then this file is a skeleton.
+>
+> This is the **style contract** the `backend-engineer` and
+> `frontend-engineer` agents read before writing code. Its whole purpose is
+> to make new code look like the code already here. It describes **what the
+> codebase does**, not what some architecture says it should do. The live
+> code always wins — if this file drifts from reality, fix the file.
+
+## How this file is used
+
+- Read by every coding agent in its pre-task ritual (alongside `brain-hot.md`).
+- Generated/refreshed by `/onboard` from sampling real files — not hand-prescribed.
+- Organized **per area → per aspect**. Keep each entry to an observed fact +
+  (optionally) a one-line example path. No aspirational rules.
+
+---
+
+## <area, e.g. backend/ or src/api>
+
+### File layout
+- _e.g. handlers live in `<path>`; one file per `<thing>`; tests sit `<where>`._
+
+### Naming
+- _e.g. functions named `<pattern>`; types named `<pattern>`; files `<case>`._
+
+### Error handling
+- _e.g. errors wrapped with `<idiom>`; never swallowed; surfaced via `<mechanism>`._
+
+### Tests
+- _e.g. framework `<x>`; layout `<where>`; assertion style `<how>`; table-driven? mocks where?_
+
+### Framework / library idioms
+- _e.g. dependency wiring via `<pattern>`; the project uses `<lib>` for `<concern>` — don't introduce alternatives._
+
+---
+
+## <area, e.g. frontend/ or src/ui>
+
+### File layout
+- _e.g. components in `<path>`; colocation of `{component, test, styles}`?_
+
+### Component & state conventions
+- _e.g. function components; state via `<library>`; stores in `<path>`._
+
+### Styling
+- _e.g. `<Tailwind / CSS modules / tokens>`; semantic tokens at `<path>`; no raw values._
+
+### i18n
+- _e.g. strings via `<mechanism>`; locale files at `<path>`; keep all locales in sync._
+
+### Tests
+- _e.g. `<framework>`; mirror source structure; mock the API layer not the model._
+
+---
+
+## Cross-cutting
+
+- _Anything that spans areas: logging, config access, commit conventions
+  observed in git history, etc._
+
+## Drift log
+
+> Coding agents append a line here when the live code disagrees with a
+> convention above, so the next `/onboard scan` can reconcile it.
+
+- _(none yet)_

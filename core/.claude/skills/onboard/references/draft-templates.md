@@ -119,8 +119,9 @@ from manifest + Stage 1 scan>
 <the area's actual commands — pulled from area's Makefile / package.json scripts>
 
 ## Local rules
-<area-specific B-rules / F-rules / K-rules. Pull from preset rule files
-that apply (e.g. hex-boundaries.md for go-hex backend areas).>
+<area-specific rules derived from the area's actual code + the
+code-style sampler. Reference `.claude/rules/code-style.md` for the
+project's conventions; add a custom-preset rule file only if one is installed.>
 ```
 
 ### B.3 Worked example — `backend/CLAUDE.md` (Go monorepo area)
@@ -156,7 +157,7 @@ cache for hot-path lookups.
 - `make smoke` — /healthz + shortener round-trip
 
 ## Local rules
-- B1 (hex direction): see `.claude/rules/hex-boundaries.md`
+- B1 (conventions): follow `.claude/rules/code-style.md` for this area's layout, naming, error handling, test style
 - B2 (migrations): every schema change ships with an `up.sql` AND `down.sql`
 - F1 (Redis fallback): handler MUST degrade to PG if Redis is unavailable
 ```

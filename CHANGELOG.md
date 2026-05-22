@@ -13,6 +13,62 @@
 
 - (none yet)
 
+## v0.8.0 — 2026-05-22
+
+The **"learn the codebase"** release — the template no longer imposes an
+architecture. Instead of shipping prescriptive backend/frontend engineers
+(hexagonal, Feature-Sliced Design, Pinia), core now ships **architecture-
+agnostic** engineers that read the project's own conventions and conform.
+
+### ⚠️ BREAKING
+
+- **Removed the `go-hex`, `nextjs-fsd`, and `vue-pinia` presets** (their
+  engineer agents, `hex-boundaries.md` / `fsd-layers.md` / `vue-patterns.md`
+  rules, `hex-check` / `playwright-install` skills, and docs). Projects that
+  installed them keep their copies, but the template no longer ships or
+  recommends them. **`k8s-helm` is unchanged** (it's infra; it imposes no
+  code architecture). Teams that want an enforced architecture can author it
+  as a **custom preset** — see `docs/adding-new-preset.md`.
+- Dispatch now defaults to the new core engineers; any project automation
+  that hard-coded `go-hexagonal-engineer` / `frontend-fsd-engineer` / etc.
+  must point at `backend-engineer` / `frontend-engineer`.
+
+### Added
+
+- **`backend-engineer` + `frontend-engineer`** (core, architecture-agnostic).
+  They read `.claude/rules/code-style.md`, sample 2-3 representative files,
+  and implement **in the project's existing style** — improving quality (TDD
+  + the 6 gates) *within* the pattern, never reshaping it. A structural
+  change is raised as a design suggestion (`DONE_WITH_CONCERNS`), not imposed.
+- **`.claude/rules/code-style.md`** — a project-local "style contract" the
+  engineers read. Ships as a stub; `/onboard` fills it from sampling real code.
+- **`/onboard` Stage 3-D — code-style sampler** — a 4th mining agent that
+  samples representative files per area+language and extracts naming, error
+  handling, test structure, layout, and framework idioms →
+  `code-style-signals.md` → `onboarding-engineer` writes `code-style.md`.
+- **`detect-topology.sh`** now emits a `frameworks` array (next/vue/react) to
+  steer the sampler, and only ever recommends the `k8s-helm` preset.
+
+### Changed
+
+- **Dispatch + boundary review rewired** to the generic engineers across
+  `repo-to-agent-mapping.md`, `/next-task`, `/assign`, `orchestrator`,
+  `sub-agent-workflow`, `CLAUDE.md.tmpl`, and the 6-gate playbook. Gate 3
+  boundary review is now `senior-tech-lead` reading the project's own
+  conventions (a custom preset may ship its own reviewer).
+- **N1 reframed** from "architecture boundary (per preset)" to "the project's
+  own boundary, captured in `code-style.md`".
+- De-presetted every lingering hex/FSD/Pinia reference across rules, skills,
+  playbooks, onboarding references, and docs (README, control-plane-architecture,
+  windows-install, compliance-mapping, …).
+
+### Note
+
+`examples/url-shortener-go-hex/` stays as a **frozen sample of a hexagonal
+project** (a project *can* be hex — the template just doesn't ship a hex
+preset). Re-publishing the removed presets as example community presets is a
+possible future follow-up.
+
 ## v0.7.0 — 2026-05-22
 
 The **"conform, don't impose"** release — fixes the failure mode where a

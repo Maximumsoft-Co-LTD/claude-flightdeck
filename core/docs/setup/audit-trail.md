@@ -30,7 +30,7 @@ Every line is a single JSON object:
 | `event` | string | `"PostToolUse"` or `"SubagentStop"` |
 | `tool` | string | Tool name — typically `"Agent"` |
 | `agent_id` | string | Harness-assigned ID for the dispatched agent (may be empty) |
-| `subagent_type` | string | E.g. `"general-purpose"`, `"<prefix>-orchestrator"`, `"hexagonal-reviewer"` |
+| `subagent_type` | string | E.g. `"general-purpose"`, `"<prefix>-orchestrator"`, `"senior-tech-lead"` |
 | `task_id` | string | Extracted from dispatched prompt (regex: `[A-Z][A-Z0-9]+-(S\d+\.\d+\|\d+)`). Empty if not found |
 | `files_touched` | array of strings | Best-effort; harness convention varies |
 | `reason` | string | Exit / stop / return reason if present |
@@ -41,7 +41,7 @@ Every line is a single JSON object:
 ### Example line
 
 ```json
-{"ts":"2026-05-22T13:31:23Z","event":"PostToolUse","tool":"Agent","agent_id":"a-7f3","subagent_type":"go-hexagonal-engineer","task_id":"PROJ-S03.04","files_touched":["internal/usecase/x.go","internal/usecase/x_test.go"],"reason":"complete","duration_ms":18432,"sha":"abc1234","project":"my-service"}
+{"ts":"2026-05-22T13:31:23Z","event":"PostToolUse","tool":"Agent","agent_id":"a-7f3","subagent_type":"backend-engineer","task_id":"PROJ-S03.04","files_touched":["internal/usecase/x.go","internal/usecase/x_test.go"],"reason":"complete","duration_ms":18432,"sha":"abc1234","project":"my-service"}
 ```
 
 ## Retention
@@ -101,7 +101,7 @@ See also: [`/audit-query` skill](../../.claude/skills/audit-query/SKILL.md) — 
 ### All dispatches by a specific subagent
 
 ```bash
-jq -c 'select(.subagent_type=="go-hexagonal-engineer")' \
+jq -c 'select(.subagent_type=="backend-engineer")' \
   docs/spec/audit/2026-*.jsonl
 ```
 

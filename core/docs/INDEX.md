@@ -41,7 +41,7 @@ Full architecture rationale:
 | **A009** Live per-task mini-retro | Append before moving on | `/next-task` Step 7; `/retro --task`; orchestrator's pre-task ritual |
 | **A010** LSP-first navigation | Semantic = LSP, text = grep | `.claude/rules/lsp-first.md`; agent pre-task ritual Step 4 |
 | **A011+** Project-local | Your A### rules | `.claude/rules/brain-hot.md` "Project-specific rules" section |
-| **N1** Architecture boundary | Per-preset (hex / FSD / etc.) | Preset `BOUNDARY.md` files; 6-gate Gate 3 |
+| **N1** Architecture boundary | The project's own (learned at onboard) | `.claude/rules/code-style.md`; 6-gate Gate 3 (`senior-tech-lead`) |
 | **N2** Contract-first | Contract commit precedes consumers | `docs/playbooks/contract-first.md`; 6-gate Gate 5 |
 | **N3** 6-gate review | (= A004) | (see A004) |
 | **N4** Parallel conflict prevention | (= A007) | (see A007) |

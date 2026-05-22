@@ -76,18 +76,20 @@ After any change, do at minimum:
 
 ```bash
 mkdir -p /tmp/test-install
-./install.sh /tmp/test-install --preset go-hex,nextjs-fsd \
+# Default install is preset-less (core is architecture-agnostic). Add
+# --preset k8s-helm to also exercise the one shipped preset.
+./install.sh /tmp/test-install --preset k8s-helm \
   --config <(echo 'PROJECT_NAME="Test Service"
 PROJECT_SLUG=test-svc
 AGENT_PREFIX=tsvc
 TASK_ID_PREFIX=TSVC
 TECH_STACK_DESC="Go 1.22, Postgres, Next.js 14"
 BRAIN_PATH=""
-PRESETS=go-hex,nextjs-fsd') --force
+PRESETS=k8s-helm') --force
 
 grep -rln '{{[A-Z_]\{2,\}}}' /tmp/test-install  # must be empty
-ls /tmp/test-install/.claude/agents/            # core + preset agents
-ls /tmp/test-install/.claude/skills/            # 14 core + preset skills
+ls /tmp/test-install/.claude/agents/            # backend-engineer + frontend-engineer + core + k8s-engineer
+ls /tmp/test-install/.claude/skills/            # core skills (+ any preset skill)
 ```
 
 Full check: `docs/control-plane-architecture.md` "Verification" section.

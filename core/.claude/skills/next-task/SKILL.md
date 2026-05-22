@@ -136,11 +136,12 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    | Task class | Subagent |
    |---|---|
-   | Backend service feature | `<your backend engineer>` (e.g. `go-hexagonal-engineer` from the go-hex preset) |
-   | Frontend feature | `<your frontend engineer>` (e.g. `frontend-fsd-engineer` from the nextjs-fsd preset) |
-   | Event-pipeline producer/consumer | `<your pipeline engineer>` |
-   | External-provider adapter | `<your adapter engineer>` |
-   | Observability / dashboard | `<your observability engineer>` |
+   | Any server-side feature (handler, use-case/service, data access, migration, worker, producer/consumer) | `backend-engineer` |
+   | Any client-side feature (page, component, state, form, API call, i18n) | `frontend-engineer` |
+   | Infra / deploy (if `k8s-helm` installed) | `k8s-engineer` |
+   | Cross-service architectural decision | `senior-tech-lead` |
+
+   The engineers are architecture-agnostic — they read `.claude/rules/code-style.md` + sample the codebase and conform to its real style. A custom preset may add specialized agents; route to those when installed. Full table: `.claude/skills/assign/references/repo-to-agent-mapping.md`.
 
    **Write the task spec to a brief file, then dispatch with a short pointer prompt** — never paste the full spec into `prompt` (it stalls the agent). Write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md` from `references/dispatch-prompt-template.md`, then `Agent(subagent_type=..., prompt="<short pointer to the brief>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`). Full convention: `docs/setup/file-based-dispatch.md`.
 

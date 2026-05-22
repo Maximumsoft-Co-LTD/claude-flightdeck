@@ -45,11 +45,12 @@ after the first sprint closes.
 - **Project has committed code.** The wizard runs without commits but
   the mining stages return nothing useful. Aim for ≥ 30 commits before
   running for the first time.
-- **Decide on preset(s).** `go-hex`, `nextjs-fsd`, `vue-pinia`,
-  `k8s-helm`, … pick what matches your stack. Stage 0 will recommend
-  some, but install them BEFORE running `/onboard` for the first time
-  — re-running `install.sh --preset <missing> --force` mid-wizard
-  works but adds noise.
+- **Presets are optional.** No backend/frontend preset is needed — the
+  core `backend-engineer` / `frontend-engineer` read your codebase and
+  conform. The only shipped preset is `k8s-helm` (infra); install it if
+  you deploy via Helm. Stage 3 derives your code conventions into
+  `.claude/rules/code-style.md` regardless. (Want an opinionated
+  architecture enforced? Author a custom preset — `docs/adding-new-preset.md`.)
 
 ### Time budget
 

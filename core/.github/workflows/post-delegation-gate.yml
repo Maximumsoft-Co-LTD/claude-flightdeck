@@ -104,9 +104,9 @@ jobs:
             esac
           fi
 
-      # Gate 3 — Boundary: run project-specific architectural check if
-      # exposed as a `verify-isolation` Make target. Most preset
-      # projects (go-hex, nextjs-fsd) ship one.
+      # Gate 3 — Boundary: run the project's own architectural check if it
+      # exposes one (e.g. a `verify-isolation` / lint Make target). The
+      # boundaries themselves live in `.claude/rules/code-style.md`.
       - name: Gate 3 — Boundary
         run: |
           set -euo pipefail

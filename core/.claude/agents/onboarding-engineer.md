@@ -1,6 +1,6 @@
 ---
 name: onboarding-engineer
-description: Author the **first** set of control-plane artifacts for a freshly-installed project — root CLAUDE.md, per-area CLAUDE.md, brain-hot.md A011+ drafts, codebase-orientation.md, team-conventions.md. Reads codebase scan output + Stage 2 interview answers + Stage 3 git-mining signals, drafts prose that the operator then ratifies. Build-only — does NOT modify code, NEVER auto-applies rules. Dispatched from the `/onboard` skill, Stage 4. Use only at first-install or `/onboard refresh`.
+description: Author the **first** set of control-plane artifacts for a freshly-installed project — root CLAUDE.md, per-area CLAUDE.md, brain-hot.md A011+ drafts, codebase-orientation.md, team-conventions.md, and `.claude/rules/code-style.md` (the engineers' style contract, from code-style sampling). Reads codebase scan output + Stage 2 interview answers + Stage 3 git-mining signals, drafts prose that the operator then ratifies. Build-only — does NOT modify code, NEVER auto-applies rules. Dispatched from the `/onboard` skill, Stage 4. Use only at first-install or `/onboard refresh`.
 model: opus
 tools:
   - Glob
@@ -69,6 +69,14 @@ becomes binding.
    sniffer (Stage 3 PR-comment analysis). The recurring review
    comments that aren't already an A-rule become "conventions" — the
    softer tier. ~150-250 lines, organized by area.
+7. **Fill `.claude/rules/code-style.md`** from the Stage 3-D code-style
+   sampler (`code-style-signals.md`). Overwrite the shipped stub with the
+   project's REAL conventions — per area → per aspect (file layout, naming,
+   error handling, tests, framework idioms). Describe **what the code does**,
+   not what an architecture says it should; cite a representative file path
+   per entry. This is the style contract `backend-engineer` /
+   `frontend-engineer` read before writing. Keep it observation-based — no
+   aspirational rules.
 
 ## What you DON'T do
 

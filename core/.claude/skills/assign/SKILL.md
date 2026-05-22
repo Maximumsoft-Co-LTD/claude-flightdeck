@@ -22,15 +22,14 @@ For when the user already knows which task they want to dispatch. Otherwise → 
 
 ## Repo / Component → Subagent mapping
 
-Define a mapping table for your project (one row per repo or component → the subagent that owns it). Example shape:
+Default mapping (the core engineers are architecture-agnostic — they read `.claude/rules/code-style.md` + sample the code and conform). Full table: `references/repo-to-agent-mapping.md`.
 
 | Repo / Component | Subagent |
 |---|---|
-| `<backend-svc-a>` | `<your backend engineer>` (e.g. `go-hexagonal-engineer` from the go-hex preset) |
-| `<backend-svc-b>` | `<your backend engineer>` |
-| `<frontend>` | `<your frontend engineer>` (e.g. `frontend-fsd-engineer` from the nextjs-fsd preset) |
-| `<pipeline-svc>` | `<your pipeline engineer>` |
-| `<infra/k8s>` | `<your platform engineer>` |
+| Any server-side component | `backend-engineer` |
+| Any client-side / UI component | `frontend-engineer` |
+| Infra / deploy (if `k8s-helm` installed) | `k8s-engineer` |
+| Cross-service architectural decision | `senior-tech-lead` |
 
 ## Steps
 

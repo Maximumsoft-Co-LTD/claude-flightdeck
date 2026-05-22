@@ -44,8 +44,9 @@ Agent(subagent_type="<mapped agent>",
 - .claude/rules/phase-matrix.md
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
+- .claude/rules/code-style.md          # the project's learned conventions
 - docs/designs/sprint-S<N>/D<NNN>-<slug>.md
-- <any preset-specific rules: hex-boundaries.md, fsd-layers.md, etc.>
+- <any custom-preset rules, if a preset is installed>
 
 [VERIFICATION]
 Before writing any code, emit a JSON object with this exact shape:
@@ -129,7 +130,7 @@ Your final reply MUST LEAD with a status line, then include the rest:
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
 - docs/designs/sprint-S04/D012-add-tenant-invites.md
-- .claude/rules/hex-boundaries.md
+- .claude/rules/code-style.md
 
 [VERIFICATION]
 Before writing any code, emit a JSON object with this exact shape:
@@ -244,7 +245,7 @@ Acceptance criteria (verbatim from D015):
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
 - docs/designs/sprint-S04/D018-extract-invite-policy.md
-- .claude/rules/hex-boundaries.md
+- .claude/rules/code-style.md
 
 [VERIFICATION]
 {

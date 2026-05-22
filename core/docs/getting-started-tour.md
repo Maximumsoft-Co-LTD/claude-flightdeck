@@ -169,9 +169,9 @@ mentions (L149), and writes a ≥500-line zero-fix D-doc using
 **You type**: nothing — `/next-task` dispatches this once the D-doc
 exists.
 
-**What happens**: the preset engineer (e.g.
-`go-hexagonal-engineer`, `frontend-fsd-engineer`,
-`vue-engineer`) runs its pre-task ritual, reads the D-doc, invokes
+**What happens**: the engineer (`backend-engineer` or
+`frontend-engineer`) runs its pre-task ritual, reads `code-style.md` +
+samples the codebase to match its style, reads the D-doc, invokes
 `superpowers:test-driven-development`, writes the failing test first
 (A001), then implements to green. It commits and returns a summary.
 
@@ -207,8 +207,8 @@ skill walks the 6-gate playbook
 1. **Inspect** — `git diff --stat` + read the diff yourself.
 2. **Build + Test** — `make build && make test` (and `docker-build`
    per Gate 2).
-3. **Boundary** — preset-specific reviewer (e.g.
-   `hexagonal-reviewer`, FSD lint, helm lint).
+3. **Boundary** — `senior-tech-lead` checks the diff against the
+   project's own conventions (`code-style.md`); +`helm lint` if k8s-helm.
 4. **Quality** (parallel, one message) —
    `pr-review-toolkit:code-reviewer`, `:silent-failure-hunter`,
    `:type-design-analyzer` (+ `:pr-test-analyzer` if tests touched,

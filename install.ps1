@@ -25,7 +25,7 @@
     Permission profile: restricted | standard | permissive. Default: standard.
 
 .PARAMETER Preset
-    Comma-separated preset names to merge over core/. E.g. "go-hex,nextjs-fsd".
+    Comma-separated preset names to merge over core/. E.g. "k8s-helm". Optional — core is architecture-agnostic.
 
 .PARAMETER Config
     Path to a KEY="value" config file (same shape as template.config.example).
@@ -52,7 +52,7 @@
     .\install.ps1 .\target -Profile restricted
 
 .EXAMPLE
-    .\install.ps1 .\target -Preset go-hex,nextjs-fsd -BrainPath C:\Obsidian\brain
+    .\install.ps1 .\target -Preset k8s-helm -BrainPath C:\Obsidian\brain
 
 .EXAMPLE
     .\install.ps1 .\target -Config template.config -Force
