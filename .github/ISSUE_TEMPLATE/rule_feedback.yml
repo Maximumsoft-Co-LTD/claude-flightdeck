@@ -1,0 +1,56 @@
+name: "📏 Rule feedback"
+description: "An A-rule / N-rule / lesson was wrong, too strict, too loose, or missing for your stack."
+title: "[rule] "
+labels: ["rule-feedback", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Rules in `brain-hot.md` (A001-A010) + the playbooks are the
+        opinionated core. If one misfired for your project, that's
+        signal worth feeding back — it's how the template stays honest.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Template version
+      options: ["0.4.0", "0.3.0", "0.2.1", "0.2.0", "main (unreleased)", "unknown"]
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Which rule?
+      description: "Rule ID + where it lives."
+      placeholder: "A004 (6-gate review) in brain-hot.md · N3 in CLAUDE.md · phase-matrix Phase 7 trigger"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What's wrong with it?
+      options:
+        - "Too strict — blocks legitimate work"
+        - "Too loose — let a real problem through"
+        - "Wrong for my stack / domain"
+        - "Ambiguous — agents interpret it inconsistently"
+        - "Missing — there should be a rule here but isn't"
+        - "Duplicate / contradicts another rule"
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: What happened
+      description: "Concrete example. When did the rule fire (or fail to fire)? What did it cost?"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed wording (optional)
+      description: "If you have a better version of the rule, draft it here. Bold rule · Why · How-to-apply."
+  - type: input
+    id: stack
+    attributes:
+      label: Your stack
+      placeholder: "Go 1.22 hex + Postgres · Next.js 14 FSD · Python FastAPI"

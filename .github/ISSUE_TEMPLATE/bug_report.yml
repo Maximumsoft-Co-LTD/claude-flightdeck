@@ -1,0 +1,71 @@
+name: "🐞 Bug report"
+description: "Something in the template broke — install.sh, a hook, a skill, the installer, CI."
+title: "[bug] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. The more concrete the repro, the faster the fix.
+        **Do not paste secrets** — redact tokens / keys / `.env` values.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Template version
+      description: "From `.ai-workflows/manifest.json` in your installed project, or `./install.sh --version`."
+      options:
+        - "0.4.0"
+        - "0.3.0"
+        - "0.2.1"
+        - "0.2.0"
+        - "main (unreleased)"
+        - "unknown"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area broke?
+      options:
+        - "install.sh (bash installer)"
+        - "install.ps1 (PowerShell installer)"
+        - "a hook (lint.sh / audit.sh / secret-redact.sh)"
+        - "a skill (/next-task, /retro, /onboard, …)"
+        - "an agent (orchestrator, design-doc-writer, …)"
+        - "a preset (go-hex / nextjs-fsd / vue-pinia / k8s-helm)"
+        - "CI workflow (post-delegation-gate.yml, …)"
+        - "docs / template content"
+        - "other"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS + shell
+      placeholder: "macOS 14 / zsh · Ubuntu 24.04 / bash · Windows 11 / PowerShell 7"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: "Exact commands. What you ran, what you expected, what happened."
+      placeholder: |
+        1. ./install.sh ~/code/svc --preset go-hex
+        2. Opened in Claude Code, ran /next-task
+        3. Expected … but got …
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output / error
+      description: "Paste the error. Redact secrets. Code block auto-formats."
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight
+      options:
+        - label: "I checked `jq` is installed (hooks need it)"
+        - label: "I redacted any secrets / tokens / `.env` values from the paste above"

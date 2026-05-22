@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "💬 Discussions — questions, show-and-tell, ideas"
+    url: https://github.com/Maximumsoft-Co-LTD/claude-flightdeck/discussions
+    about: "Ask a question, share how you adopted the template, or float an idea before opening a formal issue. Sanitized onboarding retros + audit digests are welcome here."
+  - name: "📖 Onboarding guide"
+    url: https://github.com/Maximumsoft-Co-LTD/claude-flightdeck/blob/main/core/docs/setup/onboarding-guide.md
+    about: "Setting up the template in a project? Read the /onboard operator guide first."
+  - name: "🤝 Contributing (new presets, rule fixes)"
+    url: https://github.com/Maximumsoft-Co-LTD/claude-flightdeck/blob/main/CONTRIBUTING.md
+    about: "Want to PR a new preset or fix a rule? Start here."

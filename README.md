@@ -335,6 +335,39 @@ just as `.tmpl` files. Start at
 [`examples/url-shortener-go-hex/docs/spec/STATUS.md`](examples/url-shortener-go-hex/docs/spec/STATUS.md)
 and follow the README's suggested reading order (≈20 min walkthrough).
 
+## Feedback & contributing
+
+This template gets better the more real-world adoption signal it
+absorbs. Three ways to send feedback back to the canonical repo
+([`Maximumsoft-Co-LTD/claude-flightdeck`](https://github.com/Maximumsoft-Co-LTD/claude-flightdeck)):
+
+1. **Structured GitHub issue forms.** Five forms, each with a
+   template-version dropdown so we know what you're on: 🐞 **bug
+   report**, 📏 **rule feedback**, 🧩 **preset request**, ⚙️ **skill
+   feedback**, ⛺ **onboarding feedback**. Open
+   [a new issue](https://github.com/Maximumsoft-Co-LTD/claude-flightdeck/issues/new/choose)
+   and pick a form.
+2. **`/flightdeck-feedback` from inside Claude Code.** If you installed
+   the template, this skill drafts a structured issue from your session
+   context + manifest version, redacts secrets, shows you a preview,
+   and opens it via `gh` (or prints a prefilled URL). Opt-in, one-shot.
+3. **[Discussions](https://github.com/Maximumsoft-Co-LTD/claude-flightdeck/discussions)
+   for sanitized retros.** A redacted excerpt of your
+   `docs/spec/retros/onboarding.md` or `/audit-query` digest — which
+   A-rules you dropped, which gates fired most — is the single
+   highest-signal feedback we get. Pure data, zero LLM cost. Redact
+   project names + secrets first.
+
+**Design note: pull, not push.** Nothing phones home — feedback is
+never automatic, every send shows you a preview first, and the only
+token cost is the one-shot `/flightdeck-feedback` invocation. No
+always-on telemetry, by design.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full guide (including
+how to open a PR, add a preset, or fix a rule). Installed projects also
+get [`docs/setup/feedback.md`](core/docs/setup/feedback.md) with
+prefilled issue links.
+
 ## Source
 
 - `idip-platform` — Go/Gin + Vue 3 + K8s + Obsidian Brain; richer hot rules

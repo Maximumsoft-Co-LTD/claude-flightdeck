@@ -1,0 +1,48 @@
+name: "🧩 Preset request"
+description: "Request a new tech-stack preset (or an addition to an existing one)."
+title: "[preset] "
+labels: ["preset-request", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Presets are opt-in tech-stack bundles (`go-hex`, `nextjs-fsd`,
+        `vue-pinia`, `k8s-helm`). A preset = engineer agent(s) +
+        architectural rule + optional skill + setup doc. See
+        `docs/adding-new-preset.md` — PRs welcome if you want to author it.
+  - type: input
+    id: name
+    attributes:
+      label: Proposed preset name
+      placeholder: "python-fastapi · rust-axum · spring-boot · django · laravel"
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Stack it covers
+      placeholder: "Python 3.12 + FastAPI + Pydantic v2 + SQLAlchemy 2 + Alembic"
+    validations:
+      required: true
+  - type: textarea
+    id: agents
+    attributes:
+      label: Agents it should ship
+      description: "What specialist engineer agent(s) + reviewer would this preset add?"
+      placeholder: "fastapi-engineer (use-case + adapter + pytest), maybe an async-boundary reviewer"
+  - type: textarea
+    id: rule
+    attributes:
+      label: Architectural rule (if any)
+      description: "Does this stack have a non-negotiable layout rule? (hex direction, FSD layers, …)"
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Will you author the PR?
+      description: "Adding a preset is mostly markdown — see docs/adding-new-preset.md."
+      options:
+        - "Yes — I'll open a PR"
+        - "Maybe — with guidance"
+        - "No — requesting only"
+    validations:
+      required: true

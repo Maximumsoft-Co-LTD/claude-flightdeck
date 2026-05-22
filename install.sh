@@ -492,6 +492,9 @@ cat <<EOF
         /next-task        — pick something to work on
         /design-review    — UI fidelity gate (if you ship UI)
         /retro            — sprint close + audit
+  6. Found a rough edge? Send feedback upstream:
+        /flightdeck-feedback     — draft + send a GitHub issue (opt-in)
+        or see docs/setup/feedback.md for prefilled issue links
 EOF
 [[ -n "$BRAIN_PATH" ]] && note "External Brain wired: $BRAIN_PATH (see brain-hot.md footer)"
 [[ -z "$BRAIN_PATH" ]] && note "In-repo Brain enabled: .claude/memory/ (export BRAIN_PATH later to switch)"

@@ -1,0 +1,61 @@
+name: "⛺ Onboarding feedback"
+description: "Feedback on the /onboard wizard — a stage was confusing, a question was missing, a draft was off."
+title: "[onboard] "
+labels: ["onboarding-feedback", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `/onboard` is the 8-stage setup wizard. The best signal comes
+        from your `docs/spec/retros/onboarding.md` (Stage 8) — feel free
+        to paste a **sanitized** excerpt below.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Template version
+      options: ["0.4.0", "0.3.0", "main (unreleased)", "unknown"]
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Which stage?
+      options:
+        - "0 — Pre-flight / topology detection"
+        - "1 — Codebase scan"
+        - "2 — Team interview"
+        - "3 — Pattern mining (git history / PR comments / drift)"
+        - "4 — Draft documentation (onboarding-engineer)"
+        - "5 — A-rule ratification"
+        - "6 — State capture"
+        - "7 — First-feature handoff"
+        - "8 — Onboarding retro"
+        - "Multi-repo / sibling inheritance"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type of feedback
+      options:
+        - "Stage was confusing / unclear"
+        - "An interview question was missing / wrong"
+        - "Topology detection misclassified my repo"
+        - "A-rule drafts were off (bad evidence / wrong rules)"
+        - "Stage took way longer than expected"
+        - "Multi-repo inheritance didn't work as expected"
+        - "Worked great — sharing what helped (positive)"
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Detail
+    validations:
+      required: true
+  - type: textarea
+    id: retro
+    attributes:
+      label: Onboarding retro excerpt (optional, sanitized)
+      description: "Paste from docs/spec/retros/onboarding.md. Redact project names / secrets."
+      render: markdown

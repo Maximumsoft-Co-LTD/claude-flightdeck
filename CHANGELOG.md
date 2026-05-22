@@ -13,6 +13,43 @@
 
 - (none yet)
 
+## v0.4.0 — 2026-05-22
+
+The **"feedback loop"** release — closes the distributed-template gap:
+adopters can now send structured feedback back to the canonical repo
+without any always-on phone-home. Pull-based, zero passive token cost.
+
+### Added
+
+- **GitHub issue forms** (`.github/ISSUE_TEMPLATE/`) — 5 structured
+  YAML forms (bug / rule-feedback / preset-request / skill-feedback /
+  onboarding-feedback) each with a template-version dropdown, plus a
+  `config.yml` routing to Discussions + onboarding guide + CONTRIBUTING.
+- **`/flightdeck-feedback` skill** (`core/.claude/skills/flightdeck-feedback/`)
+  — opt-in, one-shot. Reads the install manifest for version context,
+  asks the feedback type, drafts a structured issue body, **redacts
+  secrets**, shows a **preview**, then opens the issue via `gh` (or
+  prints a prefilled URL). Never sends automatically.
+- **`CONTRIBUTING.md`** — 4 contribution paths (issue / discussion /
+  in-Claude skill / PR), `core/` ground rules, local contributor setup.
+- **`.github/PULL_REQUEST_TEMPLATE.md`** — VERSION-bump + CHANGELOG +
+  de-domain-specify + token-budget checklist.
+- **`core/docs/setup/feedback.md`** — ships into every project; how to
+  send feedback upstream (prefilled URLs + skill + sanitized-retro
+  sharing).
+
+### Changed
+
+- **`install.sh`** — Next-steps output now mentions `/flightdeck-feedback`.
+- **`README.md`** — new "Feedback & contributing" section.
+
+### Design note
+
+Feedback is **pull, not push** — nothing phones home, every send shows
+a preview first, and the only token cost is the one-shot
+`/flightdeck-feedback` invocation (~5-10k, opt-in). No always-on
+telemetry by design (privacy + token-cost).
+
 ## v0.3.0 — 2026-05-22
 
 The **"adopter onboarding"** release — adds an 8-stage setup wizard

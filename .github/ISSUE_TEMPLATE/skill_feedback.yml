@@ -1,0 +1,52 @@
+name: "⚙️ Skill feedback"
+description: "A skill didn't trigger, triggered when it shouldn't, or did the wrong thing."
+title: "[skill] "
+labels: ["skill-feedback", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Skills are the user-invocable workflow commands (`/next-task`,
+        `/retro`, `/onboard`, `/dispatch-parallel`, …). Trigger
+        reliability + correct behavior are what make the workflow
+        feel automatic — report misfires here.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Template version
+      options: ["0.4.0", "0.3.0", "0.2.1", "0.2.0", "main (unreleased)", "unknown"]
+    validations:
+      required: true
+  - type: input
+    id: skill
+    attributes:
+      label: Which skill?
+      placeholder: "/next-task · /retro · /onboard · /post-delegation-gate · /design-review"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What went wrong?
+      options:
+        - "Didn't trigger — I said the right thing but it didn't fire"
+        - "Over-triggered — fired when I didn't want it"
+        - "Wrong behavior — fired but did the wrong thing"
+        - "Dispatched the wrong agent"
+        - "Token-heavy — blew up context"
+        - "Step was unclear / I got stuck mid-skill"
+    validations:
+      required: true
+  - type: textarea
+    id: said
+    attributes:
+      label: What you typed / the trigger phrase
+      placeholder: "I said 'work on these two together' and expected /dispatch-parallel"
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: What happened vs expected
+    validations:
+      required: true
