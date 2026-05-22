@@ -20,16 +20,21 @@ git clone https://github.com/Maximumsoft-Co-LTD/claude-flightdeck.git ~/code/cla
 #    optional preset: --preset k8s-helm  (infra) · or a custom preset you authored
 ~/code/claude-flightdeck/install.sh ~/code/my-project --profile standard
 
-# 3. Open ~/code/my-project in Claude Code, then run the setup wizard:
+# 3. Verify the install (structure · placeholders · plugins · scaffolding):
+#    bash ~/code/my-project/.claude/skills/onboard/scripts/doctor.sh
+#    → exits non-zero on any FAIL; WARNs clear after /onboard
+
+# 4. Open ~/code/my-project in Claude Code, run the setup wizard:
 #    /onboard
 #    → scans the codebase, mines git history for project rules, drafts
 #      CLAUDE.md + per-area rules, seeds STATUS/backlog/FOLLOWUPS
 #      (~4-6 hr interactive; you ratify what it drafts)
 
-# 4. Start working:
+# 5. Start working:
 #    /next-task        → orchestrator picks the next task and dispatches it
 #    /post-delegation-gate → 6-gate review before merge
 #    /retro            → sprint close + audit
+#    /ratify-rules     → land the retro's candidate rules into brain-hot
 ```
 
 **Prereqs:** `bash` + `git` (installer) · `jq` (hooks — `brew install jq` /
@@ -141,7 +146,7 @@ flowchart TD
     L1["<b>1. Root CLAUDE.md</b><br/>orchestrator manual<br/><sub>≤200 lines, routing table</sub>"]
     L2["<b>2. .claude/rules/</b> (auto-loaded)<br/>brain-hot · agent-pre-task-ritual ·<br/>phase-matrix · programming-fundamentals ·<br/>git-workflow · lsp-first · sub-agent-workflow"]
     L3["<b>3. .claude/agents/</b><br/>orchestrator · design-doc-writer ·<br/>senior-tech-lead · sprint-retro-author<br/><sub>+ preset engineers</sub>"]
-    L4["<b>4. .claude/skills/</b> (user-invocable)<br/>/next-task · /promote · /discover · /assign ·<br/>/retro · /post-delegation-gate · /dispatch-parallel ·<br/>/design-review · /recover · /audit-query · …"]
+    L4["<b>4. .claude/skills/</b> (user-invocable)<br/>/onboard · /next-task · /assign · /retro ·<br/>/ratify-rules · /post-delegation-gate ·<br/>/dispatch-parallel · /design-review · /recover · …"]
     L5["<b>5. docs/playbooks/ + docs/setup/</b><br/>post-delegation-review (6-gate) · contract-first ·<br/>parallel-conflict-prevention · failure-recovery ·<br/>secret-handling · compliance-mapping · …"]
     L6["<b>6. docs/designs/_templates/ + docs/spec/</b><br/>DESIGN_TEMPLATE · SIZE_TIERS · SELF_REVIEW ·<br/>STATUS · backlog · FOLLOWUPS · sprints/ · retros/"]
     L7["<b>7. Memory</b><br/>.claude/agent-memory/ (per-agent)<br/>+ .claude/memory/ OR external Brain (Obsidian)"]
@@ -167,11 +172,12 @@ target-project/
 ├── .claude/
 │   ├── agents/                       # specialized subagents (orchestrator, design-doc-writer,
 │   │                                 #   senior-tech-lead, sprint-retro-author + presets)
-│   ├── skills/                       # 14 user-invocable workflow skills
-│   │                                 #   /next-task /promote /discover /assign /progress
-│   │                                 #   /archive /retro /document /dispatch-parallel
-│   │                                 #   /design-review /post-delegation-gate /deploy
-│   │                                 #   /changelog /index-refresh
+│   ├── skills/                       # user-invocable workflow skills
+│   │                                 #   /onboard /next-task /promote /discover /assign
+│   │                                 #   /progress /archive /retro /ratify-rules /document
+│   │                                 #   /dispatch-parallel /design-review /post-delegation-gate
+│   │                                 #   /deploy /changelog /index-refresh /recover
+│   │   └── onboard/scripts/doctor.sh # post-install health check (run after install.sh)
 │   ├── rules/                        # always-on rules
 │   │   ├── brain-hot.md              #   hot-path rules (TDD, 6-gate review, zero-bug,
 │   │   │                             #   LSP-first, verification, token hygiene)

@@ -158,6 +158,12 @@ external brain.
 > short rule, one sentence, optional link to a longer doc. Keep this
 > section ≤ 30 lines; if you have more, factor into a separate
 > dedicated rules file (e.g. `{{PROJECT_SLUG}}-local.md`) and link from here.
+>
+> **Don't hand-edit this section from a retro.** Recurring lessons become
+> rules through the operator-gated **`/ratify-rules`** loop:
+> `sprint-retro-author` drafts them under a retro's `## Candidate A-rules`,
+> then `/ratify-rules` walks you through ratify / defer / drop and appends the
+> approved ones here (next free A###) + a lesson-trigger-map row.
 
 - **A011 — _your first project rule_** — _one line_. → optional
   [`./your-detail-file.md`](./your-detail-file.md)

@@ -43,7 +43,7 @@ The live per-task mini-retros at `docs/spec/retros/sprint-S<N>-tasks.md` are the
    - Assert at least one row was inspected; cite count: `Follow-ups scanned: N` (or `Follow-ups scanned: 0 — FOLLOWUPS.md empty, no follow-up from prior sprints`).
    - If any check fails → return to `sprint-retro-author` with the specific gap; do not patch the table inline.
    - On pass, cite the result in the retro: `Follow-ups: X consumed · Y new · Z still open · 0 sprint-touched rows left as open`.
-9. **Recurring-lesson promotion** — if a finding shows up for the 2nd+ time in the project's lessons log, promote it from `brain-hot.md` to a numbered project rule.
+9. **Recurring-lesson promotion** — if a finding shows up for the 2nd+ time in the project's lessons log, it earns a permanent rule. `sprint-retro-author` drafts it under the retro's `## Candidate A-rules` (it proposes; it never edits `brain-hot.md`). Landing it is **operator-gated**: run **`/ratify-rules`** to walk each candidate through ratify / defer / drop and append the approved ones to `brain-hot.md` (`A011+`) + the lesson-trigger map. Don't hand-edit `brain-hot.md` here.
 10. **Update affected skills + rules** — same commit. If a skill caused the problem, update it before closing the retro.
 11. **Mark sprint Done in `docs/spec/STATUS.md`** + MOVE prose to `docs/spec/STATUS-archive.md` in the SAME commit (the STATUS update protocol — keep STATUS.md a single-row pointer, not a journal).
 12. **Refresh slim indexes** — `/index-refresh` for `docs/spec/sprints/INDEX.md` + `docs/spec/backlog-index.md` + `docs/spec/sprints/sprint-S<N>-index.md`.

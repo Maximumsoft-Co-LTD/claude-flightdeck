@@ -16,7 +16,7 @@
 | 1. Root manual | [`../CLAUDE.md`](../CLAUDE.md) | Non-negotiables, dispatch routing table, workflow stage table |
 | 2. Auto-loaded rules | [`../.claude/rules/`](../.claude/rules/) | brain-hot, agent-pre-task-ritual, phase-matrix, programming-fundamentals, git-workflow, lsp-first, sub-agent-workflow |
 | 3. Specialized agents | [`../.claude/agents/`](../.claude/agents/) | orchestrator, design-doc-writer, senior-tech-lead, sprint-retro-author + preset agents |
-| 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 16 slash-commands driving the workflow |
+| 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 17 slash-commands driving the workflow |
 | 5. Playbooks + setup docs | [`./playbooks/`](./playbooks/) + [`./setup/`](./setup/) | Deep operational documents linked from rules |
 | 6. Templates + spec | [`./designs/_templates/`](./designs/_templates/) + [`./spec/`](./spec/) | Design templates, STATUS, backlog, sprints, retros |
 | 7. Memory | [`../.claude/memory/`](../.claude/memory/) or `{{BRAIN_PATH}}` | Cross-sprint lessons, retros, decisions |
@@ -78,7 +78,8 @@ Full architecture rationale:
 | [`/post-delegation-gate`](../.claude/skills/post-delegation-gate/SKILL.md) | 6-gate review on a returned agent | (none) | review log on PR |
 | [`/design-review`](../.claude/skills/design-review/SKILL.md) | UI fidelity gate after FE sprint | (none) | `docs/spec/reviews/sprint-S<N>-design-review.md` |
 | [`/progress`](../.claude/skills/progress/SKILL.md) | Mid-sprint dashboard (read-only) | (none) | (status print) |
-| [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit | `/retro --task` | `docs/spec/retros/sprint-S<N>.md` |
+| [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit | `/ratify-rules` | `docs/spec/retros/sprint-S<N>.md` |
+| [`/ratify-rules`](../.claude/skills/ratify-rules/SKILL.md) | Land retro `## Candidate A-rules` into `brain-hot.md` (operator-gated) | `/retro` | `brain-hot.md` A011+ · trigger-map row |
 | [`/archive`](../.claude/skills/archive/SKILL.md) | Move old sprints to `historical/` | (none) | moves under `docs/spec/sprints/historical/` |
 | [`/document`](../.claude/skills/document/SKILL.md) | Sync API / contract docs from code | (none) | API doc files |
 | [`/index-refresh`](../.claude/skills/index-refresh/SKILL.md) | Refresh slim INDEX files | (none) | INDEX files |

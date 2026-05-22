@@ -92,6 +92,7 @@ If the retro surfaces a recurring lesson worth a permanent rule:
 2. Draft: one-line rule + why it exists + how-to-apply (the file's template).
 3. In the retro, list it under `## Candidate A-rules` with the draft.
 4. **You propose; the orchestrator / user ratifies** — you do not silently edit `.claude/rules/brain-hot.md`. Flag the cross-references that would need updating.
+5. **Landing is a separate, operator-gated step:** the user runs **`/ratify-rules`** to walk each `## Candidate A-rules` entry through ratify / defer / drop and append the approved ones to `brain-hot.md` (`A011+`) + the lesson-trigger map. Your job ends at the proposal; `/ratify-rules` closes the loop.
 
 ## Retro structure
 

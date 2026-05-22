@@ -13,6 +13,46 @@
 
 - (none yet)
 
+## v0.9.0 — 2026-05-22
+
+The **"closing the loops"** release — adds a post-install health check so an
+adopter can confirm the control plane is wired, and an operator-gated
+ratification step so recurring retro lessons actually become permanent rules.
+
+### Added
+
+- **`doctor.sh`** (`core/.claude/skills/onboard/scripts/doctor.sh`) — a
+  read-only post-install health check. Verifies structure, that no template
+  placeholders leaked through install, plugin readiness (`pr-review-toolkit`
+  FAIL / `superpowers` WARN), whether `code-style.md` is still the install stub,
+  that `brain-hot.md` carries the A001..A010 block, spec scaffolding, and a
+  valid `settings.json`. Emits `PASS / WARN / FAIL` per check + a `READY`
+  verdict; exits non-zero on any FAIL so CI/automation can gate on it.
+  Shipped as a **script, not a slash-command** (to keep the skill count lean) —
+  `/onboard` Stage 0 runs it, and adopters run
+  `bash .claude/skills/onboard/scripts/doctor.sh` right after install.
+- **`/ratify-rules`** (`core/.claude/skills/ratify-rules/`) — the
+  operator-gated landing step that closes the lesson → rule loop. Harvests the
+  `## Candidate A-rules` that `sprint-retro-author` drafts in retros, walks the
+  operator through ratify / defer / drop on each, and appends approved ones to
+  `brain-hot.md` (`A011+`, next free number) plus a `lesson-trigger-map.md` row.
+
+### Changed
+
+- **`/retro` Step 9** now routes recurring-lesson promotion through
+  `/ratify-rules` instead of implying a hand-edit of `brain-hot.md`.
+- **`sprint-retro-author`** "Promoting a new A-rule" gains an explicit step 5:
+  the user runs `/ratify-rules` to land candidates (the agent proposes, never
+  lands).
+- **`brain-hot.md` `## Project-specific rules`** header now states rules arrive
+  via the `/ratify-rules` loop, not by hand-editing from a retro.
+- **`plugin-dependencies.md`** verify section now points to `doctor.sh` as the
+  friendly way to confirm plugin readiness.
+- **README** quick-start adds the `doctor.sh` verify step + `/ratify-rules`
+  (land retro rules); **INDEX** skills table adds `/ratify-rules` (16 → 17 rows).
+- **`/onboard` Stage 0** now runs `doctor.sh` as an install-integrity
+  pre-check (FAIL blocks onboarding; WARNs are expected on a fresh install).
+
 ## v0.8.1 — 2026-05-22
 
 The **"plugin prerequisites"** release — makes the two Claude Code plugins the
