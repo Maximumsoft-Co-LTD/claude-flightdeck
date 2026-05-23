@@ -13,6 +13,25 @@
 
 - (none yet)
 
+## v0.9.1 — 2026-05-23
+
+Small installer-UX fix: surface the **required plugin install** step in the
+installer's own "Next steps" output. Previously the requirement lived only in
+`README.md` and `docs/setup/plugin-dependencies.md`; adopters who ran
+`install.sh` / `install.ps1` and went straight to Claude Code could miss it
+until `/onboard` Stage 0 (or a 6-gate review) failed.
+
+### Changed
+
+- **`install.sh` + `install.ps1`** now print a yellow `REQUIRED — install these
+  Claude Code plugins…` banner immediately after `install complete.`, listing
+  `pr-review-toolkit` (required) and `superpowers` (strongly recommended), and
+  pointing at `docs/setup/plugin-dependencies.md`.
+- **"Next steps" panel** in both installers gains an explicit
+  `/plugin` step (install the two plugins) and `/onboard` step (Stage 0
+  verifies them) before `/next-task`, so the install-time order matches what
+  the control plane actually expects.
+
 ## v0.9.0 — 2026-05-22
 
 The **"closing the loops"** release — adds a post-install health check so an

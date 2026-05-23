@@ -712,6 +712,12 @@ Write-Manifest
 Write-Host ''
 Write-Ok 'install complete.'
 Write-Host ''
+Write-Warn 'REQUIRED — install these Claude Code plugins before your first sprint:'
+Write-Warn '    * pr-review-toolkit   (required — drives the 6-gate quality review)'
+Write-Warn '    * superpowers         (strongly recommended — TDD / verification / debugging skills)'
+Write-Warn "  In Claude Code: run /plugin -> open marketplace 'claude-plugins-official' -> install both."
+Write-Warn '  Details + graceful-degradation: docs/setup/plugin-dependencies.md'
+Write-Host ''
 Write-Note 'Next steps:'
 @"
   1. cd "$Target"
@@ -719,7 +725,10 @@ Write-Note 'Next steps:'
   3. Append project-specific rules to .claude/rules/brain-hot.md
      (add your A001, A002, ... local rules section)
   4. Edit CLAUDE.md — fill in the dispatch-routing table for your stack
-  5. Open Claude Code in the project, then try:
+  5. Open Claude Code in the project, then:
+        /plugin           — install 'pr-review-toolkit' (REQUIRED) and
+                            'superpowers' from 'claude-plugins-official'
+        /onboard          — setup wizard (Stage 0 verifies the plugins above)
         /next-task        — pick something to work on
         /design-review    — UI fidelity gate (if you ship UI)
         /retro            — sprint close + audit
