@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "comment": "File classification consumed by `install.sh upgrade`. Paths are matched against the installed-project layout (post-render, .tmpl stripped). Class lookup order: user_owned → seed_then_user_extends → template_owned (default). Glob semantics: bash globstar — `**` matches multiple path segments, `*` matches a single segment. Pattern docs: docs/setup/upgrade.md.",
+
+  "classes": {
+    "user_owned": {
+      "description": "Never touched by upgrade. The user's own sprint / retro / design / backlog content lives here, plus the install manifest itself.",
+      "patterns": [
+        ".ai-workflows/**",
+        ".claude/agent-memory/**",
+        ".claude/memory/**",
+        "docs/spec/STATUS.md",
+        "docs/spec/STATUS-archive.md",
+        "docs/spec/backlog.md",
+        "docs/spec/backlog-index.md",
+        "docs/spec/FOLLOWUPS.md",
+        "docs/spec/sprints/**",
+        "docs/spec/retros/**",
+        "docs/spec/discovery/**",
+        "docs/spec/audit/**",
+        "docs/spec/reviews/**",
+        "docs/designs/sprint-*/**",
+        "docs/designs/_archive/**"
+      ]
+    },
+
+    "seed_then_user_extends": {
+      "description": "Template seeds initial content; user extends in-place. Upgrade flags as 'NEEDS MERGE' — never auto-overwritten by --apply-safe. Hand-merge using the new template version as reference, OR use /flightdeck-upgrade (planned for v0.12) for an LLM-assisted merge.",
+      "patterns": [
+        "CLAUDE.md",
+        ".claude/CLAUDE.md",
+        ".claude/rules/brain-hot.md",
+        ".claude/rules/code-style.md",
+        ".claude/settings.json",
+        ".claude/settings.foundation.json",
+        ".claude/.mcp.json",
+        "docs/setup/lesson-trigger-map.md"
+      ]
+    },
+
+    "template_owned": {
+      "description": "Default class. Owned by the template — safely overwritten by --apply-safe on upgrade. If you customized one of these, lift the change to brain-hot.md (project-specific rules section) or a custom preset before upgrading.",
+      "patterns": [
+        "**"
+      ]
+    }
+  }
+}

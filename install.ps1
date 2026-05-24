@@ -118,12 +118,20 @@ if ($Help) {
 }
 
 # ---------- arg parse: subcommand detection ----------
-# Currently supported: `diff <target>` — compare installed manifest vs
-# current template. Otherwise the first positional is the install target.
+# Supported subcommands:
+#   diff <target>     drift report (PowerShell-supported)
+#   upgrade <target>  classified upgrade scan (NOT yet on PowerShell — use bash via WSL)
+# Otherwise the first positional is the install target.
 $SubCommand = ''
 if ($Target -eq 'diff') {
     $SubCommand = 'diff'
     $Target = $MaybeTarget
+}
+elseif ($Target -eq 'upgrade') {
+    Write-Warn 'upgrade is not yet supported on the PowerShell installer.'
+    Write-Warn 'Use the bash installer under WSL (or on macOS / Linux):'
+    Write-Warn "    bash install.sh upgrade $MaybeTarget [--apply-safe]"
+    exit 1
 }
 elseif ($MaybeTarget) {
     Write-Die "unexpected positional arg: $MaybeTarget"

@@ -13,6 +13,60 @@
 
 - (none yet)
 
+## v0.11.0 — 2026-05-24
+
+The **"safe upgrade path"** release — classified per-file upgrade scan that
+knows which files are owned by the template (safe to overwrite), which are
+seeded then user-extended (needs merge), and which are user-owned (never
+touch). Replaces the previous `--force` re-install upgrade flow, which was
+all-or-nothing and routinely blasted away project-local rules and
+customized `CLAUDE.md`.
+
+### Added
+
+- **`core/.flightdeck-upgrade.json`** — file classification manifest with
+  3 classes (`user_owned`, `seed_then_user_extends`, `template_owned`) and
+  glob-pattern matching. Loaded by the upgrade subcommand to categorize
+  every file in the new template before deciding what to do with each.
+  Ships in every install (template-owned), so future upgrades pick up
+  classification refinements automatically.
+- **`install.sh upgrade <target>`** — new subcommand. Default behavior is
+  a dry-run scan that prints a 5-section report:
+  - `SAFE OVERWRITE` — template-owned files that changed (e.g. agents,
+    skills, playbooks, design templates)
+  - `NEW` — template-owned files added since the install
+  - `NEEDS MERGE` — seed-then-extends files that changed (CLAUDE.md,
+    brain-hot.md, settings.json, etc.) — flagged for hand-merge, never
+    auto-overwritten
+  - `NEW seed` — seed-then-extends files the install never had
+  - `SKIPPED` — user-owned files the upgrade refuses to touch (sprints,
+    retros, designs, FOLLOWUPS, STATUS, agent memory)
+  Plus migration notes auto-extracted from CHANGELOG between the installed
+  version and the target version.
+- **`install.sh upgrade <target> --apply-safe`** — actually applies the
+  SAFE OVERWRITE + NEW files. Backs up overwritten files to
+  `<target>/.ai-workflows/upgrade-backups/v<from>-to-v<to>-<ts>/<orig-path>`
+  for one-command rollback, then updates the manifest with the new version
+  + source_commit + an `upgrade_history[]` entry recording the upgrade.
+
+### Changed
+
+- **`install.sh diff <target>`** "upgrade path" hint — now points at the
+  new upgrade subcommand instead of suggesting `--force`.
+- **`install.sh`** — `sed_escape` helper relocated to the top so both
+  install and upgrade can share it. `shopt -s globstar nullglob` enabled
+  globally so the classification matcher's `**` patterns work.
+
+### Known limitations
+
+- **PowerShell installer (`install.ps1`)** does NOT yet support `upgrade` —
+  it prints a clear redirect to run the bash installer under WSL. Native
+  PowerShell port is planned for a later release.
+- **Seed-then-extends merge is still manual** for now. The dry-run flags
+  what needs merging and where the new template version lives; an LLM-driven
+  `/flightdeck-upgrade` skill that proposes a 3-way merge per-file is
+  planned for v0.12.
+
 ## v0.10.0 — 2026-05-24
 
 The **"design-phase escalation channels"** release — gives the

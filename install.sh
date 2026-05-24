@@ -3,8 +3,9 @@
 #
 # Usage:
 #   ./install.sh <target-dir> [--profile P] [--preset name1,name2] [--brain-path PATH] [--config FILE] [--dry-run] [--force]
-#   ./install.sh diff <target-dir>          # report version + file drift vs template
-#   ./install.sh --version                  # print template version and exit
+#   ./install.sh diff <target-dir>                   # report version + file drift vs template
+#   ./install.sh upgrade <target-dir> [--apply-safe] # classified upgrade scan; --apply-safe overwrites template-owned files
+#   ./install.sh --version                           # print template version and exit
 #
 # --profile selects the permission/hook foundation rendered to
 # .claude/settings.json (see docs/setup/permission-profiles.md):
@@ -19,6 +20,8 @@
 #   ./install.sh ./target --config template.config --force
 #   ./install.sh ./target --dry-run                 # show what would happen
 #   ./install.sh diff ~/code/my-new-service         # drift report
+#   ./install.sh upgrade ~/code/my-new-service      # scan only (dry-run by default)
+#   ./install.sh upgrade ~/code/my-new-service --apply-safe   # apply safe overwrites
 #
 # Vars substituted in *.tmpl files (Mustache-style {{NAME}}):
 #   PROJECT_NAME, PROJECT_SLUG, AGENT_PREFIX, TECH_STACK_DESC, BRAIN_PATH, TASK_ID_PREFIX
@@ -30,6 +33,9 @@
 # date, presets, placeholder names, template source_commit) for drift control.
 
 set -euo pipefail
+
+# Enable ** globbing for the upgrade subcommand's classification matcher.
+shopt -s globstar nullglob 2>/dev/null || true
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -47,6 +53,7 @@ BRAIN_PATH=""
 CONFIG_FILE=""
 DRY_RUN=0
 FORCE=0
+APPLY_SAFE=0          # `upgrade --apply-safe` — actually overwrite template-owned files
 SUBCOMMAND=""
 PROFILE="standard"   # restricted | standard | permissive
 
@@ -61,6 +68,9 @@ note() { printf '\033[36m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[33mwarn:\033[0m %s\n' "$*" >&2; }
 ok()   { printf '\033[32m  ok\033[0m  %s\n' "$*"; }
 
+# Escape regex-significant chars in replacement RHS for sed (shared by install + upgrade).
+sed_escape() { printf '%s' "$1" | sed -e 's/[\/&]/\\&/g'; }
+
 usage() {
   sed -n '2,22p' "$0" | sed 's/^# \?//'
   exit "${1:-0}"
@@ -68,13 +78,13 @@ usage() {
 
 # ---------- arg parse ----------
 # Subcommand detection (must be first positional arg if present).
-# Currently supported: `diff <target>` — compare installed manifest vs
-# current template. Otherwise the first positional is treated as the
-# install target as before.
-if [[ "${1:-}" == "diff" ]]; then
-  SUBCOMMAND="diff"
-  shift
-fi
+# Supported subcommands:
+#   diff <target>     compare installed manifest vs current template (mtime-based file list)
+#   upgrade <target>  classified upgrade scan (sha-based, classification-aware); --apply-safe to apply
+# Otherwise the first positional is treated as the install target as before.
+case "${1:-}" in
+  diff|upgrade) SUBCOMMAND="$1"; shift ;;
+esac
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -89,6 +99,7 @@ while [[ $# -gt 0 ]]; do
     --config)        CONFIG_FILE="$2"; shift 2 ;;
     --dry-run)       DRY_RUN=1; shift ;;
     --force)         FORCE=1; shift ;;
+    --apply-safe)    APPLY_SAFE=1; shift ;;
     --) shift; break ;;
     -*) die "unknown flag: $1 (try --help)" ;;
     *)
@@ -131,7 +142,266 @@ if [[ "$SUBCOMMAND" == "diff" ]]; then
   echo
   if [[ -n "$AIWF_VERSION" && -n "$INSTALLED" && "$INSTALLED" != "$AIWF_VERSION" ]]; then
     warn "version drift: target v$INSTALLED vs template v$AIWF_VERSION"
-    warn "upgrade path (current): re-run ./install.sh $TARGET --force after backing up."
+    warn "upgrade path: ./install.sh upgrade $TARGET   (scan only; add --apply-safe to apply)"
+  fi
+  exit 0
+fi
+
+# ---------- upgrade subcommand ----------
+# Classified upgrade scan. Reads the target's manifest (version, placeholders,
+# profile, presets), walks the current template (core + installed presets),
+# classifies each file via core/.flightdeck-upgrade.json (user_owned /
+# seed_then_user_extends / template_owned), and reports per-class. By default
+# dry-run; --apply-safe overwrites template_owned files (with backups) and
+# updates the manifest with the new version + an upgrade_history entry.
+# Files classified seed_then_user_extends are flagged for manual merge —
+# never auto-overwritten (preserves user-extended CLAUDE.md / brain-hot.md
+# A011+ section / settings.json with custom MCP servers / etc.).
+if [[ "$SUBCOMMAND" == "upgrade" ]]; then
+  [[ -n "$TARGET" ]] || die "upgrade: missing <target-dir>"
+  [[ -d "$TARGET" ]] || die "upgrade: target not found: $TARGET"
+  command -v jq >/dev/null 2>&1 || die "upgrade: jq is required (brew install jq / apt install jq)"
+  TARGET="$(cd "$TARGET" && pwd)"
+  MANIFEST="$TARGET/.ai-workflows/manifest.json"
+  [[ -f "$MANIFEST" ]] || die "upgrade: no manifest at $MANIFEST (target not installed via this template?)"
+
+  # --- read installed state ---
+  INSTALLED_VER="$(jq -r '.version // "unknown"' "$MANIFEST")"
+  INSTALLED_COMMIT="$(jq -r '.source_commit // ""' "$MANIFEST")"
+  INSTALL_DATE="$(jq -r '.install_date // ""' "$MANIFEST")"
+  INSTALLED_PROFILE="$(jq -r '.profile // "standard"' "$MANIFEST")"
+  INSTALLED_PRESETS_CSV="$(jq -r '(.presets // []) | join(",")' "$MANIFEST")"
+  PROJECT_NAME="$(jq -r '.placeholders.PROJECT_NAME // ""' "$MANIFEST")"
+  PROJECT_SLUG="$(jq -r '.placeholders.PROJECT_SLUG // ""' "$MANIFEST")"
+  AGENT_PREFIX="$(jq -r '.placeholders.AGENT_PREFIX // ""' "$MANIFEST")"
+  TASK_ID_PREFIX="$(jq -r '.placeholders.TASK_ID_PREFIX // ""' "$MANIFEST")"
+  TECH_STACK_DESC="$(jq -r '.placeholders.TECH_STACK_DESC // ""' "$MANIFEST")"
+  # BRAIN_PATH: prefer explicit manifest value (newer manifests), else fall
+  # back to install default. The render uses .claude/memory when empty.
+  if jq -e '.placeholders.BRAIN_PATH' "$MANIFEST" >/dev/null 2>&1; then
+    BRAIN_PATH="$(jq -r '.placeholders.BRAIN_PATH // ""' "$MANIFEST")"
+  fi
+
+  printf '\033[36m==>\033[0m Upgrade scan: %s\n' "$TARGET"
+  printf '    installed   v%s  (commit %s, installed %s)\n' "$INSTALLED_VER" "${INSTALLED_COMMIT:-?}" "${INSTALL_DATE:-?}"
+  printf '    target      v%s\n' "${AIWF_VERSION:-unknown}"
+  printf '    profile     %s\n' "$INSTALLED_PROFILE"
+  printf '    presets     %s\n' "${INSTALLED_PRESETS_CSV:-<none>}"
+  echo
+
+  if [[ "$INSTALLED_VER" == "${AIWF_VERSION:-}" ]] && [[ $APPLY_SAFE -eq 0 ]]; then
+    ok "Already on template v$INSTALLED_VER — nothing to do."
+    exit 0
+  fi
+
+  # --- load classification (target template wins; new releases may reclassify) ---
+  CLASS_FILE="$SCRIPT_DIR/core/.flightdeck-upgrade.json"
+  [[ -f "$CLASS_FILE" ]] || die "upgrade: missing classification file $CLASS_FILE (template build issue)"
+  # Use while-read instead of mapfile — macOS ships bash 3.2 which lacks mapfile.
+  USER_OWNED_PATTERNS=()
+  while IFS= read -r line; do USER_OWNED_PATTERNS+=("$line"); done \
+    < <(jq -r '.classes.user_owned.patterns[]' "$CLASS_FILE")
+  SEED_PATTERNS=()
+  while IFS= read -r line; do SEED_PATTERNS+=("$line"); done \
+    < <(jq -r '.classes.seed_then_user_extends.patterns[]' "$CLASS_FILE")
+
+  classify_path() {
+    local p="$1" pat
+    for pat in "${USER_OWNED_PATTERNS[@]}"; do
+      # shellcheck disable=SC2053
+      [[ "$p" == $pat ]] && { echo "user_owned"; return; }
+    done
+    for pat in "${SEED_PATTERNS[@]}"; do
+      # shellcheck disable=SC2053
+      [[ "$p" == $pat ]] && { echo "seed_then_user_extends"; return; }
+    done
+    echo "template_owned"
+  }
+
+  # Render a template file to stdout with current placeholders (same sed
+  # substitutions as install's render_substitute).
+  render_to_stdout() {
+    sed \
+      -e "s/{{PROJECT_NAME}}/$(sed_escape "$PROJECT_NAME")/g" \
+      -e "s/{{PROJECT_SLUG}}/$(sed_escape "$PROJECT_SLUG")/g" \
+      -e "s/{{AGENT_PREFIX}}/$(sed_escape "$AGENT_PREFIX")/g" \
+      -e "s/{{TECH_STACK_DESC}}/$(sed_escape "$TECH_STACK_DESC")/g" \
+      -e "s/{{BRAIN_PATH}}/$(sed_escape "${BRAIN_PATH:-.claude/memory}")/g" \
+      -e "s/{{TASK_ID_PREFIX}}/$(sed_escape "$TASK_ID_PREFIX")/g" \
+      "$1"
+  }
+
+  # --- categorize every file in new template (core + installed presets) ---
+  declare -a SAFE_OVERWRITE SAFE_NEW MERGE_NEEDED MERGE_NEW USER_SKIPPED UNCHANGED
+
+  consider_template_file() {
+    # $1 = absolute template path; $2 = installed_rel path (with .tmpl stripped)
+    local tpl="$1" installed_rel="$2"
+    local installed_abs="$TARGET/$installed_rel"
+    local class
+    class=$(classify_path "$installed_rel")
+    if [[ ! -e "$installed_abs" ]]; then
+      case "$class" in
+        user_owned)             USER_SKIPPED+=("$installed_rel") ;;
+        seed_then_user_extends) MERGE_NEW+=("$installed_rel|$tpl") ;;
+        *)                      SAFE_NEW+=("$installed_rel|$tpl") ;;
+      esac
+    elif cmp -s <(render_to_stdout "$tpl") "$installed_abs"; then
+      UNCHANGED+=("$installed_rel")
+    else
+      case "$class" in
+        user_owned)             USER_SKIPPED+=("$installed_rel") ;;
+        seed_then_user_extends) MERGE_NEEDED+=("$installed_rel|$tpl") ;;
+        *)                      SAFE_OVERWRITE+=("$installed_rel|$tpl") ;;
+      esac
+    fi
+  }
+
+  # core/ — every file; profile-specific settings are filtered to the installed profile.
+  while IFS= read -r -d '' tpl; do
+    rel="${tpl#$SCRIPT_DIR/core/}"
+    case "$rel" in
+      .claude/settings.*.json.tmpl)
+        [[ "$rel" == ".claude/settings.${INSTALLED_PROFILE}.json.tmpl" ]] || continue
+        installed_rel=".claude/settings.json"
+        ;;
+      *)
+        installed_rel="${rel%.tmpl}"
+        ;;
+    esac
+    consider_template_file "$tpl" "$installed_rel"
+  done < <(find "$SCRIPT_DIR/core" -type f -print0)
+
+  # installed presets — same mapping as install (agents/rules/skills → .claude/<sub>/; docs → docs/)
+  if [[ -n "$INSTALLED_PRESETS_CSV" ]]; then
+    IFS=',' read -ra PRESET_LIST <<< "$INSTALLED_PRESETS_CSV"
+    for p in "${PRESET_LIST[@]}"; do
+      p="$(printf '%s' "$p" | tr -d '[:space:]')"
+      [[ -z "$p" ]] && continue
+      preset_src="$SCRIPT_DIR/presets/$p"
+      [[ -d "$preset_src" ]] || { warn "preset '$p' not found in $SCRIPT_DIR/presets — skipping"; continue; }
+      for sub in agents rules skills; do
+        [[ -d "$preset_src/$sub" ]] || continue
+        while IFS= read -r -d '' tpl; do
+          rel="${tpl#$preset_src/$sub/}"
+          consider_template_file "$tpl" ".claude/$sub/${rel%.tmpl}"
+        done < <(find "$preset_src/$sub" -type f -print0)
+      done
+      if [[ -d "$preset_src/docs" ]]; then
+        while IFS= read -r -d '' tpl; do
+          rel="${tpl#$preset_src/docs/}"
+          consider_template_file "$tpl" "docs/${rel%.tmpl}"
+        done < <(find "$preset_src/docs" -type f -print0)
+      fi
+    done
+  fi
+
+  # --- print report ---
+  # print_section <label> <ansi-color-code> <count> [items...]
+  # Count is passed explicitly because `${arr[@]:-}` under set -u expands an
+  # empty array to one empty string, breaking the count. Items use the
+  # safe-expansion form `${arr[@]+"${arr[@]}"}` (no iteration when empty).
+  print_section() {
+    local label="$1" color="$2" count="$3"
+    shift 3
+    printf '\033[%sm%s\033[0m (%d)\n' "$color" "$label" "$count"
+    if [[ "$count" -eq 0 ]]; then
+      printf '    <none>\n\n'
+      return
+    fi
+    local item
+    for item in "$@"; do
+      printf '    %s\n' "${item%%|*}"
+    done
+    echo
+  }
+
+  print_section "SAFE OVERWRITE (template-owned, changed)"          "32" "${#SAFE_OVERWRITE[@]}" ${SAFE_OVERWRITE[@]+"${SAFE_OVERWRITE[@]}"}
+  print_section "NEW (template-owned, new file)"                    "32" "${#SAFE_NEW[@]}"       ${SAFE_NEW[@]+"${SAFE_NEW[@]}"}
+  print_section "NEEDS MERGE (template-seeded, user-extended)"      "33" "${#MERGE_NEEDED[@]}"   ${MERGE_NEEDED[@]+"${MERGE_NEEDED[@]}"}
+  print_section "NEW seed (template-seeded, never installed here)"  "33" "${#MERGE_NEW[@]}"      ${MERGE_NEW[@]+"${MERGE_NEW[@]}"}
+  print_section "SKIPPED (user-owned, never touched by upgrade)"    "36" "${#USER_SKIPPED[@]}"   ${USER_SKIPPED[@]+"${USER_SKIPPED[@]}"}
+  printf '\033[2mUNCHANGED: %d files\033[0m\n\n' "${#UNCHANGED[@]}"
+
+  # --- migration notes from CHANGELOG (lines strictly between target and installed) ---
+  CHANGELOG="$SCRIPT_DIR/CHANGELOG.md"
+  if [[ -f "$CHANGELOG" && -n "$AIWF_VERSION" && "$INSTALLED_VER" != "$AIWF_VERSION" ]]; then
+    note "Migration notes (CHANGELOG.md v$INSTALLED_VER → v$AIWF_VERSION):"
+    awk -v installed="$INSTALLED_VER" -v target="$AIWF_VERSION" '
+      /^## v/ {
+        if (match($0, /v[0-9]+\.[0-9]+\.[0-9]+/)) {
+          ver = substr($0, RSTART+1, RLENGTH-1)
+          if (ver == installed) { exit }
+          capture = (ver == target || capture) ? 1 : 0
+        }
+      }
+      capture { print "    " $0 }
+    ' "$CHANGELOG"
+    echo
+  fi
+
+  if [[ $APPLY_SAFE -eq 0 ]]; then
+    note "Dry-run only. Re-run with --apply-safe to overwrite the SAFE files above."
+    if [[ ${#MERGE_NEEDED[@]} -gt 0 || ${#MERGE_NEW[@]} -gt 0 ]]; then
+      note "For MERGE files: hand-merge against the template versions under $SCRIPT_DIR/core/ (or wait for /flightdeck-upgrade in v0.12)."
+    fi
+    exit 0
+  fi
+
+  # --- --apply-safe path ---
+  TS="$(date +%Y%m%d-%H%M%S)"
+  BACKUP_DIR="$TARGET/.ai-workflows/upgrade-backups/v${INSTALLED_VER}-to-v${AIWF_VERSION}-${TS}"
+  mkdir -p "$BACKUP_DIR"
+  note "Backups → $BACKUP_DIR"
+
+  apply_one() {
+    local installed_rel="$1" tpl="$2"
+    local installed_abs="$TARGET/$installed_rel"
+    if [[ -e "$installed_abs" ]]; then
+      local bak="$BACKUP_DIR/$installed_rel"
+      mkdir -p "$(dirname "$bak")"
+      cp "$installed_abs" "$bak"
+    fi
+    mkdir -p "$(dirname "$installed_abs")"
+    render_to_stdout "$tpl" > "$installed_abs"
+    case "$installed_rel" in
+      .claude/hooks/*.sh) chmod +x "$installed_abs" ;;
+    esac
+    ok "wrote $installed_rel"
+  }
+
+  applied=0
+  for entry in ${SAFE_OVERWRITE[@]+"${SAFE_OVERWRITE[@]}"} ${SAFE_NEW[@]+"${SAFE_NEW[@]}"}; do
+    apply_one "${entry%%|*}" "${entry##*|}"
+    applied=$((applied + 1))
+  done
+
+  # --- update manifest with new version + upgrade history ---
+  TMP_MANIFEST="$(mktemp)"
+  UPGRADE_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  NEW_COMMIT="$(git -C "$SCRIPT_DIR" rev-parse --short HEAD 2>/dev/null || true)"
+  jq --arg ver "${AIWF_VERSION:-unknown}" \
+     --arg commit "$NEW_COMMIT" \
+     --arg upgrade_date "$UPGRADE_DATE" \
+     --arg from "$INSTALLED_VER" \
+     --argjson nfiles "$applied" \
+     '.version = $ver
+      | .source_commit = $commit
+      | .upgrade_history = ((.upgrade_history // []) + [{
+          from: $from,
+          to: $ver,
+          date: $upgrade_date,
+          source_commit: $commit,
+          files_overwritten: $nfiles
+        }])' \
+     "$MANIFEST" > "$TMP_MANIFEST"
+  mv "$TMP_MANIFEST" "$MANIFEST"
+  ok "updated manifest: $MANIFEST"
+  echo
+  ok "Upgrade complete: v$INSTALLED_VER → v${AIWF_VERSION:-unknown} ($applied files overwritten)"
+  if [[ ${#MERGE_NEEDED[@]} -gt 0 || ${#MERGE_NEW[@]} -gt 0 ]]; then
+    total_merge=$((${#MERGE_NEEDED[@]} + ${#MERGE_NEW[@]}))
+    warn "$total_merge file(s) still need manual merge — see the NEEDS MERGE / NEW seed sections above."
   fi
   exit 0
 fi
@@ -326,9 +596,6 @@ if [[ -n "$PRESETS" ]]; then
 fi
 
 # ---------- render placeholders ----------
-# Escape regex-significant chars in replacement RHS for sed
-sed_escape() { printf '%s' "$1" | sed -e 's/[\/&]/\\&/g'; }
-
 render_substitute() {
   # $1 src path; output path = src with .tmpl suffix stripped.
   # Substitutes {{PLACEHOLDERS}}. If .tmpl is in the name, also renames.
