@@ -44,6 +44,65 @@
 
 ---
 
+## 1.5 Cross-System Impact & Knowledge Gaps
+
+> **Why this section exists:** the most expensive bugs are the ones
+> that are locally-correct but globally-wrong. This section forces the
+> design author to (a) name every downstream system / business process
+> this change touches, and (b) declare honestly where they lacked the
+> knowledge to make a safe call. The orchestrator surfaces both to the
+> user **before gate approval** so risks become decisions, not
+> discoveries.
+
+### 1.5.1 Blast Radius (what this change AFFECTS)
+
+> Enumerate every system / service / consumer / business process that
+> could feel this change. Be liberal — false positives here are cheap;
+> a missed downstream is what causes Saturday-night incidents.
+
+| # | Downstream consumer | How affected | Risk grade | Mitigation |
+|---|---------------------|--------------|------------|------------|
+| 1 | [e.g. mobile app v3.x clients] | API field becomes nullable | HIGH | Ship server-side default for 1 release before flipping; coordinate with mobile team via `#mobile-api` |
+| 2 | [e.g. nightly reporting ETL] | New event topic; existing topic unchanged | LOW | None — additive only |
+| 3 | [e.g. RBAC module] | Adds a new permission key | MEDIUM | Migration must seed default-deny; document in retro for L050 |
+
+**Risk grade legend:**
+- **HIGH** — breaking change, cross-team coordination needed, or downstream that pages on failure. Orchestrator surfaces to user before approval.
+- **MEDIUM** — recoverable degradation, needs heads-up to owners but no coordination.
+- **LOW** — additive / behind a flag / no observable change to consumers.
+
+**Cross-system dependency sketch** (optional but recommended for ≥1 HIGH or ≥2 MEDIUM rows):
+
+```mermaid
+flowchart LR
+    THIS[This change] -->|new event| TopicX
+    TopicX --> ConsumerA
+    TopicX --> ConsumerB
+    UpstreamY -->|existing call, unchanged| THIS
+```
+
+### 1.5.2 Knowledge Gaps (what the design author DOESN'T KNOW)
+
+> Distinct from `## 10. Open Questions` (which has a default to ratify).
+> A knowledge gap is **"I don't have enough information to even propose a
+> defensible default"** — typically because the relevant context lives
+> outside this repo (other team's service, undocumented business rule,
+> production data shape, vendor API quirk). Declare them honestly — a
+> hidden gap becomes a load-bearing bug.
+
+| # | What I need to know | Why I need it | Likely source | Impact if I guess wrong | Resolved? |
+|---|---------------------|---------------|---------------|-------------------------|-----------|
+| 1 | [e.g. Exact retry semantics of the upstream `pricing-svc` /quote endpoint] | Determines whether our handler is idempotent or needs dedup | Pricing team / `pricing-svc` runbook | Could double-charge on retry storms | [ ] |
+| 2 | [e.g. Whether finance ETL reads from the `orders` view or the raw table] | Decides if a column rename is safe or breaks the morning report | Data team / `#data-platform` | Silent reporting drift Mon AM | [ ] |
+
+**If any row is unresolved at design completion** → the design-doc-writer
+returns `NEEDS_CONTEXT` (NOT `DONE_WITH_CONCERNS`), because by
+definition there's no default to ratify. The orchestrator routes the
+question to the user (and where possible, to a human with the context)
+before re-dispatching.
+
+---
+
 ## 2. Architecture & Approach
 
 ### High-Level Flow
@@ -510,9 +569,29 @@ Seed data needed:
 
 ## 10. Open Questions / Risks
 
-| # | Question / Risk | Decision | Resolved? |
-|---|----------------|----------|-----------|
-| 1 | [open question] | [decision or TBD] | [ ] |
+> Every question the design author was unsure about. The orchestrator
+> surfaces these to the user **before gate approval** so decisions land
+> in the doc, not as last-minute discoveries during implementation.
+>
+> Severity legend (set by `design-doc-writer`):
+> - **load-bearing** — wrong guess means rework in days (architecture,
+>   data model, scope, contract, RBAC). If you see one here the doc
+>   should have been returned `NEEDS_CONTEXT`; treat as STOP.
+> - **material** — wrong guess means a recoverable edit cycle (API
+>   shape, error semantics, migration strategy). Decide before impl.
+> - **cosmetic** — wrong guess means a one-line patch (naming, ordering,
+>   wording). Skim and override only if needed.
+>
+> Each question carries the author's **default + reason + impact-if-wrong**
+> so the user can OK/override in one read.
+
+| # | Question | Severity | Default picked | Why this default | Impact if wrong | Resolved? |
+|---|----------|----------|----------------|------------------|-----------------|-----------|
+| 1 | [e.g. Should `priority` be nullable on the API response?] | material | non-null, default="normal" | matches existing `Task.priority` in `models/task.go:42` | Frontend `?? "normal"` fallback breaks for legacy rows | [ ] |
+
+**After the user decides:** flip `Resolved?` to `[x]`, update `Default
+picked` to the chosen answer, and add a Change Log row recording who
+decided and when.
 
 ---
 

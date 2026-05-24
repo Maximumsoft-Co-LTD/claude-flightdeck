@@ -140,6 +140,21 @@ assume any particular architecture is in place:
       `NEEDS_CONTEXT` = missing info the brief didn't provide (say what);
       `BLOCKED` = you can't complete (say what you tried + help needed). It
       is ALWAYS OK to escalate — bad work is worse than no work.
+    - **Subagents cannot call `AskUserQuestion`** — these statuses are
+      your only channel to the user. Use them rather than guessing on
+      something material.
+    - **Design phase specifically (`design-doc-writer` and equivalents):**
+      use the severity matrix in
+      [`../agents/design-doc-writer.md`](../agents/design-doc-writer.md#handling-ambiguity-—-when-to-ask-vs-when-to-best-guess) —
+      knowledge gap (info missing, no defensible default) → `NEEDS_CONTEXT`
+      (declare it in `## 1.5.2 Knowledge Gaps`, do NOT write the doc body);
+      load-bearing ambiguity → `NEEDS_CONTEXT` (do NOT write the doc body);
+      HIGH-risk blast radius (downstream consumer affected) →
+      `DONE_WITH_CONCERNS` (write the doc, populate `## 1.5.1 Blast Radius`,
+      orchestrator surfaces before approval); material ambiguity with a
+      defensible default from codebase evidence → `DONE_WITH_CONCERNS` (log
+      in `## 10. Open Questions` with severity + default + impact-if-wrong);
+      cosmetic ambiguity → `DONE` (best-guess, optionally log).
     - **Files touched** — paths + line counts
     - **Rules applied** — bulleted A### / L### list
     - **Skills invoked** — list (e.g. `test-driven-development`,

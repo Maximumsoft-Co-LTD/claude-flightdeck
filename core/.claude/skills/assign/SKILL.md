@@ -44,6 +44,14 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
    - If FE work and your project uses design references → verify the design / Figma node IDs exist (if missing → **BLOCK**, request design)
 5. **Show task details, ask user to confirm.**
 6. **Check / create the Design Doc** — at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md`. If missing, dispatch the `design-doc-writer` agent first (via a brief file — write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md`, dispatch with a short pointer prompt; see `docs/setup/file-based-dispatch.md`), then resume.
+
+6b. **Surface design-doc risk + ambiguity before approval** — read three doc sections in order and bundle every unresolved row into `AskUserQuestion`. Order matters because each tier can BLOCK dispatch:
+   - **§1.5.2 Knowledge Gaps** — any unresolved row means BLOCK (the doc should have come back `NEEDS_CONTEXT`). Bundle each into a question with `What I need to know` + `Why` + `Likely source` + `Impact if I guess wrong`. After resolution, `SendMessage` the design-doc-writer to complete the doc body before continuing.
+   - **§1.5.1 Blast Radius** — bundle every HIGH-risk downstream into one prompt each ("Downstream `<consumer>` affected by `<how>` — mitigation `<X>` — approve?"); batch MEDIUM rows ("heads-up to `<list>` — OK?"); skip LOW.
+   - **§10 Open Questions** — `load-bearing` → BLOCK + prompt; `material` → bundle with author's default + impact; `cosmetic` → one batch prompt.
+
+   After answers, update the doc in-place (`Resolved? → [x]`, fill `Default picked` / knowledge-gap answer, append Change Log row per resolved section), commit, then proceed. See `/next-task` Step 8b for the canonical procedure.
+
 7. **Cross-cutting pre-checks** — multi-tenancy / RBAC / contract-first, per the rules that apply to {{PROJECT_NAME}}.
 8. **Delegate** — pick the `subagent_type` from `references/repo-to-agent-mapping.md`, then instantiate `references/dispatch-prompt-template.md` with the task ID, type, design-doc path, AC list, touched-files matrix, and test plan (verbatim from the design doc) and **write it to a brief file** `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`. Dispatch with the short **pointer prompt** (NOT the full template inline — that stalls the agent; see `docs/setup/file-based-dispatch.md`). The dispatched agent emits a JSON object matching `references/verification-json-schema.md` BEFORE writing code.
 

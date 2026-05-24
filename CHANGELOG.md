@@ -13,6 +13,61 @@
 
 - (none yet)
 
+## v0.10.0 — 2026-05-24
+
+The **"design-phase escalation channels"** release — gives the
+`design-doc-writer` subagent (which cannot call `AskUserQuestion`) three
+distinct, machine-readable channels to surface "I'm unsure" / "this is
+risky" / "I don't know enough" to the user, and teaches the orchestrator
+to bundle each tier into the right `AskUserQuestion` call **before**
+gate approval. Closes the most expensive failure mode: design-doc-writer
+silently guessing on something load-bearing, then the impl agent shipping
+the wrong thing.
+
+### Added
+
+- **`DESIGN_TEMPLATE.md` `## 1.5 Cross-System Impact & Knowledge Gaps`**
+  (new top-level section between §1 Overview and §2 Architecture):
+  - **§1.5.1 Blast Radius** — table of `# | Downstream consumer | How
+    affected | Risk grade (HIGH/MEDIUM/LOW) | Mitigation`, optional
+    mermaid cross-system sketch. Forces the design author to name every
+    downstream system / service / consumer / business process this change
+    touches, so risks become decisions instead of incidents.
+  - **§1.5.2 Knowledge Gaps** — table of `# | What I need to know | Why |
+    Likely source | Impact if I guess wrong | Resolved?`. Distinct from
+    Open Questions (which has a default to ratify); a knowledge gap means
+    "I don't have enough information to even propose a defensible default".
+    Any unresolved row forces `NEEDS_CONTEXT` return.
+- **`DESIGN_TEMPLATE.md` `## 10. Open Questions / Risks`** — enriched
+  schema from `# | Question / Risk | Decision | Resolved?` to `# |
+  Question | Severity | Default picked | Why this default | Impact if
+  wrong | Resolved?`, with `load-bearing / material / cosmetic` severity
+  legend that maps 1:1 to the subagent's return status.
+
+### Changed
+
+- **`design-doc-writer` agent** — "What you do" gains explicit
+  Cross-System Impact scan + Knowledge Gap declaration steps. New
+  "Handling ambiguity" section codifies a 5-class severity matrix
+  (knowledge gap / load-bearing / HIGH blast-radius / material /
+  cosmetic) → return status (`NEEDS_CONTEXT` / `DONE_WITH_CONCERNS` /
+  `DONE`), with explicit guidance that knowledge gaps must NOT be
+  compressed into open questions by inventing a default.
+- **`agent-pre-task-ritual.md` Step 6** — clarifies that the four return
+  statuses are subagents' only channel to the user (no
+  `AskUserQuestion` for them) and points design-phase agents at the
+  severity matrix.
+- **`/next-task` Step 8b (new)** + **`/assign` Step 6b (new)** —
+  orchestrator reads §1.5.2 → §1.5.1 → §10 in that order before gate
+  approval, bundles unresolved rows by severity into `AskUserQuestion`
+  calls (knowledge gaps and load-bearing → BLOCK and prompt; HIGH
+  blast-radius → per-consumer prompt; material → bundle with default +
+  impact; cosmetic → single batch prompt). After answers, updates the
+  doc in-place (`Resolved? → [x]`, fills the chosen answer, appends a
+  Change Log row) and commits before dispatching impl. Knowledge gap
+  resolution re-dispatches the design-doc-writer via `SendMessage` so
+  it can complete the doc body with the new context.
+
 ## v0.9.1 — 2026-05-23
 
 Small installer-UX fix: surface the **required plugin install** step in the

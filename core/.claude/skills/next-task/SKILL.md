@@ -132,6 +132,27 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    Cross-check against the project's local rules file. Iterate until clean.
 
+8b. **Surface design-doc risk + ambiguity before approval** — read THREE sections of the doc in order and bundle every unresolved row into `AskUserQuestion` calls. Do NOT proceed to Step 9 until each is `[x]` resolved.
+
+   **§1.5.2 Knowledge Gaps** (read FIRST — these are blockers):
+   - Each `Resolved? = [ ]` row means the design author had no defensible default. The doc should have come back `NEEDS_CONTEXT`; either way BLOCK dispatch.
+   - Bundle into `AskUserQuestion` with one question per row (include `What I need to know` + `Why` + `Likely source` + `Impact if I guess wrong` as context). The user may answer directly, or route the question to a human with the context — either way the doc cannot proceed until each gap is filled.
+   - After answers land, the design-doc-writer must be re-dispatched (via `SendMessage`) with the resolved knowledge so it can complete the doc body.
+
+   **§1.5.1 Blast Radius** (read SECOND — risk surface):
+   - Bundle every `Risk grade = HIGH` row into `AskUserQuestion` (one question per row): "Downstream `<consumer>` is affected by `<how>` — proposed mitigation: `<X>`. Approve / require coordination / require mitigation change?"
+   - For `MEDIUM` rows, ask the user in one batch: "MEDIUM-risk downstream consumers — heads-up sent (or to be sent) to: `<list>`. OK to proceed?"
+   - `LOW` rows are informational — skim, don't prompt.
+
+   **§10. Open Questions / Risks** (read THIRD — decision-tier):
+   - `severity = load-bearing` rows: should have been `NEEDS_CONTEXT`. BLOCK and bundle into `AskUserQuestion`.
+   - `severity = material` rows: bundle into `AskUserQuestion` (author's default + impact-if-wrong as context). User ratifies or overrides.
+   - `severity = cosmetic` rows: one batch prompt "Cosmetic defaults — OK to take them all?".
+
+   **After the user answers each section**, update the doc in-place: flip every touched `Resolved?` to `[x]`, set `Default picked` (or knowledge-gap answer) to the chosen answer, and append a Change Log row per section (`<date> | Resolved §1.5.2 KG #<n>: <decision> | user via /next-task`). Commit this design-doc edit before Step 9 so the impl brief points at a fully-ratified spec.
+
+   If a section is absent or empty, skip it and move to the next. If all three are clean, proceed straight to Step 9.
+
 9. **Dispatch to the right subagent**
 
    | Task class | Subagent |
