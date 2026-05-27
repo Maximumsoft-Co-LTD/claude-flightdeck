@@ -11,7 +11,15 @@
 
 ## Unreleased
 
-- (none yet)
+### Fixed
+
+- **`design-doc-writer` could not write its own output.** The agent's
+  tool whitelist in `core/.claude/agents/design-doc-writer.md` was
+  missing `Write` / `Edit` / `MultiEdit` / `Bash`, so the agent failed
+  to author the markdown file its output contract requires. Added the
+  four tools. Downstream projects upgrading via `install.sh upgrade`
+  pick this up automatically (the file is classified
+  `template_owned`).
 
 ## v0.11.0 — 2026-05-24
 

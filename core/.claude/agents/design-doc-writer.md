@@ -11,6 +11,10 @@ tools:
   - TodoWrite
   - Agent
   - SendMessage
+  - Write
+  - Edit
+  - MultiEdit
+  - Bash
 ---
 
 # Design Doc Writer
