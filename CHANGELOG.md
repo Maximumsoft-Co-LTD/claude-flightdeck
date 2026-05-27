@@ -11,6 +11,10 @@
 
 ## Unreleased
 
+- (none yet)
+
+## v0.11.1 — 2026-05-27
+
 ### Fixed
 
 - **`design-doc-writer` could not write its own output.** The agent's
