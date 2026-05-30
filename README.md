@@ -179,6 +179,11 @@ get the update.
 `CLAUDE.md` in this repo (not in `core/`) is the meta-manual for editing
 the template.
 
+**Where template improvements come from:** [`docs/research/`](docs/research/)
+is a maintainer-only research workspace — a Capture → Process → Synthesize →
+Apply loop that turns Claude Code / SDLC findings into concrete `core/` and
+`presets/` changes. Not shipped by the installer.
+
 ## Feedback
 
 Three feedback paths to
