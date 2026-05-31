@@ -77,6 +77,14 @@ explains *how the skill works* makes the model think it already knows
 enough and skip the skill body. (Adopted from superpowers'
 `writing-skills` Claude-Search-Optimization rule.)
 
+**Split when unwieldy (progressive disclosure).** Keep `SKILL.md` lean;
+move content that is large or rarely-used-together into `references/`
+(read on demand) so a trigger doesn't pay for tokens it won't use.
+**Mark every script execute-vs-read** — say whether the model should
+*run* it (deterministic op) or *read* it as reference. Both serve the
+"smallest set of high-signal tokens" principle. Full guide (also shipped
+to installed projects): [`core/docs/setup/skill-authoring.md`](core/docs/setup/skill-authoring.md).
+
 ### Ground rules for `core/`
 
 1. **De-domain-specify.** No project-specific names in `core/` — no

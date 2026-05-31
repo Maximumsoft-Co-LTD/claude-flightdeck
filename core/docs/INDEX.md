@@ -138,8 +138,10 @@ Full architecture rationale:
 | [`integration-branch-strategy`](./setup/integration-branch-strategy.md) | Setting up branch protection / merge flow |
 | [`deployment-workflow`](./setup/deployment-workflow.md) | First deploy on this project |
 | [`settings-merge`](./setup/settings-merge.md) | Re-installing the template into an existing project |
+| [`skill-authoring`](./setup/skill-authoring.md) | Authoring/improving a `SKILL.md` — triggers (CSO), progressive disclosure, token budget |
 | [`permission-profiles`](./setup/permission-profiles.md) | Choosing `--profile restricted\|standard\|permissive` |
 | [`secret-handling`](./setup/secret-handling.md) | Any secret-touching change |
+| [`agent-config-security`](./setup/agent-config-security.md) | Changing `.claude/settings*.json` / `.mcp.json` / hooks — committed config is executable |
 | [`compliance-mapping`](./setup/compliance-mapping.md) | Auditor walks in |
 | [`separation-of-duties`](./setup/separation-of-duties.md) | Regulated work (N6) |
 | [`multi-team-deployment`](./setup/multi-team-deployment.md) | Setting up an org fork |

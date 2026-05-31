@@ -45,8 +45,13 @@ inside `docs/` (top level here) stays in this repo.
    `## Token budget`.** No skill without a budget section. The
    `description` must be **trigger/symptom-based** (CSO), not a workflow
    summary — lead with the user phrases / slash-commands / failure
-   symptoms that should auto-load it (see `CONTRIBUTING.md` "Improving a
-   skill").
+   symptoms that should auto-load it. The `## Token budget` exists because
+   context is a finite, degrading resource — a skill should deliver "the
+   smallest set of high-signal tokens" (Anthropic): keep `SKILL.md` lean,
+   split rarely-co-used material into `references/` (progressive
+   disclosure), and mark each script execute-vs-read. Full guide:
+   `core/docs/setup/skill-authoring.md` (also shipped to projects); maintainer
+   notes in `CONTRIBUTING.md` "Improving a skill".
 5. **Each agent file MUST reference `agent-pre-task-ritual.md` and
    `brain-hot.md` as mandatory reads** in its body — that's the contract
    between orchestrator and subagent.

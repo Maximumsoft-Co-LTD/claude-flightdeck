@@ -57,6 +57,5 @@ keep the template's edge as the ecosystem adds more skills/agents/MCP tools.
 
 ## Status
 - [x] Proposed (this note exists)
-- [x] Promoted to `apply/proposed/` → [context-discipline-skill-authoring-rules.md](../../apply/proposed/context-discipline-skill-authoring-rules.md)
-- [ ] Discussed / validated
-- [ ] Shipped
+- [x] Shipped as scope (b) → [../../apply/shipped/context-discipline-skill-authoring-rules.md](../../apply/shipped/context-discipline-skill-authoring-rules.md)
+  — new `core/docs/setup/skill-authoring.md` (ships) + CONTRIBUTING + CLAUDE.md rule 4.

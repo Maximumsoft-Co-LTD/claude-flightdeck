@@ -40,6 +40,26 @@
   must record what / why / how-it's-better in CHANGELOG + the doc itself
   + (if research-driven) the `docs/research/` apply loop.
 
+- **Skill-authoring discipline shipped to `core/`** — new
+  `core/docs/setup/skill-authoring.md` (reaches every installed project)
+  codifying how to write a `SKILL.md`: required header (`name` /
+  `description` / `## Token budget`), trigger/symptom-based (CSO)
+  descriptions, **split-when-unwieldy** (progressive disclosure into
+  `references/`), **execute-vs-read** script intent, and the rationale
+  ("context is a finite, degrading resource — deliver the smallest set of
+  high-signal tokens"). Linked from `core/docs/INDEX.md` (also backfilled
+  the `agent-config-security` row). `CONTRIBUTING.md` "Improving a skill"
+  + `CLAUDE.md` rule 4 add the two rules tersely and point to the canonical
+  core doc.
+  - **Why / how it's better:** the template *enforced* a Token-budget
+    section but never wrote down *why* or the two implicit authoring rules;
+    they lived only in maintainers' heads. Shipping them in `core/` gives
+    project skill authors a citable standard, so skills stay high-signal
+    and trigger correctly. Research-traced: the first two processed sources
+    (Anthropic Agent-Skills authoring + Context engineering) →
+    `synthesis/claude-code-core/context-discipline-as-design-constraint.md`
+    → `apply/shipped/`.
+
 - **AGENTS.md cross-tool interop** — new `core/AGENTS.md`, a thin pointer
   to `CLAUDE.md` for agents that follow the open AGENTS.md standard
   (Codex, Cursor, GitHub Copilot, Gemini CLI, Aider, Amp, …). Restates the
