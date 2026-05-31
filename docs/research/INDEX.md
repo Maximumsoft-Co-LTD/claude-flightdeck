@@ -7,12 +7,13 @@ advances. `Sources` = count of notes in `sources/` tagged with the track.
 > Legend — Synthesis: `—` none · `draft` · `✅ low/med/high` (confidence).
 > Apply: `—` none · `proposed` · `shipped`.
 
-> Inbox seeded 2026-05-30 in **6 research rounds**: **336 verified links** (all
-> reachable; rounds 2-6 enforced quality ≥4, primary/recognized sources only).
-> Rounds 5-6 were **saturation/broaden passes** over all 38 covered sub-topics —
-> both yielded more sources every time (**0 saturated, twice**), so the field
-> is still far from exhausted. `Inbox` counts links tagged to each track (some
-> are multi-track, so the column sums to >336). `Sources` = processed notes.
+> Inbox seeded 2026-05-30/31 in **7 research rounds**: **336 source links** +
+> **43 build-from GitHub artifacts** = **379 verified links** (all reachable;
+> rounds 2-7 enforced quality ≥4, primary/recognized sources only).
+> Rounds 5-6 were **saturation/broaden passes** (0 saturated, twice). Round 7
+> was an **artifact-harvest** pass — real skills/agents/rules/hooks/commands on
+> GitHub + marketplaces to seed OUR skills (see _inbox.md "Artifacts to build
+> from"). `Inbox` counts #track-tagged source links; `Sources` = processed notes.
 
 | Track | Inbox | Sources | Synthesis | Apply | Last update |
 |---|---:|---:|:---:|:---:|---|
@@ -77,6 +78,21 @@ empirical study contradicting Anthropic's passive skill-description guidance ·
 VS Code/Copilot Agent Skills (cross-vendor SKILL.md portability). Confirms the field
 is not close to exhausted — two full passes, zero saturated topics. The hard pivot
 remains **processing**, not more capture.
+
+**Round 7 — artifact-harvest (build-from references):** 16 agents hunted GitHub +
+marketplaces for real, reusable **skills/agents/rules/hooks/slash-commands** to seed
+our own, tagged by `artifact_kind` + `adoptability` (lift-directly / adapt /
+study-pattern / reference-only). Result: **+43 verified artifacts, 0 saturated**.
+Live in `inbox/_inbox.md` → "Artifacts to build from (GitHub)". Highest-value:
+- **lift-directly:** `anthropics/skills` (official SKILL.md spec + template + skill-creator
+  scripts) · `nizos/tdd-guard` (TDD-enforcement hook) · `karanb192/claude-code-hooks`.
+- **adapt:** `wshobson/agents` (155 skills / 191 agents — closest peer bundle) ·
+  `VoltAgent/awesome-claude-code-subagents` (154 SDLC subagents) · `github/spec-kit` ·
+  `anthropics/claude-code-security-review` · `hashicorp/agent-skills` · `ast-grep/agent-skill` ·
+  `trailofbits/skills` · `qdhenry/Claude-Command-Suite` + `wshobson/commands`.
+- **study-pattern:** `anthropics/claude-plugins-official` (marketplace/plugin.json shape) ·
+  `PatrickJS/awesome-cursorrules` · `github/awesome-copilot` · `josix/awesome-claude-md`.
+These are the concrete seeds for the next phase — building/improving our own skills.
 
 ## Shipped changes (the scoreboard)
 
