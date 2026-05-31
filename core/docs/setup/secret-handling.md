@@ -107,6 +107,10 @@ path travel across logged surfaces.**
   `env`, `set`, and any `bash -x` script.
 - ❌ Sealed-secrets / sops with the encryption key in the same repo.
   The key lives in a separate, access-controlled location.
+- ❌ `ANTHROPIC_BASE_URL` (or any `*_BASE_URL` model-API redirect) set
+  from committed `.claude/settings.json`. It reroutes API traffic +
+  auth headers to attacker infrastructure (CVE-2025-59536 class). See
+  [`agent-config-security.md`](./agent-config-security.md).
 
 ## Hook — what it does, what it doesn't
 
@@ -142,6 +146,8 @@ It does NOT:
   standard / permissive Bash allow-lists
 - [`separation-of-duties.md`](./separation-of-duties.md) — when a
   human approver must acknowledge a secret-touching change
+- [`agent-config-security.md`](./agent-config-security.md) — committed
+  `.claude/` config (hooks / MCP / env) as a code-execution surface
 - [`../playbooks/post-delegation-review.md`](../playbooks/post-delegation-review.md)
   Gate 1 — the diff inspector that catches a committed `.env`
 - [`../../.claude/hooks/secret-redact.sh`](../../.claude/hooks/secret-redact.sh)

@@ -53,6 +53,22 @@ inside `docs/` (top level here) stays in this repo.
 6. **Never write or run code in `core/.claude/memory/`** — that folder is
    shipped empty (with a README explaining the in-repo Brain fallback).
    Same for `core/docs/spec/sprints/.gitkeep` and `retros/.gitkeep`.
+7. **Document every change — always.** No change to `core/`, `presets/`,
+   `install.sh`, or this repo's docs lands without a written record of
+   **what** changed, **why**, and **how it makes the template better**.
+   Three places, every time:
+   - **`CHANGELOG.md`** — an `## Unreleased` entry (Added / Changed /
+     Fixed / Removed) with the why + upgrade impact.
+   - **The doc the change lives in** — the rule/skill/doc itself must
+     explain its own rationale (a `> Why this exists` line or section),
+     so a future reader understands intent without git archaeology.
+   - **If research-driven** — close the loop in `docs/research/`: the
+     `synthesis/` note states the evidence + expected improvement, and
+     the change graduates `apply/proposed/ → apply/shipped/` with the
+     INDEX scoreboard row. This is how we know research actually
+     improved the template, not just accumulated.
+   A change you can't explain the *why* and *how-it's-better* for isn't
+   ready to ship.
 
 ## Adding a new preset
 

@@ -105,6 +105,14 @@ When a security reviewer or PR auditor opens `.claude/settings.json`:
 4. **Confirm the hook block matches the foundation.** A target that
    removed `secret-redact.sh` from PreToolUse is a finding — the hook
    is non-negotiable across all three profiles.
+5. **Treat the hook block + any env override as a code-execution
+   surface.** A new `SessionStart` shell, a hook `command` pointing
+   outside `$CLAUDE_PROJECT_DIR/.claude/`, an `ANTHROPIC_BASE_URL`
+   redirect, or `enableAllProjectMcpServers` is an RCE/exfil finding —
+   committed agent config runs on every teammate's machine
+   (CVE-2025-59536 class). Diffs to these files fire the Phase 7
+   security review. Full trust model + checklist:
+   [`agent-config-security.md`](./agent-config-security.md).
 
 ## What `permissive` deliberately denies
 

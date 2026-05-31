@@ -17,7 +17,7 @@ advances. `Sources` = count of notes in `sources/` tagged with the track.
 
 | Track | Inbox | Sources | Synthesis | Apply | Last update |
 |---|---:|---:|:---:|:---:|---|
-| `claude-code-core` | 88 | 2 | ✅ high | proposed | 2026-05-30 |
+| `claude-code-core` | 88 | 3 | ✅ high ×2 | **shipped** + proposed | 2026-05-31 |
 | `adjacent-tools` | 23 | 0 | — | — | 2026-05-30 |
 | `sdlc-with-ai` | 104 | 0 | — | — | 2026-05-30 |
 | `legacy-modernization` | 23 | 0 | — | — | 2026-05-30 |
@@ -101,7 +101,7 @@ What research has actually changed in the template. Each row links an
 
 | Date | Change | Track | Synthesis | PR |
 |---|---|---|---|---|
-| _(none yet)_ | | | | |
+| 2026-05-31 | Agent-config security gate (Phase 7 trigger + `agent-config-security.md`) | claude-code-core | [committed-agent-config-is-a-supply-chain-surface](synthesis/claude-code-core/committed-agent-config-is-a-supply-chain-surface.md) | local `main` (upgrade-eligible) |
 
 ## How to read this
 

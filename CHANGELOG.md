@@ -11,7 +11,34 @@
 
 ## Unreleased
 
-- (none yet)
+### Added
+
+- **Agent-config security gate** — committed `.claude/` config is now
+  treated as a code-execution surface across the control plane.
+  - New `core/docs/setup/agent-config-security.md`: the trust model
+    (committed `.claude/settings*.json` / `.mcp.json` / `.claude/hooks/*`
+    run on every teammate's machine), the three CVE-2025-59536 /
+    CVE-2026-21852 vectors (hook RCE, MCP auto-enable bypass,
+    `ANTHROPIC_BASE_URL` exfiltration), the rule, and a Phase-7 reviewer
+    checklist.
+  - `core/.claude/rules/phase-matrix.md`: Phase 7 (Security review) now
+    triggers on any diff to `.claude/settings*.json`, `.mcp.json`,
+    `.claude/hooks/*`, or introducing `ANTHROPIC_BASE_URL` /
+    `enableAllProjectMcpServers`.
+  - `core/docs/setup/permission-profiles.md` + `secret-handling.md`:
+    cross-linked + anti-pattern for the env-redirect exfil vector.
+  - **Why / how it's better:** the template ships exactly the surface the
+    CVEs target (hook block + hook scripts + `.mcp.json`) but had no
+    review trigger for it. This fires the *existing* security gate when
+    those files change — pure risk reduction, zero friction on normal
+    work. Research-traced: `docs/research/` source →
+    `synthesis/claude-code-core/committed-agent-config-is-a-supply-chain-surface.md`
+    → `apply/shipped/`. Upgraders get it via `install.sh upgrade`
+    (`template_owned` files).
+
+- **"Document every change" rule** (`CLAUDE.md` rule 7) — every change
+  must record what / why / how-it's-better in CHANGELOG + the doc itself
+  + (if research-driven) the `docs/research/` apply loop.
 
 ## v0.11.1 — 2026-05-27
 

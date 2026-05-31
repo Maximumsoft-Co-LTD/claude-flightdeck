@@ -121,6 +121,13 @@ Phase 7 runs when the diff touches any of:
 - prototype pollution / `Object.assign` / merge from untrusted JSON
 - CORS / CSP / cookie attributes (SameSite, Secure, HttpOnly)
 - regex compiled from user input (ReDoS — catastrophic backtracking)
+- **agent config that is committed + executable** — any diff to
+  `.claude/settings*.json`, `.mcp.json`, or `.claude/hooks/*`, or a diff
+  introducing `ANTHROPIC_BASE_URL` / any `*_BASE_URL` model-API redirect /
+  `enableAllProjectMcpServers`. Committed agent config runs on every
+  teammate's machine (CVE-2025-59536 class) — review it like CI config. Full
+  trust model + reviewer checklist:
+  [`../../docs/setup/agent-config-security.md`](../../docs/setup/agent-config-security.md).
 
 The orchestrator decides; dispatch `pr-review-toolkit:silent-failure-hunter`
 + a security-focused review of `senior-tech-lead` if a trigger fires.
