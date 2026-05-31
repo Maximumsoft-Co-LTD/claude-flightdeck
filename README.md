@@ -75,7 +75,8 @@ Full picture: [`docs/control-plane-architecture.md`](docs/control-plane-architec
 
 ```
 target-project/
-├── CLAUDE.md                # root orchestrator manual
+├── CLAUDE.md                # root orchestrator manual (source of truth)
+├── AGENTS.md                # cross-tool pointer → CLAUDE.md (Codex/Cursor/Copilot…)
 ├── .claude/
 │   ├── agents/              # backend-engineer, frontend-engineer,
 │   │                        #   orchestrator, design-doc-writer,

@@ -494,7 +494,7 @@ backup_existing() {
 # settings.json gets soft-merge treatment below — DON'T back it up here, the
 # soft-merge function decides whether to overwrite or write the snippet
 # side-by-side.
-for p in "$TARGET/CLAUDE.md" "$TARGET/docs/spec/STATUS.md"; do
+for p in "$TARGET/CLAUDE.md" "$TARGET/AGENTS.md" "$TARGET/docs/spec/STATUS.md"; do
   [[ -e "$p" ]] && backup_existing "$p"
 done
 # .claude/ as a whole: back it up only if --force is NOT set AND the target

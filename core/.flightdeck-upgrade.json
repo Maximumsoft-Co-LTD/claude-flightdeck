@@ -28,6 +28,7 @@
       "description": "Template seeds initial content; user extends in-place. Upgrade flags as 'NEEDS MERGE' — never auto-overwritten by --apply-safe. Hand-merge using the new template version as reference, OR use /flightdeck-upgrade (planned for v0.12) for an LLM-assisted merge.",
       "patterns": [
         "CLAUDE.md",
+        "AGENTS.md",
         ".claude/CLAUDE.md",
         ".claude/rules/brain-hot.md",
         ".claude/rules/code-style.md",

@@ -40,6 +40,30 @@
   must record what / why / how-it's-better in CHANGELOG + the doc itself
   + (if research-driven) the `docs/research/` apply loop.
 
+- **AGENTS.md cross-tool interop** — new `core/AGENTS.md`, a thin pointer
+  to `CLAUDE.md` for agents that follow the open AGENTS.md standard
+  (Codex, Cursor, GitHub Copilot, Gemini CLI, Aider, Amp, …). Restates the
+  stable non-negotiables (design-first / test-first / review-gated /
+  conform / agent-config-is-executable) and routes to `CLAUDE.md` for the
+  full rule set.
+  - `core/.flightdeck-upgrade.json`: `AGENTS.md` classified
+    `seed_then_user_extends` (upgrade flags NEEDS-MERGE, never clobbers a
+    user-extended copy).
+  - `install.sh`: `AGENTS.md` added to the re-install backup loop
+    (preserved like `CLAUDE.md`).
+  - `core/CLAUDE.md.tmpl` + `README.md`: note that `CLAUDE.md` is the
+    single source of truth and `AGENTS.md` is a pointer; added to the
+    "What you get" tree.
+  - **Why / how it's better:** `CLAUDE.md` is read only by Claude Code, so
+    the template's rules were invisible to any other agent a teammate used
+    on the same repo. AGENTS.md is the Linux-Foundation cross-tool standard
+    (~21 tools, 60k+ repos; empirical ~28% runtime / ~16% token reduction).
+    Now the discipline follows the *repo*, not the *tool* — with one source
+    of truth (pointer design, no rule duplication / drift). Research-traced:
+    `sources/2026-05-31-agents-md-open-standard.md` →
+    `synthesis/adjacent-tools/agents-md-cross-tool-interop-via-pointer.md`
+    → `apply/shipped/`.
+
 ## v0.11.1 — 2026-05-27
 
 ### Fixed
