@@ -4,6 +4,17 @@
 >
 > **Core principle**: parallel speed is only worth it when the work is provably disjoint. If you can't prove disjointness in under a minute, **serialize** — a clobbered worktree costs far more than the sequential run.
 
+## Step 0 — First question: is multi-agent even the right call?
+
+Before the 4 layers, clear the prior gate in
+[`../../.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) §1.0:
+parallel subagents cost ~**15×** the tokens of a single agent and their top
+failure mode is **context fragmentation** (independent agents making
+conflicting assumptions). Parallelize only when the work is **provably
+disjoint AND read-heavy/independent**. If decisions in one stream constrain
+another, or the streams share state → **keep it single-agent or serialize.**
+The 4 layers below assume you've already decided parallel is worth it.
+
 ## Why this exists
 
 Two subagents writing the same file in the same tree race on `.git/index` and silently eat each other's work; cross-service imports introduced in parallel pass each agent's own tests but break the boundary. The 4 layers are a pre-flight gate that lets multi-stream sprints fan out safely to disjoint paths.

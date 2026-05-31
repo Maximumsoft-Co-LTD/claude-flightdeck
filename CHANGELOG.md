@@ -60,6 +60,23 @@
     `synthesis/claude-code-core/context-discipline-as-design-constraint.md`
     → `apply/shipped/`.
 
+- **"When NOT to parallelize" gate** — `core/.claude/rules/sub-agent-workflow.md`
+  gains **§1.0 "When NOT to use multi-agent"** before the §1 decision tree,
+  and `core/docs/playbooks/parallel-conflict-prevention.md` gains a **Step 0
+  "is multi-agent even the right call?"**. Both state the ~15× token cost
+  (Anthropic) and the context-fragmentation failure mode (Cognition "Don't
+  Build Multi-Agents" + the MAST 14-failure-mode taxonomy), with the rule:
+  default to one well-briefed agent; parallelize only when work is provably
+  disjoint AND read-heavy/independent; compress long single tasks, don't
+  split them.
+  - **Why / how it's better:** the control plane was strong on *how* to
+    parallelize safely but had no gate for *whether* to — so fan-outs could
+    silently cost 15× and produce fragile, hard-to-reconcile output. This
+    makes the dispatch decision conscious and evidence-backed without
+    reversing the existing "default to inline / serialize" stance.
+    Research-traced: `sources/2026-05-31-cognition-dont-build-multi-agents.md`
+    → `synthesis/claude-code-core/when-not-to-parallelize.md` → `apply/shipped/`.
+
 - **AGENTS.md cross-tool interop** — new `core/AGENTS.md`, a thin pointer
   to `CLAUDE.md` for agents that follow the open AGENTS.md standard
   (Codex, Cursor, GitHub Copilot, Gemini CLI, Aider, Amp, …). Restates the

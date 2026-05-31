@@ -17,7 +17,7 @@ advances. `Sources` = count of notes in `sources/` tagged with the track.
 
 | Track | Inbox | Sources | Synthesis | Apply | Last update |
 |---|---:|---:|:---:|:---:|---|
-| `claude-code-core` | 88 | 3 | ✅ high ×2 | **shipped ×2** | 2026-05-31 |
+| `claude-code-core` | 88 | 4 | ✅ high ×3 | **shipped ×3** | 2026-05-31 |
 | `adjacent-tools` | 23 | 1 | ✅ high | **shipped** | 2026-05-31 |
 | `sdlc-with-ai` | 104 | 0 | — | — | 2026-05-30 |
 | `legacy-modernization` | 23 | 0 | — | — | 2026-05-30 |
@@ -104,6 +104,7 @@ What research has actually changed in the template. Each row links an
 | 2026-05-31 | Agent-config security gate (Phase 7 trigger + `agent-config-security.md`) | claude-code-core | [committed-agent-config-is-a-supply-chain-surface](synthesis/claude-code-core/committed-agent-config-is-a-supply-chain-surface.md) | local `main` (upgrade-eligible) |
 | 2026-05-31 | AGENTS.md cross-tool interop (`core/AGENTS.md` pointer + installer wiring) | adjacent-tools | [agents-md-cross-tool-interop-via-pointer](synthesis/adjacent-tools/agents-md-cross-tool-interop-via-pointer.md) | local `main` (upgrade-eligible) |
 | 2026-05-31 | Skill-authoring discipline shipped to core (`docs/setup/skill-authoring.md`) | claude-code-core | [context-discipline-as-design-constraint](synthesis/claude-code-core/context-discipline-as-design-constraint.md) | local `main` (upgrade-eligible) |
+| 2026-05-31 | "When NOT to parallelize" gate (sub-agent-workflow §1.0 + playbook Step 0) | claude-code-core | [when-not-to-parallelize](synthesis/claude-code-core/when-not-to-parallelize.md) | local `main` (upgrade-eligible) |
 
 ## How to read this
 

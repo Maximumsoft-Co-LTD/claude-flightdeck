@@ -21,6 +21,28 @@ When you invoke a discipline skill or gate (`/next-task`, `/assign`,
 the user which discipline is active and makes a skipped step visible.
 (Adopted from the superpowers "announce at start" convention.)
 
+## §1.0 When NOT to use multi-agent (read before §1)
+
+Multi-agent is a tool with a real, named cost and failure mode — not a
+default. Before fanning out, clear this gate:
+
+- **Cost:** parallel subagents cost on the order of **~15× the tokens** of a
+  single-agent run (Anthropic, multi-agent research system). Pay it only when
+  the parallel work genuinely earns it.
+- **Top failure mode — context fragmentation:** independent subagents make
+  *conflicting assumptions not prescribed upfront*, producing output a final
+  agent can't cleanly reconcile (Cognition, "Don't Build Multi-Agents"; MAST
+  taxonomy — 14 multi-agent failure modes, mostly inter-agent misalignment,
+  NeurIPS 2025).
+
+→ **Default to ONE well-briefed agent with continuous context.** Reach for
+parallel subagents only when the work is **(a) provably disjoint** (see
+[`../../docs/playbooks/parallel-conflict-prevention.md`](../../docs/playbooks/parallel-conflict-prevention.md))
+**AND (b) read-heavy or independent** (e.g. parallel `Explore`, independent
+file reviews). A task with shared state, or where one stream's decisions
+constrain another's → **serialize, or keep it single-agent.** For long single
+tasks, *compress* context (summarize decisions so far), don't *split* it.
+
 ## §1 When to delegate vs inline
 
 ```
