@@ -31,11 +31,19 @@
 
 ## §3 Model selection
 
-- **Haiku** — bulk rename, pattern grep, 1-line edits
-- **Sonnet** — implementation w/ spec, TDD, sprint hygiene, smoke tests, sims (DEFAULT)
-- **Opus** — design docs, hypothesis ranking, cross-component synthesis, root-cause analysis
+> Always-loaded summary of this section lives in
+> [`../../.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md)
+> §1.5 (with per-agent defaults + cost evidence). Keep the two in sync.
 
-Ambiguous → Sonnet first; escalate to Opus only after Sonnet runs ≥2 rounds without passing.
+- **Haiku** — bulk rename, pattern grep, 1-line edits, read-heavy navigation / `Explore` fan-out (~1/3 cost, 2×+ speed)
+- **Sonnet** — implementation w/ spec, TDD, sprint hygiene, smoke tests, sims, code review (DEFAULT for code)
+- **Opus** — design docs, hypothesis ranking, cross-component synthesis, root-cause analysis, planning/orchestration
+
+Ambiguous → Sonnet first; escalate to Opus only after Sonnet runs ≥2 rounds
+without passing. Before jumping a whole tier, try the `effort` param
+(low/med/high) to trade intelligence vs cost *within* one model. In Workflow
+scripts, set `opts.model` per stage (cheap for verify/Explore, Opus for
+synthesis); omit to inherit the session model.
 
 ## §4 Context-budget triggers
 

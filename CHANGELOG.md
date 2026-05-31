@@ -101,6 +101,71 @@
     `synthesis/adjacent-tools/agents-md-cross-tool-interop-via-pointer.md`
     → `apply/shipped/`.
 
+- **Test-theater guard + legacy-safe TDD** — A001 mandated TDD but never
+  defined test *quality* or handled untested legacy code.
+  - New `core/docs/setup/test-discipline.md`: the principle (a test encodes
+    INTENT, not current output), the **test-theater** anti-pattern table
+    (asserting the mock, tautology, snapshot-everything, no-red-phase,
+    behavior-as-intent, happy-path-only), the greenfield bar (property /
+    invariant testing, mutation as meta-check), the **legacy-safe
+    characterization path** (pin current behavior first — one test around the
+    change site, never a blocked commit; approval/golden-master; seams;
+    fitness functions), and an **opt-in** enforcement hook (`nizos/tdd-guard`)
+    that is explicitly *not* shipped on by default, with a legacy caveat.
+  - `core/.claude/rules/programming-fundamentals.md`: TDD pre-flight sharpened
+    (intent-not-output, named theater anti-patterns, the legacy
+    characterization branch).
+  - `core/docs/playbooks/post-delegation-review.md`: Gate 4b gains a
+    test-theater rejection step (when tests touched) + checklist note.
+  - `core/.claude/rules/phase-matrix.md`: A001 note — untested legacy
+    (`refactor`/`fix`) → "test first" = a characterization test.
+  - `core/docs/INDEX.md`: `test-discipline` setup-doc row.
+  - **Why / how it's better:** catches the dominant AI test failure mode
+    (green-but-meaningless tests) *and* removes the biggest objection to
+    adopting the template on a real legacy codebase — "no tests, the guard
+    will block/break us." It won't: the discipline switches to
+    characterization mode, stays advisory (rule + review-gate, never a hard
+    write-blocker), and the only enforcement hook is opt-in. `brain-hot.md`
+    (A001) intentionally untouched — this reinforces it. Research-traced:
+    `sources/2026-05-31-ben3d-test-theater.md` +
+    `…-understandlegacycode-characterization-tests.md` +
+    `…-property-generated-solver.md` →
+    `synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md` →
+    `apply/shipped/`.
+
+### Changed
+
+- **Cost-aware model routing — engineers default to Sonnet.** The control
+  plane's own `agent-delegation-best-practices.md` §3 said "Sonnet =
+  implementation default", yet every coding agent's frontmatter was
+  `model: opus` — so the highest-volume agents pre-paid for Opus on every
+  feature.
+  - `core/.claude/agents/backend-engineer.md` + `frontend-engineer.md`:
+    `model: opus` → `model: sonnet`, with a body note on the default + the
+    escalate-to-Opus path. `orchestrator`, `design-doc-writer`,
+    `onboarding-engineer` intentionally **stay Opus** (planning / synthesis /
+    foundational authoring); `senior-tech-lead` + `sprint-retro-author` stay
+    Sonnet.
+  - `core/.claude/rules/sub-agent-workflow.md`: new **§1.5 Cost-aware model
+    routing** (always-loaded) — tier table (Opus/Sonnet/Haiku) with per-agent
+    defaults, cost evidence (Haiku ≈ ~1/3 cost & 2×+ speed; Opus ≈ ~5×
+    Sonnet; ties to the §1.0 ~15× multi-agent multiplier), an escalation rule
+    (Sonnet → Opus after ≥2 failing-gate rounds), and per-dispatch overrides
+    (`Agent` frontmatter, Workflow `opts.model` per stage, `effort`).
+  - `core/docs/setup/agent-delegation-best-practices.md` §3: cross-linked to
+    §1.5 + Haiku-navigation / `effort` / Workflow-`model` notes (kept in sync).
+  - **Upgrade impact:** agent files are `template_owned`, so
+    `install.sh upgrade --apply-safe` will switch an installed project's
+    engineer default from `opus` to `sonnet`. Teams that want Opus engineers
+    set `model: opus` in their own copy or dispatch with an explicit override.
+  - **Why / how it's better:** implementation-with-a-design-doc is Sonnet's
+    sweet spot and the 6-gate review is the quality net, so this is the single
+    biggest avoidable cost removed with no quality regression for the common
+    case — while reserving Opus where judgment density warrants it.
+    Research-traced: `sources/2026-05-31-anthropic-haiku-4-5.md` +
+    `…-anthropic-effort-param.md` + `…-augmentcode-model-routing.md` →
+    `synthesis/claude-code-core/cost-aware-model-routing.md` → `apply/shipped/`.
+
 ## v0.11.1 — 2026-05-27
 
 ### Fixed

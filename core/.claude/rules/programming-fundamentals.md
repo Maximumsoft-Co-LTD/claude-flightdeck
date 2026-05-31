@@ -46,10 +46,26 @@
 
 Before writing the implementation:
 
-1. **Write the failing test.** Watch it red.
+1. **Write the failing test.** Watch it red. A test that was never red
+   may pass for the wrong reason.
 2. **Implement minimum to make it green.** No premature generality.
 3. **Refactor with the test as your safety net.** Now is when
    complexity ceiling + naming + dedup happen — not at write-time.
+
+**The test must encode INTENT, not just current output** — it should
+fail for a reason you can name, not merely because a string changed.
+Reject **test theater**: asserting your own mock was called, tautologies
+(`expect(f(x)).toBe(f(x))`), happy-path-only, or pinning current
+(possibly-buggy) output as if it were a spec.
+
+**Legacy / no tests around the change site?** Do NOT skip the discipline
+and do NOT bulldoze. **Switch modes:** write a **characterization test
+first** — pin the code's *current* observed behavior so any change becomes
+a visible test diff (a safety net, not a correctness claim) — then change.
+The cost is *one* test around the change site, never a project-wide suite
+and never a blocked commit. Full recipe (characterization vs intent tests,
+approval/golden-master, seams, property-based, mutation testing, the
+optional opt-in enforcement hook): [`../../docs/setup/test-discipline.md`](../../docs/setup/test-discipline.md).
 
 See `.claude/rules/brain-hot.md` A001 (TDD by default) for the
 non-negotiable version.

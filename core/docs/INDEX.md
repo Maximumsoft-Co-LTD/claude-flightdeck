@@ -130,6 +130,7 @@ Full architecture rationale:
 | [`workflow-master`](./setup/workflow-master.md) | First time — the end-to-end S1-S7 pipeline |
 | [`workflow-rules`](./setup/workflow-rules.md) | First time — the universal rules across stages |
 | [`lesson-trigger-map`](./setup/lesson-trigger-map.md) | Before touching unfamiliar code — "if touching X → apply L###" |
+| [`test-discipline`](./setup/test-discipline.md) | Writing tests — intent over theater; the legacy-safe characterization path |
 | [`index-discipline`](./setup/index-discipline.md) | Skill authoring — how slim INDEX files stay in sync |
 | [`zero-fix-task-template`](./setup/zero-fix-task-template.md) | Authoring a non-trivial D-doc |
 | [`delegation-checklist`](./setup/delegation-checklist.md) | Before dispatching a subagent |

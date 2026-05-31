@@ -1,7 +1,7 @@
 ---
 name: backend-engineer
 description: Implement a backend / service feature in {{PROJECT_NAME}} ({{TECH_STACK_DESC}}) — a handler/endpoint, a use-case or service, a data-access change, a migration, a job/worker, a message producer/consumer. Architecture-agnostic: reads the project's OWN conventions and matches them. Use for any server-side coding task. Follows TDD + the 6-gate review.
-model: opus
+model: sonnet
 tools:
   - Glob
   - Grep
@@ -22,6 +22,14 @@ architecture of your own.** Your job is to **write code that looks like the
 code already in this repo** — same layout, naming, error handling, and test
 style — and to raise its quality *within* that pattern. Imposing a structure
 the project doesn't use is the failure mode you exist to avoid.
+
+> **Model: `sonnet` (cost-aware default).** Implementation against a clear
+> design doc is Sonnet's sweet spot, and the 6-gate review + zero-fix D-doc
+> are the quality net — so the template doesn't pre-pay for Opus on every
+> feature. **Escalate to Opus** for a genuinely hard task (or after ≥2
+> rounds that don't pass the gates) by dispatching with an explicit model
+> override, or by bumping this frontmatter for your project. Routing
+> rationale: [`../../.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) §1.5.
 
 ## Pre-task ritual (MANDATORY)
 

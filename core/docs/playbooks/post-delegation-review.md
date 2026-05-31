@@ -177,7 +177,26 @@ Add conditionally:
 - `pr-review-toolkit:pr-test-analyzer` — **if tests were added/changed**.
 - `pr-review-toolkit:comment-analyzer` — **if comments were touched**.
 
-**What failure looks like**: a reviewer returns a high-confidence finding (silent error swallow, weak type that admits invalid states, a convention break).
+**Test-theater check (when tests were added/changed).** A passing test
+suite is an input, not evidence the tests are real. The reviewer (and your
+own read of the test diff) must reject **test theater** — tests that pass
+without constraining behavior:
+
+- **Asserting the mock** (`expect(mock).toHaveBeenCalled()` with no real
+  outcome checked) — proves nothing about the code.
+- **Tautology** — asserting a value the code just returned, or
+  `expect(f(x)).toBe(f(x))`.
+- **No red phase** — for a `fix`, the regression test MUST fail on the
+  pre-fix code (verify: check out pre-fix, run it, see red). For a `feat`,
+  the test should have been red before the implementation existed.
+- **Behavior-as-intent on legacy** — pinning current (unverified) output as
+  if it were a spec. Acceptable ONLY when explicitly labeled a
+  **characterization** test (locks behavior as a refactor safety net, not
+  correctness — see [`../setup/test-discipline.md`](../setup/test-discipline.md)).
+- **Happy-path only** — no error / empty / boundary case for branches the
+  code actually has.
+
+**What failure looks like**: a reviewer returns a high-confidence finding (silent error swallow, weak type that admits invalid states, a convention break, a test-theater pattern above).
 
 **On failure**: triage findings by confidence. Fix high-confidence issues; for the rest, either fix or record an explicit deferral in the task's design doc / STATUS row. Re-run the specific reviewer that flagged it. A subagent's self-review does NOT substitute for this gate.
 
@@ -252,7 +271,7 @@ Post-delegation review — {{TASK_ID_PREFIX}}-S__.__  (module: __________  branc
 [ ] Gate 1  Inspect    git -C <m> diff --stat && git -C <m> diff   (read every line; no stray files / secrets)
 [ ] Gate 2  Build+Test make build && make test   AND   make -C <m> docker-build   (container path is strict)
 [ ] Gate 3  Boundary   preset-specific reviewer agent + forbidden-import grep / lint clean
-[ ] Gate 4  Quality    code-reviewer + silent-failure-hunter + type-design-analyzer  (+pr-test-analyzer / +comment-analyzer)
+[ ] Gate 4  Quality    code-reviewer + silent-failure-hunter + type-design-analyzer  (+pr-test-analyzer → reject test theater / +comment-analyzer)
 [ ] Gate 5  Wiring     composition-root grep · migrations idempotent (A004) · observability (A008) · topic created · contract committed first (A003) · codegen in sync
 [ ] Gate 6  Smoke      make docker-up && make smoke   (+ make fe-e2e if frontend)   → make docker-down
 

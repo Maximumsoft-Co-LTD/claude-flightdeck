@@ -1,7 +1,7 @@
 ---
 name: frontend-engineer
 description: Implement a frontend / UI feature in {{PROJECT_NAME}} — a page/route, a component, a piece of client state, a form, an API client call, an i18n change. Architecture-agnostic: reads the project's OWN structure (whatever it is) and matches it. Use for any client-side coding task. Follows TDD + the 6-gate review.
-model: opus
+model: sonnet
 tools:
   - Glob
   - Grep
@@ -23,6 +23,14 @@ that looks like the UI code already in this repo** — same folders, component
 conventions, state approach, styling, and i18n — and to raise its quality
 *within* that pattern. Imposing a structure the app doesn't use is the
 failure mode you exist to avoid.
+
+> **Model: `sonnet` (cost-aware default).** Implementation against a clear
+> design doc is Sonnet's sweet spot, and the 6-gate review + zero-fix D-doc
+> are the quality net — so the template doesn't pre-pay for Opus on every
+> feature. **Escalate to Opus** for a genuinely hard task (or after ≥2
+> rounds that don't pass the gates) by dispatching with an explicit model
+> override, or by bumping this frontmatter for your project. Routing
+> rationale: [`../../.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) §1.5.
 
 ## Pre-task ritual (MANDATORY)
 

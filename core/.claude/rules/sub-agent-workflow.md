@@ -77,6 +77,43 @@ Task incoming
 use it when the work matches §1.1-6 patterns OR when context
 preservation outweighs that overhead.
 
+## §1.5 Cost-aware model routing
+
+Once you've decided to delegate, pick the **cheapest model tier that can
+do the job well** — don't burn the top tier on mechanical work. Model
+price spans roughly an order of magnitude (Opus ≈ ~5× Sonnet; Haiku 4.5 ≈
+**~1/3 the cost and 2×+ the speed** of a frontier model at near-frontier
+coding — Anthropic). Combined with the ~15× multi-agent multiplier in
+§1.0, model tier is the single biggest cost lever you control per dispatch.
+
+| Tier | Use it for | Agents that default to it |
+|---|---|---|
+| **Opus** | Planning / orchestration, design-doc synthesis, root-cause ranking, foundational authoring — work where a wrong call cascades | `{{AGENT_PREFIX}}-orchestrator`, `design-doc-writer`, `onboarding-engineer` |
+| **Sonnet** (default for code) | Implementation against a clear design doc, code review, retro, sprint hygiene, smoke runs — high-volume work with the 6-gate net underneath | `backend-engineer`, `frontend-engineer`, `senior-tech-lead`, `sprint-retro-author` |
+| **Haiku** | Bulk rename, pattern grep, 1-line mechanical edits, read-heavy navigation / `Explore` fan-out — low-judgment, high-throughput | (dispatch-time override; no agent defaults here yet) |
+
+**Escalation rule (don't pre-pay for intelligence):** start at the tier in
+the table. If a Sonnet implementation agent stalls — **≥2 rounds without
+passing its gates** — *then* re-dispatch on Opus. Ambiguous task → Sonnet
+first, escalate only on evidence. This is cheaper in aggregate than
+defaulting everything to Opus "to be safe."
+
+**How to override per dispatch** (the table is a default, not a ceiling):
+- **`Agent(...)`** — the agent's frontmatter `model:` is the default; a hard
+  task can be sent to a higher tier by dispatching the same role with an
+  explicit model, or by bumping the frontmatter for that project.
+- **Workflow scripts** — set `opts.model` per stage: cheap models for
+  read-heavy verify / `Explore` stages, reserve Opus for the synthesis
+  stage. Omit it to inherit the session model (the right default most of
+  the time).
+- **`effort`** (low / med / high / xhigh) trades intelligence vs
+  cost/latency *within* one model — reach for it before jumping a whole tier.
+
+> Deeper matrix (work-type → delegate? → model, with context-budget
+> triggers): [`../../docs/setup/agent-delegation-best-practices.md`](../../docs/setup/agent-delegation-best-practices.md) §2-3.
+> That doc is the canonical detail; this table is the always-loaded summary
+> — keep them in sync if you change a default.
+
 ## §2 Available subagent types
 
 ### Project-local agents (in `.claude/agents/`)
