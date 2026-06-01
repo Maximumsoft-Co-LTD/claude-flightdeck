@@ -127,6 +127,9 @@ review where it can.
 
 ## Tie-ins
 
+- **`/tdd` skill** — the operational front-end that *runs* this discipline
+  (Step 0 classifies greenfield vs characterization mode; self-checks theater).
+  This doc is its reference depth; invoke the skill, read the doc on demand.
 - **A001 (TDD)** — the non-negotiable failing-test-first rule this doc deepens.
 - **`programming-fundamentals.md`** — the terse TDD pre-flight that links here.
 - **`post-delegation-review.md` Gate 4b** — where test theater is caught

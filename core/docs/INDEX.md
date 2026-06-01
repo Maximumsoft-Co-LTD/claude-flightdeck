@@ -16,7 +16,7 @@
 | 1. Root manual | [`../CLAUDE.md`](../CLAUDE.md) | Non-negotiables, dispatch routing table, workflow stage table |
 | 2. Auto-loaded rules | [`../.claude/rules/`](../.claude/rules/) | brain-hot, agent-pre-task-ritual, phase-matrix, programming-fundamentals, git-workflow, lsp-first, sub-agent-workflow |
 | 3. Specialized agents | [`../.claude/agents/`](../.claude/agents/) | orchestrator, design-doc-writer, senior-tech-lead, sprint-retro-author + preset agents |
-| 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 17 slash-commands driving the workflow |
+| 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 21 slash-commands driving the workflow |
 | 5. Playbooks + setup docs | [`./playbooks/`](./playbooks/) + [`./setup/`](./setup/) | Deep operational documents linked from rules |
 | 6. Templates + spec | [`./designs/_templates/`](./designs/_templates/) + [`./spec/`](./spec/) | Design templates, STATUS, backlog, sprints, retros |
 | 7. Memory | [`../.claude/memory/`](../.claude/memory/) or `{{BRAIN_PATH}}` | Cross-sprint lessons, retros, decisions |
@@ -66,7 +66,7 @@ Full architecture rationale:
 
 ---
 
-## Skills cheat-sheet (16 slash-commands)
+## Skills cheat-sheet (18 slash-commands)
 
 | Skill | When to use | Sister skill | Writes |
 |---|---|---|---|
@@ -75,6 +75,7 @@ Full architecture rationale:
 | [`/next-task`](../.claude/skills/next-task/SKILL.md) | Pick + dispatch next sprint task | `/assign` | dispatch + 6-gate review |
 | [`/assign`](../.claude/skills/assign/SKILL.md) | Dispatch a specific task ID | `/next-task` | dispatch + 6-gate review |
 | [`/dispatch-parallel`](../.claude/skills/dispatch-parallel/SKILL.md) | Run 2+ agents in parallel (with Conflict Radar) | `/assign` | N parallel commits |
+| [`/tdd`](../.claude/skills/tdd/SKILL.md) | Write an intent-bearing test; legacy → characterization-first | (none) | test files (red → green) |
 | [`/post-delegation-gate`](../.claude/skills/post-delegation-gate/SKILL.md) | 6-gate review on a returned agent | (none) | review log on PR |
 | [`/design-review`](../.claude/skills/design-review/SKILL.md) | UI fidelity gate after FE sprint | (none) | `docs/spec/reviews/sprint-S<N>-design-review.md` |
 | [`/progress`](../.claude/skills/progress/SKILL.md) | Mid-sprint dashboard (read-only) | (none) | (status print) |

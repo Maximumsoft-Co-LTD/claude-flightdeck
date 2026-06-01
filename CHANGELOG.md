@@ -46,6 +46,27 @@
     it is (per `agent-config-security.md`). Lives only in the template repo —
     `install.sh` never ships `site/`.
 
+- **`/tdd` skill — test discipline as a slash command** — new
+  `core/.claude/skills/tdd/SKILL.md` operationalizes the already-shipped
+  `core/docs/setup/test-discipline.md` as an auto-loading, user-invocable
+  skill. Trigger-based (CSO) description; a **Step 0** that classifies the
+  change site (greenfield → red-green-refactor; **untested legacy →
+  characterization-first, never a blocked commit**); a test-theater
+  self-check; and a meta-check / handoff to Gate 4b. Wired as an entry point
+  from `programming-fundamentals.md` (TDD pre-flight), `agent-pre-task-ritual.md`
+  (Step 4 skill activation), `phase-matrix.md` (A001 tie-in), and the
+  `core/docs/INDEX.md` skills cheat-sheet (counts reconciled: 21 skills / 18
+  cheat-sheet rows); the doc back-links to it.
+  - **Why / how it's better:** the discipline previously shipped only as a
+    *doc* that relied on an agent remembering to read it. A skill with sharp
+    triggers auto-loads at the moment a test is about to be written — so the
+    legacy-safe mode-switch actually fires instead of being forgotten. No
+    placeholders → no `.tmpl`, no installer change; ships on fresh install +
+    `install.sh upgrade`. Research-traced to the **same synthesis** as the
+    test-theater guard
+    (`synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md`) →
+    `apply/shipped/test-theater-guard.md` (artifact #6) → INDEX scoreboard.
+
 - **Agent-config security gate** — committed `.claude/` config is now
   treated as a code-execution surface across the control plane.
   - New `core/docs/setup/agent-config-security.md`: the trust model

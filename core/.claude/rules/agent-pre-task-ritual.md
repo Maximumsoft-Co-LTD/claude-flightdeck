@@ -98,7 +98,8 @@ assume any particular architecture is in place:
 
 12. Match task class → invoke the right superpower skill:
     - **Implementation** → `superpowers:test-driven-development`
-      (failing test first)
+      (failing test first) + **`/tdd`** (intent-not-theater; on untested
+      legacy → characterization-first, never a blocked commit)
     - **Bug fix** → `superpowers:systematic-debugging` (RCA before fix)
     - **Design / planning** → `superpowers:writing-plans` or
       `superpowers:brainstorming`

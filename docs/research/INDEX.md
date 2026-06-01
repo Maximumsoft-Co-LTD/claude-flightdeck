@@ -19,7 +19,7 @@ advances. `Sources` = count of notes in `sources/` tagged with the track.
 |---|---:|---:|:---:|:---:|---|
 | `claude-code-core` | 88 | 7 | ✅ high ×4 | **shipped ×4** | 2026-05-31 |
 | `adjacent-tools` | 23 | 1 | ✅ high | **shipped** | 2026-05-31 |
-| `sdlc-with-ai` | 104 | 3 | ✅ high | **shipped** | 2026-05-31 |
+| `sdlc-with-ai` | 104 | 3 | ✅ high | **shipped** | 2026-06-01 |
 | `legacy-modernization` | 23 | 1 | (in sdlc synthesis) | **shipped** | 2026-05-31 |
 | `complex-systems` | 41 | 0 | — | — | 2026-05-30 |
 | `software-tech` | 62 | 0 | — | — | 2026-05-30 |
@@ -106,7 +106,7 @@ What research has actually changed in the template. Each row links an
 | 2026-05-31 | Skill-authoring discipline shipped to core (`docs/setup/skill-authoring.md`) | claude-code-core | [context-discipline-as-design-constraint](synthesis/claude-code-core/context-discipline-as-design-constraint.md) | local `main` (upgrade-eligible) |
 | 2026-05-31 | "When NOT to parallelize" gate (sub-agent-workflow §1.0 + playbook Step 0) | claude-code-core | [when-not-to-parallelize](synthesis/claude-code-core/when-not-to-parallelize.md) | local `main` (upgrade-eligible) |
 | 2026-05-31 | Cost-aware model routing (sub-agent-workflow §1.5 + engineers default to Sonnet) | claude-code-core | [cost-aware-model-routing](synthesis/claude-code-core/cost-aware-model-routing.md) | local `main` (upgrade-eligible) |
-| 2026-05-31 | Test-theater guard + legacy-safe characterization path (`test-discipline.md` + Gate 4b + matrix) | sdlc-with-ai | [test-theater-and-legacy-safe-tdd](synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md) | local `main` (upgrade-eligible) |
+| 2026-06-01 | Test-theater guard + legacy-safe characterization path (`test-discipline.md` + Gate 4b + matrix) **+ `/tdd` skill** (operationalizes the doc) | sdlc-with-ai | [test-theater-and-legacy-safe-tdd](synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md) | local `main` (upgrade-eligible) |
 
 ## How to read this
 

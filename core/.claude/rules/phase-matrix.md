@@ -171,8 +171,9 @@ Dispatch `/design-review` for the 3-lens visual gate. Skip otherwise.
   the "test first" phase = a **characterization test** that pins current
   behavior *before* you change it — not a from-scratch new-behavior spec.
   This keeps the discipline legacy-safe (one test around the change site,
-  never a blocked commit). Recipe + the test-theater anti-patterns the
-  gate rejects: [`../../docs/setup/test-discipline.md`](../../docs/setup/test-discipline.md).
+  never a blocked commit). Invoke **`/tdd`** to run it (it picks the mode);
+  recipe + the test-theater anti-patterns the gate rejects:
+  [`../../docs/setup/test-discipline.md`](../../docs/setup/test-discipline.md).
 - **A005 (design-doc-first)** — phase 2. Matrix shows feat = ✓
   (full template), fix/refactor/spike = ⚠ (light), chore/docs = skip.
 - **A004 (6-gate review)** — phases 6 + 7 trig + 8 + 9 trig + 10 are

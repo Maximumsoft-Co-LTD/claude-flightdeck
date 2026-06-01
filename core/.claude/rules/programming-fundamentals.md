@@ -44,6 +44,10 @@
 
 ## TDD pre-flight (when phase 4 is ✓ for this type)
 
+> **Invoke `/tdd`** to run this discipline — it classifies the change site
+> (greenfield → red-green-refactor; untested legacy → characterization-first,
+> never a blocked commit) and self-checks against test theater.
+
 Before writing the implementation:
 
 1. **Write the failing test.** Watch it red. A test that was never red

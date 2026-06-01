@@ -192,7 +192,8 @@ without constraining behavior:
 - **Behavior-as-intent on legacy** — pinning current (unverified) output as
   if it were a spec. Acceptable ONLY when explicitly labeled a
   **characterization** test (locks behavior as a refactor safety net, not
-  correctness — see [`../setup/test-discipline.md`](../setup/test-discipline.md)).
+  correctness — see [`../setup/test-discipline.md`](../setup/test-discipline.md)
+  / the `/tdd` skill).
 - **Happy-path only** — no error / empty / boundary case for branches the
   code actually has.
 

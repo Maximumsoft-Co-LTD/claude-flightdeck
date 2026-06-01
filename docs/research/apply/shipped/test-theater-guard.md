@@ -1,11 +1,11 @@
 ---
 synthesis_source: ../../synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md
 track: sdlc-with-ai
-target: core/docs/setup/test-discipline.md, core/.claude/rules/programming-fundamentals.md, core/docs/playbooks/post-delegation-review.md, core/.claude/rules/phase-matrix.md, core/docs/INDEX.md
-type: new-doc + rule-update + playbook-update + matrix-note
+target: core/docs/setup/test-discipline.md, core/.claude/rules/programming-fundamentals.md, core/docs/playbooks/post-delegation-review.md, core/.claude/rules/phase-matrix.md, core/docs/INDEX.md, core/.claude/skills/tdd/SKILL.md, core/.claude/rules/agent-pre-task-ritual.md
+type: new-doc + rule-update + playbook-update + matrix-note + new-skill
 status: shipped
 pr: "local commit (main); install.sh upgrade-eligible"
-date: 2026-05-31
+date: 2026-05-31 (doc) · 2026-06-01 (/tdd skill follow-on)
 ---
 
 ## What changes
@@ -27,6 +27,16 @@ date: 2026-05-31
    legacy (`refactor`/`fix`) → the "test first" phase is a characterization
    test, not a greenfield spec.
 5. **`core/docs/INDEX.md`** — `test-discipline` setup-doc row.
+6. **`core/.claude/skills/tdd/SKILL.md`** (NEW, 2026-06-01) — operationalizes
+   the doc as a `/tdd` slash-command + auto-loading skill: a trigger-based
+   (CSO) description so it fires when an agent is about to write a test, a
+   **Step 0 mode-classification** (greenfield → red-green-refactor; untested
+   legacy → characterization-first), the theater self-check, and a meta-check /
+   Gate-4b handoff. Wired as an entry point from `programming-fundamentals.md`
+   (TDD pre-flight), `agent-pre-task-ritual.md` Step 4 (skill activation),
+   `phase-matrix.md` (A001 tie-in), and the INDEX skills cheat-sheet; the doc
+   back-links to it. No placeholders → no installer change. **Turns a passive
+   doc into discipline the agent actually runs** at the right moment.
 
 ## Why
 See synthesis. A001 mandated TDD but never defined test *quality* (theater is
@@ -64,4 +74,15 @@ phase-matrix "characterization test" legacy note present
 programming-fundamentals "Switch modes" legacy branch present
 opt-in hook "NOT shipped by default" present (legacy-safe)
 0 stray placeholders in touched files; de-domain grep clean
+```
+
+## Follow-on (2026-06-01): operationalized as the `/tdd` skill
+```
+core/.claude/skills/tdd/SKILL.md ships (install exit 0; present in target)
+header has name + trigger/CSO description + ## Token budget (skill-authoring rule 4)
+0 placeholders in SKILL.md (no .tmpl needed); de-domain grep clean
+entry points wired: programming-fundamentals (TDD pre-flight blockquote),
+  agent-pre-task-ritual Step 4, phase-matrix A001 tie-in, INDEX cheat-sheet row
+test-discipline.md back-links to the skill (bidirectional)
+INDEX counts reconciled: layer table 21, cheat-sheet 18 (was 17/16 — off-by-one fixed)
 ```
