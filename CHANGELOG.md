@@ -67,6 +67,34 @@
     (`synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md`) →
     `apply/shipped/test-theater-guard.md` (artifact #6) → INDEX scoreboard.
 
+- **`/security-review` skill — Phase-7 security review as a slash command** —
+  new `core/.claude/skills/security-review/SKILL.md` operationalizes Phase 7
+  (Security review), which previously existed only as a trigger list in
+  `phase-matrix.md` with no runnable procedure. It is **diff-aware** (reviews
+  the pending diff, not the whole repo), **semantic** (reasons about a real
+  source→sink→reachable path, not regex/pattern SAST), and makes
+  **false-positive filtering a first-class step** (drops DoS / rate-limit /
+  generic-validation / open-redirect / no-reachable-path) so the gate stays
+  signal, not noise. Covers the 10-family vuln taxonomy; folds in a
+  **supply-chain / slopsquatting dimension** (verify every newly-added manifest
+  dependency actually exists + is the intended package — ~19.7% of LLM-suggested
+  packages don't exist, and attackers squat the hallucinated names → install-time
+  RCE); reuses the existing `agent-config-security.md` checklist as one
+  dimension; and notes an **opt-in** prompt-injection PostToolUse hook
+  (lasso-security/claude-hooks), NOT shipped by default (same posture as the
+  tdd-guard hook). `phase-matrix.md` Phase-7 now invokes `/security-review` and
+  gained a "new dependency in a manifest" trigger; `agent-config-security.md`
+  points at it; INDEX counts reconciled (22 skills / 19 cheat-sheet rows).
+  - **Why / how it's better:** Phase 7 was the only review phase with no
+    procedure — in practice ad-hoc or skipped. This gives it a concrete,
+    low-noise, diff-aware pass (same move as `/tdd` ← `test-discipline.md`) and
+    closes a live install-RCE gap (slopsquatting) that our dependency-adding
+    engineers are exposed to. No placeholders → no installer change; ships on
+    fresh install + `install.sh upgrade`. Research-traced: sources
+    (`anthropic-claude-code-security-review`, `slopsquatting-package-hallucination`,
+    `cve-2025-59536`) → `synthesis/claude-code-core/security-review-as-a-skill.md`
+    → `apply/shipped/security-review-skill.md` → INDEX scoreboard.
+
 - **Agent-config security gate** — committed `.claude/` config is now
   treated as a code-execution surface across the control plane.
   - New `core/docs/setup/agent-config-security.md`: the trust model

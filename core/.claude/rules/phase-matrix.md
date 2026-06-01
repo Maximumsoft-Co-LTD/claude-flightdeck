@@ -128,9 +128,17 @@ Phase 7 runs when the diff touches any of:
   teammate's machine (CVE-2025-59536 class) — review it like CI config. Full
   trust model + reviewer checklist:
   [`../../docs/setup/agent-config-security.md`](../../docs/setup/agent-config-security.md).
+- **a new dependency added to a manifest** (`package.json`, `go.mod`,
+  `requirements.txt`, `Cargo.toml`, `pyproject.toml`, `Gemfile`, …) — verify it
+  **actually exists** and is the **intended** package, not a hallucinated /
+  squatted name (~19.7% of LLM-suggested packages don't exist → slopsquatting is
+  install-time RCE). A package you can't confirm exists is a STOP.
 
-The orchestrator decides; dispatch `pr-review-toolkit:silent-failure-hunter`
-+ a security-focused review of `senior-tech-lead` if a trigger fires.
+**Invoke [`/security-review`](../skills/security-review/SKILL.md)** to run Phase 7
+— a diff-aware, semantic pass across the dimensions above with false-positive
+filtering so it stays signal not noise (it dispatches
+`pr-review-toolkit:silent-failure-hunter` + a security-focused `senior-tech-lead`
+for the deep dimensions). The orchestrator decides which triggers fired.
 
 ## Triggers (Phase 9 — Design-fidelity review)
 
