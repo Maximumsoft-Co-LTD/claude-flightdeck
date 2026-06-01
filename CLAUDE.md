@@ -96,6 +96,13 @@ to the preset table in `README.md`.
 After any change, do at minimum:
 
 ```bash
+# 0. Validate the control-plane SOURCES (skills/agents structure + cross-links).
+#    Fast, dependency-free, repo-only (NOT shipped). Run before the install test.
+#    Fails on a missing name/description/## Token budget, a skill name that
+#    drifts from its directory, or a mis-pathed cross-link; warns on oversized
+#    SKILL.md / non-CSO descriptions. Mirrored in CI by .github/workflows/validate.yml.
+bash scripts/validate-skills.sh
+
 mkdir -p /tmp/test-install
 # Default install is preset-less (core is architecture-agnostic). Add
 # --preset k8s-helm to also exercise the one shipped preset.

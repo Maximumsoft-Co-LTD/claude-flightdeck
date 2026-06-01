@@ -95,6 +95,32 @@
     `cve-2025-59536`) → `synthesis/claude-code-core/security-review-as-a-skill.md`
     → `apply/shipped/security-review-skill.md` → INDEX scoreboard.
 
+- **Skill/agent source validator (`scripts/validate-skills.sh`) + `validate`
+  CI** — a dependency-free, **repo-only** gate (lives at the template root; never
+  copied into a consumer project) that validates the template's OWN control-plane
+  sources: every `core/.claude/skills/*/SKILL.md` has `name` + `description` +
+  `## Token budget` with a `name` matching its directory, and a link sweep across
+  `core/` catches rotted relative cross-links. It is **`.tmpl`-aware** (a link to
+  `x.md` is satisfied by `x.md.tmpl`) and **metavar-aware** (skips `{{PH}}` /
+  `<META>` path patterns), and flags a broken link only when its basename exists
+  *elsewhere* in `core/` (a genuinely mis-pathed doc) — illustrative example paths
+  are skipped + counted, not failed, so the gate stays high-signal. Oversized
+  SKILL.md and non-CSO descriptions are warnings (never fail CI).
+  `.github/workflows/validate.yml` runs it on PR/push to `main`; the maintainer
+  `CLAUDE.md` "Verification cadence" runs it as step 0.
+  - **Caught immediately:** a real mis-pathed link
+    (`assign/references/repo-to-agent-mapping.md` → `docs/setup/conform-to-codebase.md`
+    used `../../../` where `../../../../` was needed) — now fixed; and flagged
+    `onboard`'s SKILL.md (343 lines) as a progressive-disclosure candidate.
+  - **Why / how it's better:** the shipped `ai-workflow-validation.yml` validates
+    an *installed* project's rendered `.claude/`, but nothing validated the
+    template's own `core/` sources — so the hand-authored skills (including the
+    new `/tdd` + `/security-review`, which carry many `../../../` links) had no
+    mechanical check. This closes that gap and makes the four skill-authoring
+    rules enforceable. Repo-only by design: no consumer-facing change, no
+    `install.sh` change. Not research-driven (internal QA tooling) — rationale
+    lives in the script header + the maintainer `CLAUDE.md`, no research-loop entry.
+
 - **Agent-config security gate** — committed `.claude/` config is now
   treated as a code-execution surface across the control plane.
   - New `core/docs/setup/agent-config-security.md`: the trust model

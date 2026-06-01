@@ -1,0 +1,25 @@
+name: validate-template
+
+# Validates the template's OWN control-plane sources (core/.claude/skills +
+# agents) and sweeps core/ for mis-pathed cross-links. This is the gate the
+# SHIPPED workflow (core/.github/workflows/ai-workflow-validation.yml) can't be
+# — that one runs on an *installed, rendered* project; this one runs on the
+# unrendered core/ sources here. Repo-only: scripts/validate-skills.sh is never
+# copied into a consumer project.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate skills/agents structure + cross-links
+        run: bash scripts/validate-skills.sh
