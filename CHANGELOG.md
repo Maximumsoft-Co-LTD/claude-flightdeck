@@ -13,6 +13,31 @@
 
 ### Added
 
+- **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free
+  static site that visually explains the template and its workflow, published
+  via Pages.
+  - `site/generate.py` (zero third-party deps, any `python3`) renders six
+    pages with a Tesla-inspired minimal theme (`site/assets/style.css` +
+    `deck.js`: scroll-reveal, count-up gauges, animated flight-path, frosted
+    nav). Curated copy lives in `site/content/*.html.part`.
+  - **Data-driven pages are generated from the repo's own sources of truth**
+    so they can't drift: `changelog.html` ← `CHANGELOG.md`; `research.html` ←
+    `docs/research/INDEX.md`; `agents.html` / `skills.html` ← the core (+
+    preset) agent & skill frontmatter; live stat counters computed at build.
+  - `.github/workflows/pages.yml` runs the generator on every push to `main`
+    touching `site/**`, `CHANGELOG.md`, `docs/research/INDEX.md`, or the core
+    agents/skills, then deploys `site/dist/` to Pages. (One-time repo setting:
+    Pages → Source: GitHub Actions.) `site/dist/` is gitignored (built in CI).
+  - **Why / how it's better:** onboarding to the workflow was prose-only and
+    slow; this is a scannable visual explainer (hero, use-case "mission
+    profiles" — including the legacy-characterization and cost-routing
+    upgrades — the S1–S7 pipeline, the 6-gate runway, agents/skills roster).
+    Because the data pages derive from repo sources and rebuild on push, the
+    public site stays truthful for free. The Pages workflow is minimal,
+    secret-free, read-only-`contents` CI — reviewed as the executable config
+    it is (per `agent-config-security.md`). Lives only in the template repo —
+    `install.sh` never ships `site/`.
+
 - **Agent-config security gate** — committed `.claude/` config is now
   treated as a code-execution surface across the control plane.
   - New `core/docs/setup/agent-config-security.md`: the trust model

@@ -1,0 +1,173 @@
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow boot" style="--d:0">// Claude Code control plane · status: <span class="ok">OPERATIONAL</span></p>
+    <h1 class="boot" style="--d:1">Ship software with<br><span class="glow">a disciplined autopilot.</span></h1>
+    <p class="lede boot" style="--d:2">
+      <strong>claude-flightdeck</strong> installs a layered system of <code>CLAUDE.md</code> files,
+      specialized subagents, slash-command skills, mechanical rule maps, and a
+      6-gate review loop into any project — so Claude Code runs your whole SDLC
+      <em>design-first, test-first, and review-gated</em>, not vibes-first.
+    </p>
+    <div class="cta boot" style="--d:3">
+      <a class="btn primary" href="#install">Install</a>
+      <a class="btn" href="workflow.html">See the workflow →</a>
+      <a class="btn ghost" href="__GH__" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <p class="telemetry mono boot" style="--d:4" data-type="$ ./install.sh ~/code/my-project  →  control plane online"></p>
+  </div>
+</section>
+
+<!-- ===================== STAT GAUGES ===================== -->
+<section class="gauges">
+  <div class="wrap gauge-row">
+    <div class="gauge reveal"><span class="num" data-count="__N_AGENTS__">0</span><span class="lbl">specialized agents</span></div>
+    <div class="gauge reveal"><span class="num" data-count="__N_SKILLS__">0</span><span class="lbl">slash-command skills</span></div>
+    <div class="gauge reveal"><span class="num" data-count="__N_RULES__">0</span><span class="lbl">auto-loaded rules</span></div>
+    <div class="gauge reveal"><span class="num" data-count="__N_SHIPPED__">0</span><span class="lbl">research-driven upgrades</span></div>
+  </div>
+</section>
+
+<!-- ===================== WHAT IT IS ===================== -->
+<section class="sheet"><div class="wrap">
+  <p class="eyebrow">// preflight briefing</p>
+  <h2>One install. A whole operating discipline.</h2>
+  <div class="trio">
+    <article class="panel reveal">
+      <span class="panel-ix">01</span>
+      <h3>Layered context</h3>
+      <p>Root + per-area <code>CLAUDE.md</code>, always-loaded rules (TDD, phase-matrix, git, LSP-first), and a hot-path lesson file. The agent boots with your conventions already loaded.</p>
+    </article>
+    <article class="panel reveal">
+      <span class="panel-ix">02</span>
+      <h3>Specialists, not a generalist</h3>
+      <p>An orchestrator routes work to a backend/frontend engineer, a design-doc writer, a tech-lead reviewer — each with a scoped tool-belt and a cost-aware model tier.</p>
+    </article>
+    <article class="panel reveal">
+      <span class="panel-ix">03</span>
+      <h3>Gates that don't bend</h3>
+      <p>Design-doc before code. Failing test first. A 6-gate post-delegation review before merge. A live mini-retro after every task. Discipline encoded as workflow.</p>
+    </article>
+  </div>
+</div></section>
+
+<!-- ===================== FLIGHT PATH (workflow) ===================== -->
+<section class="sheet dark flightpath"><div class="wrap">
+  <p class="eyebrow">// flight path</p>
+  <h2>Every feature flies the same route: <span class="glow">idea → ship → retro</span></h2>
+  <p class="lede">Each stage produces an artifact; the next can't start until the previous lands. The 6-gate review is the runway you can't skip.</p>
+
+  <div class="route reveal">
+    <div class="route-line"><span class="pulse" aria-hidden="true"></span></div>
+    <ol class="stops">
+      <li style="--s:0"><span class="dot"></span><b>/discover</b><small>interview → brief</small></li>
+      <li style="--s:1"><span class="dot"></span><b>/promote</b><small>brief → backlog</small></li>
+      <li style="--s:2"><span class="dot"></span><b>/next-task</b><small>pick + route</small></li>
+      <li style="--s:3"><span class="dot"></span><b>design-doc</b><small>≥500-line zero-fix</small></li>
+      <li style="--s:4"><span class="dot"></span><b>engineer</b><small>TDD: red → green</small></li>
+      <li style="--s:5"><span class="dot gate"></span><b>6-gate review</b><small>inspect→…→smoke</small></li>
+      <li style="--s:6"><span class="dot done"></span><b>mini-retro</b><small>capture learning</small></li>
+    </ol>
+  </div>
+
+  <!-- 6-gate strip -->
+  <div class="gates reveal">
+    <p class="gates-h mono">// post-delegation review — no gate skipped, ever</p>
+    <ol class="gatelights">
+      <li style="--g:0"><i></i>Inspect diff</li>
+      <li style="--g:1"><i></i>Build + Test</li>
+      <li style="--g:2"><i></i>Boundary</li>
+      <li style="--g:3"><i></i>Spec → Quality</li>
+      <li style="--g:4"><i></i>Wiring</li>
+      <li style="--g:5"><i></i>Integration smoke</li>
+    </ol>
+  </div>
+</div></section>
+
+<!-- ===================== MISSION PROFILES (use cases) ===================== -->
+<section class="sheet soft missions"><div class="wrap">
+  <p class="eyebrow">// mission profiles</p>
+  <h2>What it looks like on a real task</h2>
+  <p class="lede">Four common situations — and exactly how the control plane flies each one.</p>
+
+  <div class="mgrid">
+    <article class="mission reveal">
+      <header><span class="mtag">01 · greenfield</span><h3>Build a new feature</h3></header>
+      <p>You want a new endpoint. The orchestrator won't let code start without a design doc.</p>
+      <ol class="flow">
+        <li>/next-task picks it &amp; reads the <em>phase matrix</em> (type = feat)</li>
+        <li>design-doc-writer (Opus) authors a zero-fix D-doc</li>
+        <li>backend-engineer (Sonnet) writes the <strong>failing test first</strong></li>
+        <li>6-gate review → mini-retro → ship</li>
+      </ol>
+    </article>
+
+    <article class="mission reveal hot">
+      <header><span class="mtag warn">02 · legacy</span><h3>Fix a bug in untested legacy code</h3></header>
+      <p>No tests cover the change site. The guard <strong>switches modes</strong> instead of blocking you.</p>
+      <ol class="flow">
+        <li>systematic-debugging → reproduce &amp; find root cause</li>
+        <li>write a <strong>characterization test</strong> that pins current behavior</li>
+        <li>change with the safety net — drift becomes a visible diff</li>
+        <li>one test around the change site — never a blocked commit</li>
+      </ol>
+      <p class="mfoot mono">// shipped upgrade #6 — legacy-safe test discipline</p>
+    </article>
+
+    <article class="mission reveal">
+      <header><span class="mtag">03 · parallel</span><h3>Fan out a sprint</h3></header>
+      <p>Several independent workstreams. But first: <em>should</em> this even be parallel?</p>
+      <ol class="flow">
+        <li>the "when NOT to parallelize" gate (~15× token cost check)</li>
+        <li>4-layer conflict prevention: paths, worktrees, contracts, deps</li>
+        <li>dispatch disjoint agents in one message, isolated worktrees</li>
+        <li>serial fan-in: 6-gate each, orchestrator commits in order</li>
+      </ol>
+      <p class="mfoot mono">// shipped upgrade #4 — when-not-to-parallelize</p>
+    </article>
+
+    <article class="mission reveal">
+      <header><span class="mtag">04 · cost</span><h3>Spend the right model</h3></header>
+      <p>Not every task needs the top tier. Routing matches model to judgment density.</p>
+      <ol class="flow">
+        <li><span class="badge m-opus">opus</span> plans &amp; synthesizes (design, orchestration)</li>
+        <li><span class="badge m-sonnet">sonnet</span> implements against the design doc</li>
+        <li><span class="badge m-haiku">haiku</span> navigates &amp; does mechanical edits</li>
+        <li>escalate only on evidence (≥2 failing-gate rounds)</li>
+      </ol>
+      <p class="mfoot mono">// shipped upgrade #5 — cost-aware routing</p>
+    </article>
+  </div>
+</div></section>
+
+<!-- ===================== NON-NEGOTIABLES ===================== -->
+<section class="sheet"><div class="wrap">
+  <p class="eyebrow">// flight rules</p>
+  <h2>The non-negotiables</h2>
+  <ul class="rules">
+    <li class="reveal"><b>Design-first (A005)</b> — no code without a merged design doc.</li>
+    <li class="reveal"><b>TDD-first (A001)</b> — a failing test before implementation; characterization-first on legacy.</li>
+    <li class="reveal"><b>6-gate review (A004)</b> — inspect → build+test → boundary → spec → quality → wiring → smoke.</li>
+    <li class="reveal"><b>Live mini-retro (A009)</b> — every task captures a lesson before the next.</li>
+    <li class="reveal"><b>Conform to the codebase</b> — match the project's real conventions; never impose an architecture.</li>
+  </ul>
+</div></section>
+
+<!-- ===================== INSTALL ===================== -->
+<section class="sheet soft install" id="install"><div class="wrap">
+  <p class="eyebrow">// clearance to install</p>
+  <h2>Wheels up in three commands</h2>
+  <pre class="terminal reveal"><code><span class="c"># 1 · clone the template</span>
+git clone __GH__.git ~/code/claude-flightdeck
+
+<span class="c"># 2 · install into your project (core is architecture-agnostic)</span>
+~/code/claude-flightdeck/install.sh ~/code/my-project
+
+<span class="c"># 3 · health check, then open in Claude Code and run /onboard</span>
+bash ~/code/my-project/.claude/skills/onboard/scripts/doctor.sh</code></pre>
+  <p class="muted">Prereqs: <code>bash</code> + <code>git</code> + <code>jq</code>. Plugins: <code>pr-review-toolkit</code> (required) + <code>superpowers</code> (recommended). Then drive it with <code>/next-task · /post-delegation-gate · /retro · /ratify-rules</code>.</p>
+  <div class="cta">
+    <a class="btn primary" href="__GH__#quick-start" target="_blank" rel="noopener">Full quick-start ↗</a>
+    <a class="btn" href="workflow.html">Understand the workflow →</a>
+  </div>
+</div></section>

@@ -1,0 +1,58 @@
+<section class="sheet doc"><div class="wrap">
+  <p class="eyebrow">// flight operations manual</p>
+  <h1>The workflow, end to end</h1>
+  <p class="lede">claude-flightdeck encodes a 7-stage pipeline (S1–S7). Each stage has an owner, an artifact, and a gate. Below: how a task flows, what fires when, and why each guard exists.</p>
+
+  <!-- 7 stages -->
+  <h2>S1–S7 · the pipeline</h2>
+  <div class="stages">
+    <div class="stage reveal"><span class="sx">S1</span><h3>Discovery</h3><p>Interview the intent. <code>/discover</code> turns a fuzzy idea into a written brief — assumptions, scope, open questions surfaced before anyone designs.</p></div>
+    <div class="stage reveal"><span class="sx">S2</span><h3>Sprint planning</h3><p>Briefs become backlog items with a type slot (feat / fix / refactor / chore / docs / spike / release). The type decides which phases run.</p></div>
+    <div class="stage reveal"><span class="sx">S3</span><h3>Design</h3><p>A ≥500-line <strong>zero-fix design doc</strong> — acceptance criteria, touched-files matrix, contracts, test plan. Correlates with one-pass implementation, no re-delegation.</p></div>
+    <div class="stage reveal"><span class="sx">S4</span><h3>Implement</h3><p>Test-first. The engineer conforms to the project's real conventions, writes the failing test, then the minimum to green, then refactors under the net.</p></div>
+    <div class="stage reveal"><span class="sx">S5</span><h3>Review</h3><p>The 6-gate post-delegation review (below). Nothing merges on a subagent's "done" — correctness is re-derived from the diff and re-run commands.</p></div>
+    <div class="stage reveal"><span class="sx">S6</span><h3>Per-task retro</h3><p>A live mini-retro captures the lesson <em>before</em> the next task — so knowledge compounds instead of evaporating.</p></div>
+    <div class="stage reveal"><span class="sx">S7</span><h3>Sprint close</h3><p>Recurring lessons graduate into <code>brain-hot.md</code> rules; carry-overs land in FOLLOWUPS. The control plane gets smarter each sprint.</p></div>
+  </div>
+
+  <!-- phase matrix -->
+  <h2>The phase matrix · type × phase</h2>
+  <p>Work type changes which phases run, run light, or skip — so a typo fix isn't dragged through a 500-line template, and a feature never ships without its gates.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Phase</th><th>feat</th><th>fix</th><th>refactor</th><th>chore</th><th>docs</th></tr></thead>
+    <tbody>
+      <tr><td>Design doc</td><td class="y">full</td><td class="w">light</td><td class="w">light</td><td class="n">skip</td><td class="n">skip</td></tr>
+      <tr><td>Test first</td><td class="y">✓</td><td class="y">regression</td><td class="y">equiv-check</td><td class="n">skip</td><td class="n">skip</td></tr>
+      <tr><td>Implement</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">edits</td></tr>
+      <tr><td>Code review</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="w">light</td></tr>
+      <tr><td>Security review</td><td class="t">trigger</td><td class="t">trigger</td><td class="t">trigger</td><td class="t">trigger</td><td class="n">skip</td></tr>
+      <tr><td>Integration smoke</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="w">light</td><td class="n">skip</td></tr>
+      <tr><td>Live mini-retro</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+    </tbody>
+  </table></div>
+
+  <!-- 6 gates -->
+  <h2>The 6-gate review · the runway</h2>
+  <div class="gatecards">
+    <div class="gatecard reveal"><span class="gnum">1</span><h4>Inspect</h4><p>Read the diff — not the prose about it. No stray files, no secrets.</p></div>
+    <div class="gatecard reveal"><span class="gnum">2</span><h4>Build + Test</h4><p>Real build + real tests in every touched area, including the strict container path.</p></div>
+    <div class="gatecard reveal"><span class="gnum">3</span><h4>Boundary</h4><p>The diff respects the project's own module boundaries (learned at onboard).</p></div>
+    <div class="gatecard reveal"><span class="gnum">4</span><h4>Spec → Quality</h4><p>Every AC built, nothing extra (4a); then reviewers hunt silent failures, weak types, and <em>test theater</em> (4b).</p></div>
+    <div class="gatecard reveal"><span class="gnum">5</span><h4>Wiring</h4><p>The new code is actually wired in — composition root, migrations, observability, topics, contracts.</p></div>
+    <div class="gatecard reveal"><span class="gnum">6</span><h4>Integration smoke</h4><p>The full stack comes up; the golden path works end to end.</p></div>
+  </div>
+
+  <!-- parallel + when not -->
+  <h2>Parallel work · with a gate before the gate</h2>
+  <p>The control plane is strong on <em>how</em> to parallelize safely — and explicit about <em>whether</em> you should at all.</p>
+  <div class="trio">
+    <article class="panel reveal"><span class="panel-ix">⚠</span><h3>When NOT to parallelize</h3><p>Parallel subagents cost ~15× the tokens and their top failure mode is context fragmentation. Default to one well-briefed agent; parallelize only when work is provably disjoint AND read-heavy.</p></article>
+    <article class="panel reveal"><span class="panel-ix">4×</span><h3>Conflict prevention</h3><p>Path declaration + overlap grep · worktree isolation · contract-first · task dependency graph. Any layer fails to clear → serialize.</p></article>
+    <article class="panel reveal"><span class="panel-ix">→</span><h3>Serial fan-in</h3><p>Each returned agent passes its own full 6-gate review; the orchestrator commits serially in a deterministic order.</p></article>
+  </div>
+
+  <p class="src-note">Curated overview. The mechanical rules live in
+    <a href="__GH__/blob/main/core/.claude/rules/phase-matrix.md"><code>phase-matrix.md</code></a>,
+    <a href="__GH__/blob/main/core/docs/playbooks/post-delegation-review.md"><code>post-delegation-review.md</code></a>, and
+    <a href="__GH__/blob/main/core/docs/playbooks/parallel-conflict-prevention.md"><code>parallel-conflict-prevention.md</code></a>.</p>
+</div></section>

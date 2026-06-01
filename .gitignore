@@ -24,3 +24,10 @@ template.config
 
 # Backup files left by sed -i on macOS
 *.bak.bak
+
+# Generated static site output (built in CI by .github/workflows/pages.yml)
+/site/dist/
+
+# Playwright MCP scratch (snapshots / console logs / verification screenshots)
+/.playwright-mcp/
+/*.png

@@ -9,6 +9,11 @@ loop — distilled from production codebases that share these conventions.
 No re-building from scratch. Architecture-agnostic by default; opinionated
 extras opt-in via presets.
 
+> 🛰️ **Usage & workflow site:** <https://maximumsoft-co-ltd.github.io/claude-flightdeck/>
+> — a visual explainer (hero, animated flight-path, use-case mission profiles,
+> agents/skills roster). Generated from this repo on every push; source in
+> [`site/`](site/).
+
 ## Quick start
 
 ```bash
