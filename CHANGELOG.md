@@ -28,6 +28,14 @@
     touching `site/**`, `CHANGELOG.md`, `docs/research/INDEX.md`, or the core
     agents/skills, then deploys `site/dist/` to Pages. (One-time repo setting:
     Pages → Source: GitHub Actions.) `site/dist/` is gitignored (built in CI).
+  - Visual polish pass: an SVG favicon (no more `favicon.ico` 404);
+    **animated use-case flows** — each mission profile's steps cascade in over
+    a drawing timeline spine so the reader *watches* the sequence; a
+    **Before → After** section ("vibes-first" vs the disciplined flow); ambient
+    hero motion + a scroll cue; and a **deep-link / refresh reveal pre-pass**
+    (deck.js) so any element already in or above the viewport reveals
+    immediately and never sticks hidden, plus `scroll-margin-top` so `#anchor`
+    jumps clear the fixed nav.
   - **Why / how it's better:** onboarding to the workflow was prose-only and
     slow; this is a scannable visual explainer (hero, use-case "mission
     profiles" — including the legacy-characterization and cost-routing

@@ -68,9 +68,25 @@
         io.unobserve(el);
       });
     }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-    revealEls.forEach(function (el) { io.observe(el); });
-    // count-up gauges sit inside .reveal wrappers; also observe any stray ones
-    document.querySelectorAll(".gauge").forEach(function (el) { io.observe(el); });
+
+    // Deep-link / refresh-mid-page pre-pass: anything already in or ABOVE the
+    // viewport on load reveals immediately (no flash, and elements scrolled
+    // past are never stuck invisible if the user scrolls back up). Only
+    // genuinely below-the-fold elements wait for the observer.
+    var vh = window.innerHeight;
+    revealEls.forEach(function (el) {
+      var top = el.getBoundingClientRect().top;
+      if (top < vh * 0.92) {
+        el.classList.add("in");
+        el.querySelectorAll("[data-count]").forEach(countUp);
+        if (el.hasAttribute("data-count")) countUp(el);
+      } else {
+        io.observe(el);
+      }
+    });
+    document.querySelectorAll(".gauge").forEach(function (el) {
+      if (el.getBoundingClientRect().top >= vh * 0.92) io.observe(el);
+    });
   }
 
   /* ---- telemetry typing ---- */

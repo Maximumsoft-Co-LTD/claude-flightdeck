@@ -16,6 +16,7 @@
     </div>
     <p class="telemetry mono boot" style="--d:4" data-type="$ ./install.sh ~/code/my-project  →  control plane online"></p>
   </div>
+  <a class="scrollcue" href="#install" aria-label="Scroll"><span></span></a>
 </section>
 
 <!-- ===================== STAT GAUGES ===================== -->
@@ -47,6 +48,33 @@
       <span class="panel-ix">03</span>
       <h3>Gates that don't bend</h3>
       <p>Design-doc before code. Failing test first. A 6-gate post-delegation review before merge. A live mini-retro after every task. Discipline encoded as workflow.</p>
+    </article>
+  </div>
+</div></section>
+
+<!-- ===================== BEFORE / AFTER ===================== -->
+<section class="sheet ba"><div class="wrap">
+  <p class="eyebrow">// before / after</p>
+  <h2>From vibes-first to discipline-first</h2>
+  <div class="ba-grid">
+    <article class="ba-card before reveal">
+      <span class="ba-tag">without a control plane</span>
+      <ul>
+        <li>code first, design later — or never</li>
+        <li>tests bolted on afterward, if at all</li>
+        <li>review = a skim of the agent's own summary</li>
+        <li>lessons evaporate between tasks</li>
+      </ul>
+    </article>
+    <div class="ba-arrow reveal" aria-hidden="true">→</div>
+    <article class="ba-card after reveal">
+      <span class="ba-tag">with claude·flightdeck</span>
+      <ul>
+        <li>a design doc merges before any code</li>
+        <li>failing test first — characterization on legacy</li>
+        <li>6-gate review re-derives correctness from the diff</li>
+        <li>every task leaves a mini-retro; rules compound</li>
+      </ul>
     </article>
   </div>
 </div></section>
