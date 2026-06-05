@@ -32,7 +32,7 @@ After it finishes you'll have:
 - `.claude/rules/brain-hot.md` with project-local A011+ rules drafted
   from git history (you choose which to keep)
 - `docs/setup/codebase-orientation.md` + `team-conventions.md`
-- `docs/spec/STATUS.md` + `backlog.md` + `FOLLOWUPS.md` seeded
+- `docs/project/STATUS.md` + `backlog.md` + `FOLLOWUPS.md` seeded
 
 ## Pre-flight (one-time, before the sprint starts)
 
@@ -45,8 +45,8 @@ You've already run:
 …and `/onboard` (above). Open the project in Claude Code. Confirm:
 
 - `CLAUDE.md` non-negotiables (N1-N6) read sensible
-- `docs/spec/STATUS.md` shows your first sprint (or you're about to author it)
-- `docs/spec/backlog.md` has at least one row
+- `docs/project/STATUS.md` shows your first sprint (or you're about to author it)
+- `docs/project/backlog.md` has at least one row
 - `.claude/settings.json` exists and matches the profile you chose
   ([`./setup/permission-profiles.md`](./setup/permission-profiles.md))
 
@@ -68,15 +68,15 @@ for duplicates against the backlog and other discovery items, and
 writes the detail file.
 
 **Written**:
-- `docs/spec/discovery/D007-operator-status-filter.md` (the detail)
-- new row in `docs/spec/discovery.md` (the index)
+- `docs/project/ideas/D007-operator-status-filter.md` (the detail)
+- new row in `docs/project/ideas.md` (the index)
 
 **Cross-links**: A008 (discovery → backlog state), workflow stage S1
 ([`./setup/workflow-master.md`](./setup/workflow-master.md))
 
 **If it goes wrong**:
 - Duplicate flagged but you want to refine instead → `/discover refine D###`
-- File didn't land → check `docs/spec/discovery/` exists and is writable
+- File didn't land → check `docs/project/ideas/` exists and is writable
 
 ### Step 2 — `/promote` to backlog
 
@@ -89,8 +89,8 @@ duplicate, affected components, cross-cutting concerns). If it
 passes, an enriched row lands on the backlog.
 
 **Written**:
-- new row in `docs/spec/backlog.md` referencing `D007`
-- D007's state → `promoted` in `docs/spec/discovery.md`
+- new row in `docs/project/backlog.md` referencing `D007`
+- D007's state → `promoted` in `docs/project/ideas.md`
 
 **Cross-links**: A008; backlog index ([`./setup/index-discipline.md`](./setup/index-discipline.md))
 
@@ -103,13 +103,13 @@ passes, an enriched row lands on the backlog.
 ## Monday afternoon — sprint planning + start
 
 Sprint planning is **manual** — open the new
-`docs/spec/sprints/sprint-S<N>.md`, copy the backlog rows into the
+`docs/project/sprints/sprint-S<N>.md`, copy the backlog rows into the
 task table, pick fanout waves, write the cross-task contracts
 section. The orchestrator agent can help if you ask; there's no
 dedicated skill because planning rewards human deliberation.
 
 Once the sprint file exists, mark it the active sprint by updating
-`docs/spec/STATUS.md` (this is the A008 source-of-truth move).
+`docs/project/STATUS.md` (this is the A008 source-of-truth move).
 
 ### Step 3 — `/next-task`
 
@@ -220,8 +220,8 @@ skill walks the 6-gate playbook
 
 **Written**:
 - review log on the PR (or attached at
-  `docs/spec/reviews/sprint-S<N>-<task-id>.md`)
-- audit JSONL records in `docs/spec/audit/YYYY-MM.jsonl` for every
+  `docs/project/reviews/sprint-S<N>-<task-id>.md`)
+- audit JSONL records in `docs/project/audit/YYYY-MM.jsonl` for every
   dispatched reviewer
 
 **Cross-links**: A004 / N3 (6-gate), L116 (wiring), L182 (visual
@@ -240,14 +240,14 @@ fidelity), playbook
 ### Step 7 — Live mini-retro (A009 / L036)
 
 **You type**: append manually to
-`docs/spec/retros/sprint-S<N>-tasks.md` — or invoke
+`docs/project/retros/sprint-S<N>-tasks.md` — or invoke
 `/retro --task <id>`.
 
 **What happens**: 5 minutes while the context is still hot, you fill
 in the 6-field mini-retro template (what worked / what bit / time
 spent vs estimate / lessons / followups / done state).
 
-**Written**: append-only block in `docs/spec/retros/sprint-S<N>-tasks.md`
+**Written**: append-only block in `docs/project/retros/sprint-S<N>-tasks.md`
 
 **Cross-links**: A009, L036, A008 (sprint close aggregates these)
 
@@ -298,10 +298,10 @@ into fix-now vs defer, fixes the process bugs immediately, and writes
 the full retro file.
 
 **Written**:
-- `docs/spec/retros/sprint-S<N>.md` (the closing retro)
-- updates to `docs/spec/FOLLOWUPS.md` (deferred items + their
+- `docs/project/retros/sprint-S<N>.md` (the closing retro)
+- updates to `docs/project/FOLLOWUPS.md` (deferred items + their
   severity + `PR-APPROVER` ack per N6 if any)
-- STATUS prose moved to `docs/spec/STATUS-archive.md` **in the same
+- STATUS prose moved to `docs/project/STATUS-archive.md` **in the same
   commit** (per A008)
 
 **Cross-links**: A009 / L036 (live retros aggregated here),
@@ -342,15 +342,15 @@ rules" section.
 
 | Step | Audit trail |
 |---|---|
-| 1 (`/discover`) | `docs/spec/discovery/D###.md`; index row |
-| 2 (`/promote`) | `docs/spec/backlog.md` row |
-| 3 (`/next-task`) | dispatch in `docs/spec/audit/YYYY-MM.jsonl` |
+| 1 (`/discover`) | `docs/project/ideas/D###.md`; index row |
+| 2 (`/promote`) | `docs/project/backlog.md` row |
+| 3 (`/next-task`) | dispatch in `docs/project/audit/YYYY-MM.jsonl` |
 | 4 (`design-doc-writer`) | `docs/designs/sprint-S<N>/D###.md`; dispatch in audit JSONL |
 | 5 (engineer agent) | git commits + branch; audit JSONL |
 | 6 (`/post-delegation-gate`) | review log on PR; reviewer dispatches in audit JSONL |
-| 7 (live mini-retro) | `docs/spec/retros/sprint-S<N>-tasks.md` append |
+| 7 (live mini-retro) | `docs/project/retros/sprint-S<N>-tasks.md` append |
 | 8 (`/progress`) | none (read-only) |
-| 9 (`/retro`) | `docs/spec/retros/sprint-S<N>.md`; STATUS-archive move |
+| 9 (`/retro`) | `docs/project/retros/sprint-S<N>.md`; STATUS-archive move |
 | 10 (brain promotion) | `.claude/rules/brain-hot.md` diff |
 
 An auditor walking this chain end-to-end can answer: who/when

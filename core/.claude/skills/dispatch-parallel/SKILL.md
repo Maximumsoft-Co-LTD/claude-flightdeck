@@ -144,8 +144,8 @@ Output contract (mandatory in your final reply):
 ## Sprint cleanup (after fan-in completes)
 
 1. Bump any meta-submodule pointers for touched repos + push.
-2. **Backlog sync** — mark each task row done in `docs/spec/backlog.md` immediately. Do NOT defer to sprint close.
-3. **Live mini-retro per task** — append a 6-field retro to `docs/spec/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch.
+2. **Backlog sync** — mark each task row done in `docs/project/backlog.md` immediately. Do NOT defer to sprint close.
+3. **Live mini-retro per task** — append a 6-field retro to `docs/project/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch.
 4. `git worktree remove <path>` for any persistent worktrees you held open.
 5. `/retro` at sprint close (aggregates the mini-retros + audits the backlog).
 

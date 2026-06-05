@@ -122,7 +122,7 @@ Core (always available):
 
 | Subagent | Use for | Reads first |
 |---|---|---|
-| `<prefix>-orchestrator` | Pick next task; orchestrate a sprint phase; multi-step PM work | `docs/spec/STATUS.md` + backlog |
+| `<prefix>-orchestrator` | Pick next task; orchestrate a sprint phase; multi-step PM work | `docs/project/STATUS.md` + backlog |
 | `backend-engineer` | Any server-side feature (handler, use-case/service, data access, migration, worker, producer/consumer). Architecture-agnostic — conforms to the project's style | `.claude/rules/code-style.md` + area CLAUDE.md + design doc |
 | `frontend-engineer` | Any client-side feature (page, component, state, form, API call, i18n). Architecture-agnostic — conforms to the app's style | `.claude/rules/code-style.md` + area CLAUDE.md + design doc |
 | `design-doc-writer` | Author a ≥500-line zero-fix design doc per task | task brief + relevant area CLAUDE.md |

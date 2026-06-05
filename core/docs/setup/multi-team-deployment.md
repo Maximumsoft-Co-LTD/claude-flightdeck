@@ -31,7 +31,7 @@
                 │  any project repo                │   project install
                 │  + .claude/rules/brain-hot.md    │   — A011+ project rules
                 │  + .claude/agents/<prefix>-*     │   — project-specific agents
-                │  + docs/spec/                    │   — the live sprint
+                │  + docs/project/                    │   — the live sprint
                 └──────────────────────────────────┘
 ```
 

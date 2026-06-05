@@ -1,6 +1,6 @@
 # Backlog Entry Template
 
-> Standard format for ALL entries in `docs/spec/backlog.md`.
+> Standard format for ALL entries in `docs/project/backlog.md`.
 
 ## Table Format (6 columns — used in every section)
 
@@ -62,7 +62,7 @@ Place immediately after the table, using `<details>` for collapsible content:
 <details>
 <summary>B### — Title</summary>
 
-**Source:** D### (`docs/spec/discovery/D###-slug.md`) or Sprint ## testing
+**Source:** D### (`docs/project/ideas/D###-slug.md`) or Sprint ## testing
 **Spec Ref:** XX-### (if your project tracks a spec ID)
 **Root Cause:** (bugs only) concise description of why it happens
 **Dependencies:** B### (blocks), B### (related)

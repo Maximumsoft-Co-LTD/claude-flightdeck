@@ -16,7 +16,7 @@ project rules (`A011+`). That closes the loop from *lesson observed* →
 
 ## Token budget (MANDATORY)
 
-- `Grep` `docs/spec/retros/sprint-*.md` for `## Candidate A-rules` — do NOT
+- `Grep` `docs/project/retros/sprint-*.md` for `## Candidate A-rules` — do NOT
   full-Read every retro. Read ONLY the candidate section of each retro that
   has one (offset Read around the grep hit).
 - One `Read` of `.claude/rules/brain-hot.md` (the `## Project-specific rules`
@@ -33,7 +33,7 @@ project rules (`A011+`). That closes the loop from *lesson observed* →
 ## Steps
 
 1. **Gather candidates.** `Grep -n '## Candidate A-rules'`
-   `docs/spec/retros/sprint-*.md`. For each hit, Read just that section. A
+   `docs/project/retros/sprint-*.md`. For each hit, Read just that section. A
    candidate already marked `ratified → A0##` or `dropped — …` is **done** —
    skip it. The live set is everything still labelled as a proposal.
 2. **Filter to un-landed.** For each candidate, `Grep` `brain-hot.md`'s
@@ -46,7 +46,7 @@ project rules (`A011+`). That closes the loop from *lesson observed* →
    - **Ratify** — it earns a permanent rule (the bar: it recurred 2+ times or
      the operator deems it load-bearing).
    - **Defer** — keep watching; not enough signal yet. Leave the candidate as
-     a proposal (optionally log it in `docs/spec/FOLLOWUPS.md`).
+     a proposal (optionally log it in `docs/project/FOLLOWUPS.md`).
    - **Drop / reword** — won't become a rule (or needs rewording first).
    Never ratify silently — the operator's call is the gate.
 4. **Land each ratified rule:**

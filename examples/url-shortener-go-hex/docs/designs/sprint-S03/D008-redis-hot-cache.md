@@ -27,7 +27,7 @@
 - Invalidation hook integration: `cache.Invalidate(code)` already wired into `Save`, `Delete`, `Regenerate` (per A012 — landed in S02 retro)
 - Hit-rate metric `urlsh_cache_hits_total{result="hit|miss"}`
 - Cleanup goroutine determinism test (per L201 — clock-mock pattern)
-- Consume [F0004](../../spec/FOLLOWUPS.md) ✓
+- Consume [F0004](../../project/FOLLOWUPS.md) ✓
 
 **Out of scope:**
 - Alerting threshold tuning — needs 48h of baseline; deferred to S04 (sprint plus-row URLSH-S03.06)

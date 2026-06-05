@@ -59,7 +59,7 @@
 ## Backlog audit (HARD gate)
 
 ```
-grep -nE "S02\b" docs/spec/backlog.md | grep -vE "done S02|\[~\] Partial|moved to S"
+grep -nE "S02\b" docs/project/backlog.md | grep -vE "done S02|\[~\] Partial|moved to S"
 ```
 
 - Result: **0 mismatches.** 4 rows tagged S02 (B004, B005, B006, B007); all four closed as `done S02`. URLSH-S02.05 partial state cross-referenced URLSH-S03.02 in sprint-S02.md row; no orphan rows.

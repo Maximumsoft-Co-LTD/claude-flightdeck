@@ -9,7 +9,7 @@
 > **Core principle**: start tighter than you think you need. Add a
 > permission when an agent needs it; don't pre-grant a broader pattern
 > than the task requires. The audit hook records every tool call, so
-> escalations are visible in `docs/spec/audit/*.jsonl` after the fact.
+> escalations are visible in `docs/project/audit/*.jsonl` after the fact.
 
 ## The three profiles at a glance
 
@@ -26,7 +26,7 @@ All three profiles ship the same hook block:
   [`secret-handling.md`](./secret-handling.md))
 - **PostToolUse** `Write|Edit|MultiEdit` → `.claude/hooks/lint.sh`
 - **PostToolUse** `Agent` + **SubagentStop** `Agent` →
-  `.claude/hooks/audit.sh` (writes `docs/spec/audit/YYYY-MM.jsonl`)
+  `.claude/hooks/audit.sh` (writes `docs/project/audit/YYYY-MM.jsonl`)
 
 ## Decision matrix — when to pick which
 
@@ -96,7 +96,7 @@ When a security reviewer or PR auditor opens `.claude/settings.json`:
    when present, or `core/.claude/settings.<profile>.json.tmpl` in
    the template repo). Every line outside the foundation is a
    deliberate addition — confirm there's a task ID or comment.
-2. **Grep `docs/spec/audit/*.jsonl` for the most-used Bash patterns**
+2. **Grep `docs/project/audit/*.jsonl` for the most-used Bash patterns**
    in the last sprint. Patterns the agent never used can usually be
    removed.
 3. **Look for shape-changing additions** — `Bash(*)`, `Bash(rm *)`,

@@ -43,8 +43,8 @@ Common project rules to consider:
 
 ```bash
 cp docs/designs/_templates/BACKLOG_ENTRY_TEMPLATE.md /tmp/_template-ref.md  # for reference
-# Edit docs/spec/STATUS.md — fill in your project's active sprint pointer
-# Create docs/spec/sprints/sprint-S01.md from scratch (use BACKLOG_ENTRY rows)
+# Edit docs/project/STATUS.md — fill in your project's active sprint pointer
+# Create docs/project/sprints/sprint-S01.md from scratch (use BACKLOG_ENTRY rows)
 ```
 
 Then in Claude Code:

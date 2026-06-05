@@ -18,17 +18,17 @@ Keep the four slim index files in sync with their wide source files. Every skill
 
 | # | Index file | Source file | Grep pattern | Fields |
 |---|---|---|---|---|
-| 1 | `docs/spec/sprints/sprint-S<N>-index.md` | `docs/spec/sprints/sprint-S<N>.md` | `^\| TG\|^\| S` (task rows) | `ID`, `Component`, `Status`, `Depends` |
+| 1 | `docs/project/sprints/sprint-S<N>-index.md` | `docs/project/sprints/sprint-S<N>.md` | `^\| TG\|^\| S` (task rows) | `ID`, `Component`, `Status`, `Depends` |
 | 2 | `docs/designs/sprint-S<N>/INDEX.md` | `docs/designs/sprint-S<N>/D*.md` | `^#\s+Design:\|^> \*\*Status\*\*\|^> \*\*Task Group\*\*` | `DXXX`, `Title`, `Status`, `TG#` |
-| 3 | `docs/spec/backlog-index.md` | `docs/spec/backlog.md` | `^### Sprint \|^## 🚀` | `Sprint`, `Status`, `Pointer` |
-| 4 | `docs/spec/sprints/INDEX.md` | `docs/spec/sprints/sprint-*.md` | `^> \*\*Status\*\*\|^# Sprint` | `Sprint`, `Status`, `Opened`, `Closed` |
+| 3 | `docs/project/backlog-index.md` | `docs/project/backlog.md` | `^### Sprint \|^## 🚀` | `Sprint`, `Status`, `Pointer` |
+| 4 | `docs/project/sprints/INDEX.md` | `docs/project/sprints/sprint-*.md` | `^> \*\*Status\*\*\|^# Sprint` | `Sprint`, `Status`, `Opened`, `Closed` |
 
 ## Staleness detection
 
 A consumer skill does:
 
 ```bash
-stat -f '%m' docs/spec/sprints/sprint-S<N>-index.md docs/spec/sprints/sprint-S<N>.md
+stat -f '%m' docs/project/sprints/sprint-S<N>-index.md docs/project/sprints/sprint-S<N>.md
 ```
 
 If `mtime(index) < mtime(source)`:
@@ -47,9 +47,9 @@ If `mtime(index) < mtime(source)`:
 
 Rebuilds the four index pairs idempotently:
 
-- `docs/spec/sprints/INDEX.md` — list of every `sprint-S*.md` with status/opened/closed
-- `docs/spec/sprints/sprint-S<N>-index.md` — per active sprint, the task row → ID/Component/Status/Depends extracted from the wide sprint file
-- `docs/spec/backlog-index.md` — every `### Sprint S<N>` section in `backlog.md` with status + anchor link
+- `docs/project/sprints/INDEX.md` — list of every `sprint-S*.md` with status/opened/closed
+- `docs/project/sprints/sprint-S<N>-index.md` — per active sprint, the task row → ID/Component/Status/Depends extracted from the wide sprint file
+- `docs/project/backlog-index.md` — every `### Sprint S<N>` section in `backlog.md` with status + anchor link
 - `docs/designs/sprint-S<N>/INDEX.md` — per sprint design dir, every `D<NNN>-*.md` with title/status/task
 
 Standard tools only (`grep`, `sed`, `awk`, `find`, `sort`). No external deps. Running twice in a row produces identical output (idempotency-verified).

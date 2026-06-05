@@ -26,7 +26,7 @@ in-flight on analytics (S03).
 Walk these in order — each one references the next, and the chain
 builds the mental model of the AI-Workflows discipline.
 
-### 1. [`docs/spec/STATUS.md`](./docs/spec/STATUS.md) (~30 lines, ~1 min)
+### 1. [`docs/project/STATUS.md`](./docs/project/STATUS.md) (~30 lines, ~1 min)
 
 The **single-pane glance**. One row per active track. Today it says
 S03 is active, the in-flight task is `URLSH-S03.02`, branch is
@@ -34,7 +34,7 @@ S03 is active, the in-flight task is `URLSH-S03.02`, branch is
 historical prose, no sprint logs, no commentary on S01 or S02 —
 just current-sprint pointer. That discipline is A008.
 
-### 2. [`docs/spec/sprints/sprint-S03.md`](./docs/spec/sprints/sprint-S03.md) (~80 lines, ~3 min)
+### 2. [`docs/project/sprints/sprint-S03.md`](./docs/project/sprints/sprint-S03.md) (~80 lines, ~3 min)
 
 The current sprint's task table. Notice the mix of statuses:
 `[x] Done`, `[~] In Progress`, `[ ] Not Started`. Each row points
@@ -51,7 +51,7 @@ The **active task's design doc**. M-tier, in-progress. Notice:
 - AC7 (hexagonal-reviewer gate) is unchecked because the task is
   still mid-flight
 
-### 4. [`docs/spec/retros/sprint-S02.md`](./docs/spec/retros/sprint-S02.md) (~120 lines, ~5 min)
+### 4. [`docs/project/retros/sprint-S02.md`](./docs/project/retros/sprint-S02.md) (~120 lines, ~5 min)
 
 The **closed-sprint retro** — the most-information-dense file in
 the tour. Notice:
@@ -65,7 +65,7 @@ the tour. Notice:
   sprint-touched rows left open) — the gate that protects the
   audit trail
 
-### 5. [`docs/spec/FOLLOWUPS.md`](./docs/spec/FOLLOWUPS.md) (~80 lines, ~3 min)
+### 5. [`docs/project/FOLLOWUPS.md`](./docs/project/FOLLOWUPS.md) (~80 lines, ~3 min)
 
 The **follow-up registry**. 8 rows total: 4 open, 4 closed. Trace
 F0004 backwards: it was opened by URLSH-S02.05 partial decision in
@@ -74,7 +74,7 @@ URLSH-S03.02 (the active task). Cross-reference with D008 §1 ("In
 scope: consume F0004 ✓"). This is the **audit trail** working as
 designed.
 
-### 6. [`docs/spec/STATUS-archive.md`](./docs/spec/STATUS-archive.md) (~80 lines, ~2 min)
+### 6. [`docs/project/STATUS-archive.md`](./docs/project/STATUS-archive.md) (~80 lines, ~2 min)
 
 The **closed-sprint prose**, newest first. The S02 + S01 closing
 notes that used to live in STATUS.md have been moved here verbatim,
@@ -95,7 +95,7 @@ After the tour you should be able to answer:
 1. **Where does current state live?** `STATUS.md` (single row), `sprints/sprint-S<N>.md` (active task table), `retros/sprint-S<N>-tasks.md` (live mini-retros).
 2. **How does work move from "I noticed a thing" to "we shipped it"?** Follow-up appended at retro → reviewed at next sprint open → consumed by a sprint task → marked `consumed-by:` and moved to Closed at sprint close.
 3. **Why three different design-doc tiers (XS / S / M / L)?** Same template, deleted sections at smaller tiers — see [`SIZE_TIERS.md`](../../core/docs/designs/_templates/SIZE_TIERS.md). XS = no logic, no behaviour change. L = breaking contract OR multi-subsystem.
-4. **How does a lesson become a rule?** Surface in retro → captured as `L###` in brain-hot.md → on 2nd occurrence, promoted to `A0##` project rule (see A012 promotion in [`retros/sprint-S02.md`](./docs/spec/retros/sprint-S02.md)).
+4. **How does a lesson become a rule?** Surface in retro → captured as `L###` in brain-hot.md → on 2nd occurrence, promoted to `A0##` project rule (see A012 promotion in [`retros/sprint-S02.md`](./docs/project/retros/sprint-S02.md)).
 5. **What's the audit trail?** Every claim in this tour is checkable by `grep` — task IDs, design IDs, follow-up IDs, A-rule IDs, branch names — they all resolve.
 
 ## File map
@@ -104,7 +104,7 @@ After the tour you should be able to answer:
 url-shortener-go-hex/
 ├── README.md                           ← you are here
 └── docs/
-    ├── spec/
+    ├── project/
     │   ├── STATUS.md                   ← live single-pane glance (current sprint only)
     │   ├── STATUS-archive.md           ← closed-sprint prose (newest first)
     │   ├── backlog.md                  ← all work, ever

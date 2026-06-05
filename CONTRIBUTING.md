@@ -31,7 +31,7 @@ use [Discussions](https://github.com/Maximumsoft-Co-LTD/claude-flightdeck/discus
 instead of an issue.
 
 **Especially welcome:** a **sanitized** excerpt of your
-`docs/spec/retros/onboarding.md` (the Stage 8 onboarding retro) or
+`docs/project/retros/onboarding.md` (the Stage 8 onboarding retro) or
 your `/audit-query` digest. That data — which A-rules you dropped,
 which gates fired most, which skills you actually used — is the
 single highest-signal feedback we get. It tells us where the

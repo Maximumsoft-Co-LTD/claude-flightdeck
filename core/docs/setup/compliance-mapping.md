@@ -29,19 +29,19 @@
 |---|---|---|---|
 | **CC1.4** | Workforce competence & accountability | Role-based agent definitions; named human approvers via CODEOWNERS | `.claude/agents/*.md`; `.github/CODEOWNERS`; `docs/setup/separation-of-duties.md` |
 | **CC2.1** | Internal communication of policies | Auto-loaded rule files; non-negotiables in CLAUDE.md | `.claude/rules/brain-hot.md`; `CLAUDE.md` §N1–N6 |
-| **CC2.3** | External communication (clients) | Sprint retros + release notes | `docs/spec/retros/sprint-S*.md`; `CHANGELOG.md` |
-| **CC3.1** | Risk assessment process | Live mini-retros + sprint retros surface risks | `docs/spec/retros/sprint-S*-tasks.md`; `docs/spec/FOLLOWUPS.md` |
+| **CC2.3** | External communication (clients) | Sprint retros + release notes | `docs/project/retros/sprint-S*.md`; `CHANGELOG.md` |
+| **CC3.1** | Risk assessment process | Live mini-retros + sprint retros surface risks | `docs/project/retros/sprint-S*-tasks.md`; `docs/project/FOLLOWUPS.md` |
 | **CC5.1** | Control activities through policy | The 10 A-rules + Phase Matrix | `.claude/rules/brain-hot.md`; `.claude/rules/phase-matrix.md` |
 | **CC5.3** | Deployment of control activities | 6-gate post-delegation review | `docs/playbooks/post-delegation-review.md` |
 | **CC6.1** | Logical access — restrict access | Permission profiles + allow-list | `.claude/settings.json`; `docs/setup/permission-profiles.md` |
 | **CC6.2** | Logical access — register & authorize | Agent definitions + named tool allowlists | `.claude/agents/*.md` (each agent declares scope) |
-| **CC6.3** | Logical access — modify & remove access | Soft-merge preserves allow-list edits + audit log | `docs/setup/settings-merge.md`; `docs/spec/audit/*.jsonl` |
+| **CC6.3** | Logical access — modify & remove access | Soft-merge preserves allow-list edits + audit log | `docs/setup/settings-merge.md`; `docs/project/audit/*.jsonl` |
 | **CC6.6** | Logical access — system credentials | Secret redaction rule + PreToolUse hook | `docs/setup/secret-handling.md`; `.claude/hooks/secret-redact.sh` |
 | **CC6.7** | Restrict transmission, movement, removal of data | Same secret redaction + agent egress controls | `.claude/hooks/secret-redact.sh`; permission profiles deny network egress patterns |
-| **CC6.8** | Prevent / detect unauthorized software | Lint hook + audit trail of every agent invocation | `.claude/hooks/lint.sh`; `.claude/hooks/audit.sh`; `docs/spec/audit/*.jsonl` |
-| **CC7.1** | System monitoring — detect anomalies | Audit JSONL ingested into SIEM (Splunk / Datadog / ELK) | `docs/spec/audit/*.jsonl`; `docs/setup/audit-trail.md` |
-| **CC7.2** | Monitoring of system components | Same audit JSONL + observability mini-retros (A009) | `docs/spec/audit/*.jsonl`; `docs/spec/retros/sprint-S*-tasks.md` |
-| **CC7.3** | Evaluate security events | Sprint retro reviews audit anomalies | `docs/spec/retros/sprint-S*.md` (Section "Audit findings") |
+| **CC6.8** | Prevent / detect unauthorized software | Lint hook + audit trail of every agent invocation | `.claude/hooks/lint.sh`; `.claude/hooks/audit.sh`; `docs/project/audit/*.jsonl` |
+| **CC7.1** | System monitoring — detect anomalies | Audit JSONL ingested into SIEM (Splunk / Datadog / ELK) | `docs/project/audit/*.jsonl`; `docs/setup/audit-trail.md` |
+| **CC7.2** | Monitoring of system components | Same audit JSONL + observability mini-retros (A009) | `docs/project/audit/*.jsonl`; `docs/project/retros/sprint-S*-tasks.md` |
+| **CC7.3** | Evaluate security events | Sprint retro reviews audit anomalies | `docs/project/retros/sprint-S*.md` (Section "Audit findings") |
 | **CC7.4** | Respond to security incidents | Failure-recovery playbook + retro action items | `docs/playbooks/post-delegation-review.md` (failure paths) |
 | **CC8.1** | Change management — authorize changes | Design-doc-first (A005) + 6-gate review + CODEOWNERS | `docs/designs/sprint-S*/`; `docs/playbooks/post-delegation-review.md`; `.github/CODEOWNERS` |
 | **CC9.1** | Risk mitigation — recovery | Integration-branch + worktree isolation playbook | `docs/setup/integration-branch-strategy.md`; `docs/playbooks/parallel-conflict-prevention.md` |
@@ -51,27 +51,27 @@
 
 | Control | What it asks | Evidence | Where it lives |
 |---|---|---|---|
-| **§164.308(a)(1)(ii)(A)** | Risk analysis | Sprint retro + FOLLOWUPS register | `docs/spec/retros/sprint-S*.md`; `docs/spec/FOLLOWUPS.md` |
-| **§164.308(a)(1)(ii)(B)** | Risk management | Live mini-retros (A009) + sprint close audit (A008) | `docs/spec/retros/sprint-S*-tasks.md` |
+| **§164.308(a)(1)(ii)(A)** | Risk analysis | Sprint retro + FOLLOWUPS register | `docs/project/retros/sprint-S*.md`; `docs/project/FOLLOWUPS.md` |
+| **§164.308(a)(1)(ii)(B)** | Risk management | Live mini-retros (A009) + sprint close audit (A008) | `docs/project/retros/sprint-S*-tasks.md` |
 | **§164.308(a)(2)** | Assigned security responsibility | CODEOWNERS + agent role definitions | `.github/CODEOWNERS`; `.claude/agents/*.md` |
 | **§164.308(a)(3)** | Workforce security | Permission profiles + Separation of Duties (N6) | `docs/setup/permission-profiles.md`; `docs/setup/separation-of-duties.md` |
 | **§164.308(a)(4)** | Information access management | Permission profiles allow-list | `.claude/settings.json` |
 | **§164.308(a)(5)** | Security awareness & training | Onboarding tour + rules auto-load | `docs/getting-started-tour.md`; `.claude/rules/brain-hot.md` |
 | **§164.308(a)(6)** | Security incident procedures | Failure paths in 6-gate playbook | `docs/playbooks/post-delegation-review.md` |
 | **§164.308(a)(7)** | Contingency plan | Integration-branch strategy + backup-on-install behavior | `docs/setup/integration-branch-strategy.md`; `install.sh` (backup logic) |
-| **§164.308(a)(8)** | Evaluation | Sprint retro audit step (A008) | `docs/spec/retros/sprint-S*.md` |
+| **§164.308(a)(8)** | Evaluation | Sprint retro audit step (A008) | `docs/project/retros/sprint-S*.md` |
 | **§164.310(a)** | Physical safeguards — facility access | — _(out of scope — physical infra)_ |
 | **§164.310(c)** | Workstation security | Permission profiles + secret redaction enforce least privilege at the workstation | `.claude/settings.json`; `.claude/hooks/secret-redact.sh` |
 | **§164.310(d)** | Device & media controls | Secret redaction + `.gitignore` discipline | `docs/setup/secret-handling.md` |
 | **§164.312(a)(1)** | Access controls (technical) | Permission profiles | `.claude/settings.json` |
 | **§164.312(a)(2)(iv)** | Encryption / decryption | sops + age recipe (where applicable) | `docs/setup/secret-handling.md` |
-| **§164.312(b)** | Audit controls | Agent audit JSONL | `docs/spec/audit/*.jsonl` |
+| **§164.312(b)** | Audit controls | Agent audit JSONL | `docs/project/audit/*.jsonl` |
 | **§164.312(c)(1)** | Integrity (PHI not altered improperly) | 6-gate review Gate 1 (Inspect) + Gate 4 (Quality) | `docs/playbooks/post-delegation-review.md` |
 | **§164.312(d)** | Person / entity authentication | OIDC + workload identity recipes | `docs/setup/secret-handling.md` (CI section) |
 | **§164.312(e)(1)** | Transmission security | Network egress denylist; no secrets in tool prompts | `docs/setup/secret-handling.md`; permission profiles |
 | **§164.314(a)** | Business associate contracts | — _(legal — outside template)_ |
 | **§164.316(a)** | Policies & procedures | This file + the brain-hot rules | `.claude/rules/brain-hot.md`; `docs/setup/*` |
-| **§164.316(b)(1)** | Documentation | Design docs, retros, FOLLOWUPS, sprint files | `docs/designs/`; `docs/spec/` |
+| **§164.316(b)(1)** | Documentation | Design docs, retros, FOLLOWUPS, sprint files | `docs/designs/`; `docs/project/` |
 | **§164.316(b)(2)(iii)** | Documentation availability | All in repo; readable to anyone with checkout | (entire `docs/` tree) |
 
 ## ISO/IEC 27001 (Annex A controls)
@@ -96,8 +96,8 @@
 | **A.8.5** | Secure authentication | Secret handling — workload identity recipes | `docs/setup/secret-handling.md` |
 | **A.8.7** | Protection against malware | Lint hook + secret redaction + CI placeholder lint | `.claude/hooks/lint.sh`; `.claude/hooks/secret-redact.sh`; `.github/workflows/ai-workflow-validation.yml` |
 | **A.8.8** | Management of technical vulnerabilities | 6-gate review Gate 4 (Quality reviewers) | `docs/playbooks/post-delegation-review.md` |
-| **A.8.15** | Logging | Agent audit JSONL | `docs/spec/audit/*.jsonl` |
-| **A.8.16** | Monitoring activities | Audit JSONL → SIEM | `docs/spec/audit/*.jsonl`; `docs/setup/audit-trail.md` |
+| **A.8.15** | Logging | Agent audit JSONL | `docs/project/audit/*.jsonl` |
+| **A.8.16** | Monitoring activities | Audit JSONL → SIEM | `docs/project/audit/*.jsonl`; `docs/setup/audit-trail.md` |
 | **A.8.21** | Network security | OIDC + permission profiles + secret redaction | `docs/setup/secret-handling.md` |
 | **A.8.24** | Use of cryptography | sops + age recipe | `docs/setup/secret-handling.md` |
 | **A.8.25** | Secure development life cycle | Workflow-master pipeline + Phase Matrix | `docs/setup/workflow-master.md`; `.claude/rules/phase-matrix.md` |
@@ -110,28 +110,28 @@
 | **A.8.32** | Change management | Design-doc-first (A005) + 6-gate review | `docs/designs/`; `docs/playbooks/post-delegation-review.md` |
 | **A.12** | Operations security | Audit hook + lint hook + secret redaction hook | `.claude/hooks/*.sh` |
 | **A.14** | System acquisition, development & maintenance | Workflow-master + preset architectural rules | `docs/setup/workflow-master.md`; `presets/*/rules/` |
-| **A.16** | Information security incident management | Failure paths in 6-gate playbook + FOLLOWUPS | `docs/playbooks/post-delegation-review.md`; `docs/spec/FOLLOWUPS.md` |
+| **A.16** | Information security incident management | Failure paths in 6-gate playbook + FOLLOWUPS | `docs/playbooks/post-delegation-review.md`; `docs/project/FOLLOWUPS.md` |
 
 ## GDPR (EU 2016/679)
 
 | Control | What it asks | Evidence | Where it lives |
 |---|---|---|---|
 | **Art. 5(1)(a)** | Lawfulness, fairness, transparency | Design-doc-first surfaces purpose before code lands | `docs/designs/sprint-S*/` |
-| **Art. 5(1)(b)** | Purpose limitation | Discovery doc declares the use; sprint retro confirms scope | `docs/spec/discovery/`; `docs/spec/retros/sprint-S*.md` |
+| **Art. 5(1)(b)** | Purpose limitation | Discovery doc declares the use; sprint retro confirms scope | `docs/project/ideas/`; `docs/project/retros/sprint-S*.md` |
 | **Art. 5(1)(c)** | Data minimisation | 6-gate review Gate 4 (type-design-analyzer flags over-broad types) | `docs/playbooks/post-delegation-review.md` |
 | **Art. 5(1)(d)** | Accuracy | Zero-bug discipline (A002) + verification before completion (A003) | `.claude/rules/brain-hot.md` |
-| **Art. 5(1)(e)** | Storage limitation | sprint-S<N>-tasks retros + STATUS-archive lifecycle | `docs/spec/retros/`; `docs/spec/STATUS-archive.md` |
+| **Art. 5(1)(e)** | Storage limitation | sprint-S<N>-tasks retros + STATUS-archive lifecycle | `docs/project/retros/`; `docs/project/STATUS-archive.md` |
 | **Art. 5(1)(f)** | Integrity & confidentiality | Secret redaction hook + permission profiles | `.claude/hooks/secret-redact.sh`; `docs/setup/permission-profiles.md` |
-| **Art. 5(2)** | Accountability | Audit JSONL + CODEOWNERS + named approvers | `docs/spec/audit/*.jsonl`; `.github/CODEOWNERS` |
+| **Art. 5(2)** | Accountability | Audit JSONL + CODEOWNERS + named approvers | `docs/project/audit/*.jsonl`; `.github/CODEOWNERS` |
 | **Art. 25** | Data protection by design | Brain-hot A005 (design-doc-first) + Phase 7 (security trigger) | `.claude/rules/brain-hot.md`; `.claude/rules/phase-matrix.md` |
 | **Art. 25(2)** | Data protection by default | Permission profile defaults to `standard`; restricted available | `install.sh` (default profile); `docs/setup/permission-profiles.md` |
 | **Art. 28(3)** | Processor obligations / sub-processors | — _(legal — outside template)_ |
-| **Art. 30** | Records of processing activities | Sprint files + discovery docs + design docs constitute the activity record | `docs/spec/sprints/`; `docs/spec/discovery/`; `docs/designs/` |
+| **Art. 30** | Records of processing activities | Sprint files + discovery docs + design docs constitute the activity record | `docs/project/sprints/`; `docs/project/ideas/`; `docs/designs/` |
 | **Art. 32(1)(a)** | Pseudonymisation / encryption | sops + age recipe | `docs/setup/secret-handling.md` |
 | **Art. 32(1)(b)** | Ongoing confidentiality, integrity, availability | Permission profiles + 6-gate review + integration-branch strategy | `.claude/settings.json`; `docs/playbooks/post-delegation-review.md`; `docs/setup/integration-branch-strategy.md` |
-| **Art. 32(1)(d)** | Regular testing of effectiveness | Sprint retro audit; CI placeholder lint | `docs/spec/retros/sprint-S*.md`; `.github/workflows/ai-workflow-validation.yml` |
-| **Art. 33** | Breach notification | FOLLOWUPS + sprint retro action items capture incidents | `docs/spec/FOLLOWUPS.md`; `docs/spec/retros/sprint-S*.md` |
-| **Art. 35** | Data Protection Impact Assessment (DPIA) | Discovery doc + design doc for high-risk processing | `docs/spec/discovery/`; `docs/designs/sprint-S*/` |
+| **Art. 32(1)(d)** | Regular testing of effectiveness | Sprint retro audit; CI placeholder lint | `docs/project/retros/sprint-S*.md`; `.github/workflows/ai-workflow-validation.yml` |
+| **Art. 33** | Breach notification | FOLLOWUPS + sprint retro action items capture incidents | `docs/project/FOLLOWUPS.md`; `docs/project/retros/sprint-S*.md` |
+| **Art. 35** | Data Protection Impact Assessment (DPIA) | Discovery doc + design doc for high-risk processing | `docs/project/ideas/`; `docs/designs/sprint-S*/` |
 
 ## FedRAMP Moderate (NIST SP 800-53 baseline)
 
@@ -146,17 +146,17 @@ subset that AI-Workflows artifacts directly produce evidence for.
 | **AC-3** | Access enforcement | Permission profiles allow / deny | `.claude/settings.json` |
 | **AC-5** | Separation of duties | N6 + separation-of-duties doc | `CLAUDE.md` §N6; `docs/setup/separation-of-duties.md` |
 | **AC-6** | Least privilege | Profile = `restricted` baseline; escalate per task | `docs/setup/permission-profiles.md` |
-| **AC-6(9)** | Audit use of privileged functions | Agent audit JSONL | `docs/spec/audit/*.jsonl` |
+| **AC-6(9)** | Audit use of privileged functions | Agent audit JSONL | `docs/project/audit/*.jsonl` |
 | **AC-17** | Remote access | OIDC + workload identity for CI / remote runners | `docs/setup/secret-handling.md` |
 
 ### AU — Audit & Accountability
 
 | Control | What it asks | Evidence | Where it lives |
 |---|---|---|---|
-| **AU-2** | Audit events (what to record) | Audit hook records every Agent dispatch + SubagentStop | `.claude/hooks/audit.sh`; `docs/spec/audit/*.jsonl` |
+| **AU-2** | Audit events (what to record) | Audit hook records every Agent dispatch + SubagentStop | `.claude/hooks/audit.sh`; `docs/project/audit/*.jsonl` |
 | **AU-3** | Content of audit records | JSONL schema includes ts, event, tool, agent_id, subagent_type, task_id, files_touched, reason | `docs/setup/audit-trail.md` |
-| **AU-6** | Audit review, analysis & reporting | Sprint retro reviews audit anomalies | `docs/spec/retros/sprint-S*.md` (audit findings section) |
-| **AU-9** | Protection of audit information | `docs/spec/audit/` is git-tracked + checksummed at sprint close | `docs/spec/audit/*.jsonl` |
+| **AU-6** | Audit review, analysis & reporting | Sprint retro reviews audit anomalies | `docs/project/retros/sprint-S*.md` (audit findings section) |
+| **AU-9** | Protection of audit information | `docs/project/audit/` is git-tracked + checksummed at sprint close | `docs/project/audit/*.jsonl` |
 | **AU-12** | Audit record generation | Hook fires on every PostToolUse(Agent) + SubagentStop | `.claude/hooks/audit.sh` |
 
 ### CM — Configuration Management
@@ -166,7 +166,7 @@ subset that AI-Workflows artifacts directly produce evidence for.
 | **CM-2** | Baseline configuration | Install manifest captures version + profile + presets | `.ai-workflows/manifest.json` |
 | **CM-3** | Configuration change control | Design-doc-first (A005) + 6-gate review | `docs/designs/`; `docs/playbooks/post-delegation-review.md` |
 | **CM-4** | Security impact analysis | Phase 7 (security review trigger) in phase matrix | `.claude/rules/phase-matrix.md` |
-| **CM-5** | Access restrictions for change | CODEOWNERS gates `.claude/`, `docs/playbooks/`, `docs/spec/` | `.github/CODEOWNERS` |
+| **CM-5** | Access restrictions for change | CODEOWNERS gates `.claude/`, `docs/playbooks/`, `docs/project/` | `.github/CODEOWNERS` |
 | **CM-6** | Configuration settings | Permission profile templates | `core/.claude/settings.<profile>.json.tmpl` |
 | **CM-7** | Least functionality | `restricted` profile allow-list = read-only | `docs/setup/permission-profiles.md` |
 | **CM-8** | System component inventory | Install manifest + workflow-validation CI | `.ai-workflows/manifest.json`; `.github/workflows/ai-workflow-validation.yml` |
@@ -175,9 +175,9 @@ subset that AI-Workflows artifacts directly produce evidence for.
 
 | Control | What it asks | Evidence | Where it lives |
 |---|---|---|---|
-| **SI-2** | Flaw remediation | Zero-bug discipline (A002) + FOLLOWUPS | `.claude/rules/brain-hot.md`; `docs/spec/FOLLOWUPS.md` |
+| **SI-2** | Flaw remediation | Zero-bug discipline (A002) + FOLLOWUPS | `.claude/rules/brain-hot.md`; `docs/project/FOLLOWUPS.md` |
 | **SI-3** | Malicious code protection | Lint hook + secret redaction hook + CI scan | `.claude/hooks/*.sh`; `.github/workflows/ai-workflow-validation.yml` |
-| **SI-4** | System monitoring | Audit JSONL ingested into SIEM | `docs/spec/audit/*.jsonl` |
+| **SI-4** | System monitoring | Audit JSONL ingested into SIEM | `docs/project/audit/*.jsonl` |
 | **SI-7** | Software, firmware, information integrity | Lint hook + 6-gate review Gate 2 (Build+Test) | `.claude/hooks/lint.sh`; `docs/playbooks/post-delegation-review.md` |
 | **SI-10** | Information input validation | 6-gate Gate 4 (type-design-analyzer + silent-failure-hunter) | `docs/playbooks/post-delegation-review.md` |
 | **SI-11** | Error handling | Programming-fundamentals rule 4 + silent-failure-hunter reviewer | `.claude/rules/programming-fundamentals.md` |

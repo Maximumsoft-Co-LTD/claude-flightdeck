@@ -2,9 +2,9 @@
 # refresh_indexes.sh — rebuild the 4 index pairs idempotently
 #
 # Indexes rebuilt:
-#   1. docs/spec/sprints/INDEX.md          (from sprint-S*.md files)
-#   2. docs/spec/sprints/sprint-S<N>-index.md  (per active sprint)
-#   3. docs/spec/backlog-index.md          (from backlog.md sprint sections)
+#   1. docs/project/sprints/INDEX.md          (from sprint-S*.md files)
+#   2. docs/project/sprints/sprint-S<N>-index.md  (per active sprint)
+#   3. docs/project/backlog-index.md          (from backlog.md sprint sections)
 #   4. docs/designs/sprint-S<N>/INDEX.md   (per sprint design dir)
 #
 # Usage: refresh_indexes.sh [REPO_ROOT]
@@ -32,11 +32,11 @@ TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
 
 # ---------------------------------------------------------------
-# Index 1 — docs/spec/sprints/INDEX.md (all-sprints index)
+# Index 1 — docs/project/sprints/INDEX.md (all-sprints index)
 # ---------------------------------------------------------------
 build_sprints_index() {
-  local out="docs/spec/sprints/INDEX.md"
-  local src_dir="docs/spec/sprints"
+  local out="docs/project/sprints/INDEX.md"
+  local src_dir="docs/project/sprints"
 
   if [ ! -d "$src_dir" ]; then
     log "skip $out — $src_dir missing"
@@ -88,13 +88,13 @@ build_sprints_index() {
 }
 
 # ---------------------------------------------------------------
-# Index 2 — docs/spec/sprints/sprint-S<N>-index.md (per sprint)
+# Index 2 — docs/project/sprints/sprint-S<N>-index.md (per sprint)
 # ---------------------------------------------------------------
 build_sprint_task_index() {
   local sprint_file="$1"
   local sprint_name out rows
   sprint_name=$(basename "$sprint_file" .md)         # sprint-S04
-  out="docs/spec/sprints/${sprint_name}-index.md"
+  out="docs/project/sprints/${sprint_name}-index.md"
 
   {
     echo "# ${sprint_name} — Task Index"
@@ -143,11 +143,11 @@ build_sprint_task_index() {
 }
 
 # ---------------------------------------------------------------
-# Index 3 — docs/spec/backlog-index.md
+# Index 3 — docs/project/backlog-index.md
 # ---------------------------------------------------------------
 build_backlog_index() {
-  local src="docs/spec/backlog.md"
-  local out="docs/spec/backlog-index.md"
+  local src="docs/project/backlog.md"
+  local out="docs/project/backlog-index.md"
   local rows
 
   if [ ! -f "$src" ]; then
@@ -290,7 +290,7 @@ build_design_index() {
 build_sprints_index
 
 # Each active sprint file → its task index
-find docs/spec/sprints -maxdepth 1 -type f -name 'sprint-S*.md' \
+find docs/project/sprints -maxdepth 1 -type f -name 'sprint-S*.md' \
   ! -name 'sprint-S*-index.md' ! -name 'INDEX.md' 2>/dev/null \
   | sort \
   | while read -r sf; do

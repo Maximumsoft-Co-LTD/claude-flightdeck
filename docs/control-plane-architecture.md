@@ -67,16 +67,16 @@ The control plane is the codified counter-measure to all three.
 └─────────────────────────────────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│ 6. docs/designs/_templates/  +  docs/spec/                          │
+│ 6. docs/designs/_templates/  +  docs/project/                          │
 │    Templates that force quality:                                    │
 │      designs/_templates/DESIGN_TEMPLATE     — ≥500-line zero-fix    │
 │      designs/_templates/DESIGN_LIGHT        — for surgical sweeps   │
 │      designs/_templates/DESIGN_REVIEW       — checklist for /design-review │
 │      designs/_templates/BACKLOG_ENTRY       — backlog row format    │
-│      spec/STATUS.md                         — single-pane truth     │
-│      spec/backlog.md                        — all work, ever        │
-│      spec/sprints/sprint-S<N>.md            — task table per sprint │
-│      spec/retros/sprint-S<N>-tasks.md       — live mini-retros      │
+│      project/STATUS.md                         — single-pane truth     │
+│      project/backlog.md                        — all work, ever        │
+│      project/sprints/sprint-S<N>.md            — task table per sprint │
+│      project/retros/sprint-S<N>-tasks.md       — live mini-retros      │
 └─────────────────────────────────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -111,12 +111,12 @@ The control plane is the codified counter-measure to all three.
    against the project's own conventions.
 6. **Once green, skill prompts for live mini-retro** (A009 / L036) —
    user appends a 6-field row to
-   `docs/spec/retros/sprint-S<N>-tasks.md` (layer 6).
+   `docs/project/retros/sprint-S<N>-tasks.md` (layer 6).
 7. **Skill updates STATUS.md** and prompts for the next task.
 
 At sprint close, `/retro` (layer 4) aggregates the mini-retros, audits
 the backlog (A017), moves STATUS.md prose to STATUS-archive.md, and
-writes `docs/spec/retros/sprint-S<N>.md`. Lessons that emerged become
+writes `docs/project/retros/sprint-S<N>.md`. Lessons that emerged become
 new L### entries in the Brain (layer 7), cited from `brain-hot.md` if
 always-applicable.
 
@@ -184,11 +184,11 @@ for s in .claude/skills/*/SKILL.md; do
 done
 
 # 4. STATUS.md is filled in (not just the template)
-grep -q '_replace with your first sprint_' docs/spec/STATUS.md && \
+grep -q '_replace with your first sprint_' docs/project/STATUS.md && \
   echo "STATUS.md still has placeholder rows" || echo "ok"
 
 # 5. Sprint files exist for the active sprint
-ls docs/spec/sprints/sprint-S*.md || echo "no sprint files yet — run /promote"
+ls docs/project/sprints/sprint-S*.md || echo "no sprint files yet — run /promote"
 
 # 6. Brain pointer is set
 grep -q '{{BRAIN_PATH}}' .claude/rules/brain-hot.md && \

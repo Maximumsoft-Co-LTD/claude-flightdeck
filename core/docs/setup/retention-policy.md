@@ -11,20 +11,20 @@ re-stating the matrix.
 
 | Artifact | Default | Lower bound | Upper bound | Compliance driver |
 |---|---|---|---|---|
-| `docs/spec/audit/*.jsonl` (agent dispatches + gate events) | **12 months** | 3 months (pre-prod, no compliance) | 6+ years (HIPAA) | SOC2 / ISO 27001 / HIPAA / FedRAMP |
-| `docs/spec/sprints/sprint-S<N>.md` | indefinite (in-repo) | last 3 sprints active, older → `sprints/historical/` | indefinite | change-management evidence |
-| `docs/spec/retros/sprint-S<N>.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | learning record + audit |
-| `docs/spec/retros/sprint-S<N>-tasks.md` (live mini-retros) | until sprint close | aggregated into `sprint-S<N>.md` and can be archived | indefinite | learning record |
-| `docs/spec/STATUS.md` | live only (single-pane) | n/a | n/a | latest state — moved to `STATUS-archive.md` at sprint close |
-| `docs/spec/STATUS-archive.md` | indefinite (append-only) | n/a | n/a | historical narrative |
-| `docs/spec/FOLLOWUPS.md` | indefinite | n/a | n/a | open items stay scannable; closed items are the audit trail |
+| `docs/project/audit/*.jsonl` (agent dispatches + gate events) | **12 months** | 3 months (pre-prod, no compliance) | 6+ years (HIPAA) | SOC2 / ISO 27001 / HIPAA / FedRAMP |
+| `docs/project/sprints/sprint-S<N>.md` | indefinite (in-repo) | last 3 sprints active, older → `sprints/historical/` | indefinite | change-management evidence |
+| `docs/project/retros/sprint-S<N>.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | learning record + audit |
+| `docs/project/retros/sprint-S<N>-tasks.md` (live mini-retros) | until sprint close | aggregated into `sprint-S<N>.md` and can be archived | indefinite | learning record |
+| `docs/project/STATUS.md` | live only (single-pane) | n/a | n/a | latest state — moved to `STATUS-archive.md` at sprint close |
+| `docs/project/STATUS-archive.md` | indefinite (append-only) | n/a | n/a | historical narrative |
+| `docs/project/FOLLOWUPS.md` | indefinite | n/a | n/a | open items stay scannable; closed items are the audit trail |
 | `docs/designs/sprint-S<N>/D<NNN>-*.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | design-decision record |
 | `.claude/agent-memory/<agent>/MEMORY.md` | indefinite | n/a | n/a | accumulated learning per agent |
 
 ## Audit log specifics (`audit.jsonl`)
 
 The audit hook writes structured events to
-`docs/spec/audit/YYYY-MM.jsonl`. Retention tiers depend on what the
+`docs/project/audit/YYYY-MM.jsonl`. Retention tiers depend on what the
 project ships:
 
 | Tier | Default | Why |
@@ -43,8 +43,8 @@ Pick **one** of the three patterns; do not stack them.
 
 ```bash
 # Monthly cron — delete .jsonl older than 12 months from
-# docs/spec/audit/. Runs in the repo root.
-0 3 1 * * find docs/spec/audit -name '*.jsonl' -type f -mtime +365 -delete
+# docs/project/audit/. Runs in the repo root.
+0 3 1 * * find docs/project/audit -name '*.jsonl' -type f -mtime +365 -delete
 ```
 
 **2. GitHub Actions (if audit logs are git-tracked):**
@@ -63,7 +63,7 @@ jobs:
         with: { fetch-depth: 0 }
       - name: Delete audit JSONL > 365 days
         run: |
-          find docs/spec/audit -name '*.jsonl' -type f -mtime +365 -delete
+          find docs/project/audit -name '*.jsonl' -type f -mtime +365 -delete
       - name: Commit
         run: |
           git config user.email actions@github.com
@@ -76,14 +76,14 @@ jobs:
 **3. External SIEM (large teams / multi-project):**
 
 Forward each `audit.jsonl` line to your SIEM, then keep the in-repo
-copy ephemeral (`docs/spec/audit/` in `.gitignore`). Retention then
+copy ephemeral (`docs/project/audit/` in `.gitignore`). Retention then
 follows your SIEM's policy. See
 [`audit-trail.md`](./audit-trail.md) for the SIEM-ingestion shape.
 
 ## Sprint archival
 
 After 3 sprints close, move older sprint files to
-`docs/spec/sprints/historical/`:
+`docs/project/sprints/historical/`:
 
 ```bash
 /archive   # the canonical skill — see core/.claude/skills/archive/SKILL.md

@@ -38,7 +38,7 @@
 ```
 Per task group (after review + smoke test):
   1. Compliance check passed
-  2. Write mini retro → append to docs/spec/retros/sprint-XX-tasks.md
+  2. Write mini retro → append to docs/project/retros/sprint-XX-tasks.md
      - What Happened, Issues, Fixes, Lessons, Verdict
   3. Mark task done in sprint file
   4. **Backlog Sync (L087):** update backlog.md status immediately
@@ -51,7 +51,7 @@ End of sprint: /retro reads sprint-XX-tasks.md → aggregates into full retro
 
 **Why:** context vanishes after a task finishes — if not captured live, the sprint retro is missing the load-bearing detail.
 **No need to ask the user** — auto-write after every review.
-**File:** `docs/spec/retros/sprint-XX-tasks.md` (1 file per sprint, append per task)
+**File:** `docs/project/retros/sprint-XX-tasks.md` (1 file per sprint, append per task)
 
 ## E2E-Per-Task Rule (L021) — MANDATORY when project has E2E
 
@@ -149,10 +149,10 @@ Root PM (Post-Delegation Review — 6-gate, MANDATORY):
        h. **Cross-role:** if RBAC was touched → also log in as non-admin → inspect sidebar
   6. **Cross-reference AC**: open repo design doc → check each AC → mark done/fail
   7. If FAIL → delegate fix task before mark done
-  8. **Retro by Task**: append to `docs/spec/retros/sprint-XX-tasks.md`
+  8. **Retro by Task**: append to `docs/project/retros/sprint-XX-tasks.md`
      - Every claim must be evidence-based (count, don't estimate)
   9. Update sprint status + design doc tasks
-  10. **Backlog Sync**: update `docs/spec/backlog.md` immediately
+  10. **Backlog Sync**: update `docs/project/backlog.md` immediately
   11. **Commit + PR (Auto):**
      a. cd {repo} (already on the feature branch)
      b. git add -A && git commit -m "feat(module): description (S##.#)"
@@ -287,7 +287,7 @@ Then follow all phases in the task file. Update PROGRESS.md when done.
 
 Pipeline: `/discover` → detail file → `/discover refine` → `/discover review` → `/promote` (gated) → backlog → sprint
 
-**Requirement Dimensions** (kept in `docs/spec/discovery/D###-slug.md`):
+**Requirement Dimensions** (kept in `docs/project/ideas/D###-slug.md`):
 1. Problem/Opportunity 2. User Stories 3. Acceptance Criteria 4. User Scenarios
 5. UI/UX Notes 6. Technical Constraints 7. Business Context 8. Dependencies 9. Open Questions
 

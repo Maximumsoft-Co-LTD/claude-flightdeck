@@ -32,7 +32,7 @@ When a session changes its track row:
 When opening a new sprint:
 
 1. Update this row (REPLACE, not append) + move closed sprint prose to `STATUS-archive.md` in same commit.
-2. Create sprint file at `docs/spec/sprints/sprint-S<NN>.md`.
+2. Create sprint file at `docs/project/sprints/sprint-S<NN>.md`.
 3. Update `backlog.md` so each newly-scheduled row tags the sprint.
 
 ## See also

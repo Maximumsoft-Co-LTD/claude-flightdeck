@@ -21,17 +21,17 @@ Find and execute the next task from the active sprint. Every task requires a Des
 1. **Find the active sprint pointer**
 
    ```
-   Grep docs/spec/STATUS.md for the project row (or the active-sprint marker)
+   Grep docs/project/STATUS.md for the project row (or the active-sprint marker)
    ```
 
    Extract: active sprint number, in-flight task ID, branch, last update.
 
-   Fallback: `Grep` `docs/spec/backlog-index.md` for the active-sprint marker (e.g. `🚀`) → identify the active sprint pointer.
+   Fallback: `Grep` `docs/project/backlog-index.md` for the active-sprint marker (e.g. `🚀`) → identify the active sprint pointer.
 
 2. **Find the next un-started task in the sprint file**
 
    ```
-   Read docs/spec/sprints/sprint-S<N>.md with limit: 80 (header + task table only)
+   Read docs/project/sprints/sprint-S<N>.md with limit: 80 (header + task table only)
    Scan for the first row with status [ ] Not Started
    ```
 
@@ -42,7 +42,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
 2b. **Check FOLLOWUPS.md** — concrete scan rules:
 
-   - `Grep docs/spec/FOLLOWUPS.md` `## Open` section for **(a)** the task's component path or directory (e.g. `apps/web/features/auth`), **(b)** the design-doc slug (`D<NNN>-<slug>` token), and **(c)** any backlog keyword present in the candidate row's Item cell.
+   - `Grep docs/project/FOLLOWUPS.md` `## Open` section for **(a)** the task's component path or directory (e.g. `apps/web/features/auth`), **(b)** the design-doc slug (`D<NNN>-<slug>` token), and **(c)** any backlog keyword present in the candidate row's Item cell.
    - **Surface ALL `Priority=high` open rows unconditionally** — even if the keyword grep didn't hit. High-priority follow-ups are always candidates for bundling.
    - For each surfaced row, ask the user: "Open follow-up `F####` looks related — should we bundle it into this task?". Never silently consume a follow-up.
    - Cite scanned IDs in the dispatch summary (e.g. `Follow-ups scanned: F0007, F0012` or `Follow-ups scanned: none matched`).
@@ -81,7 +81,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    Display: task ID, one-line description, target component(s), AC, readiness result. Ask: "Confirm dispatch? (yes / pick different / write design doc first)".
 
-6b. **Mid-sprint follow-up consumption** — if the user confirmed bundling an open follow-up (from Step 2b) into this dispatch, update the row in `docs/spec/FOLLOWUPS.md`:
+6b. **Mid-sprint follow-up consumption** — if the user confirmed bundling an open follow-up (from Step 2b) into this dispatch, update the row in `docs/project/FOLLOWUPS.md`:
 
    - Change its `Status` cell from `open` to `in-progress`.
    - Keep the row in `## Open` for now (it transitions to `## Closed` only at sprint-close `/retro` once status becomes `consumed-by:<task-id>` or `wont-do`).
@@ -182,13 +182,13 @@ Find and execute the next task from the active sprint. Every task requires a Des
 11. **Close the task**
 
     - Update the sprint file: change `[ ] Not Started` → `[x] Done` (or `[~] Partial` if scope cut)
-    - Update `docs/spec/STATUS.md` project row (REPLACE, don't append history; move closed prose to `STATUS-archive.md`)
+    - Update `docs/project/STATUS.md` project row (REPLACE, don't append history; move closed prose to `STATUS-archive.md`)
     - Bump any submodule pointer if a nested repo was edited
     - Commit + push
 
 12. **Append the live mini-retro for this task**
 
-    Append a 6-field entry to `docs/spec/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch (what went well / what didn't / lessons / verdict).
+    Append a 6-field entry to `docs/project/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch (what went well / what didn't / lessons / verdict).
 
 13. **Decide what's next**
 

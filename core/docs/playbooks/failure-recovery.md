@@ -302,5 +302,5 @@ git -C <correct-repo> push -u origin <branch>
   scenario 1 next time
 - `docs/playbooks/post-delegation-review.md` — the gates that catch
   most issues before they need recovery
-- `docs/spec/FOLLOWUPS.md` — where every recovery writes its
+- `docs/project/FOLLOWUPS.md` — where every recovery writes its
   post-mortem row

@@ -35,7 +35,7 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
 
 1. **Parse repo + task ID.** Map repo → directory.
 2. **Find the task row (lazy — do not Read full sprint file)**:
-   - `Glob` for the active sprint file in `docs/spec/sprints/sprint-*.md`
+   - `Glob` for the active sprint file in `docs/project/sprints/sprint-*.md`
    - `Grep` for the task ID with `-A 5 -B 1` → extract row + context
    - `Read` with `limit: 80` only if the Grep didn't resolve it
 3. **Check dependencies** — warn / refuse if `blockedBy` is open.
@@ -70,7 +70,7 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
    If any blocker is detected during Steps 3-7, consult `references/blocked-task-recovery.md` for the recovery path — do NOT silently proceed past a block.
 
 9. **Act on the agent's return status, then run the gates** — the reply leads with `DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`. `DONE` → gates. `DONE_WITH_CONCERNS` → read concerns, resolve correctness/scope ones first. `NEEDS_CONTEXT` → add the missing context to the brief + re-dispatch (`SendMessage`). `BLOCKED` → assess (more context / more capable model / split / escalate); never retry the same model unchanged. Then invoke `/post-delegation-gate` which runs all 6 gates (incl. 4a spec-compliance → 4b quality) in order. Do NOT mark Done until every gate passes.
-10. **Live mini-retro (per task)** — append a 6-field retro to `docs/spec/retros/sprint-S<N>-tasks.md`: what went well / what didn't / lessons / design compliance verdict / TDD verdict / post-review fixes needed.
+10. **Live mini-retro (per task)** — append a 6-field retro to `docs/project/retros/sprint-S<N>-tasks.md`: what went well / what didn't / lessons / design compliance verdict / TDD verdict / post-review fixes needed.
 11. **Update sprint file + design doc + backlog** — row status, design doc status, backlog row marker. Refresh slim indexes via `/index-refresh`.
 12. **Bump the meta submodule pointer** if a nested repo was edited; commit + push.
 

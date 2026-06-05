@@ -74,12 +74,12 @@ The rows below are **stack-neutral**. Where a row says "(per preset)" the concre
 
 | If touching | Apply rule |
 |---|---|
-| `docs/spec/STATUS.md` track row | **A008** — REPLACE, do not append. Move prior prose to `STATUS-archive.md` in the same commit. |
-| `docs/spec/backlog.md` task row | Change status `[ ] → [~] → [x]` with date. **L087** — update immediately after task close, not deferred. **L049** — if discovery finds work already done, record `done (S## — reason)` instead of redoing it. Never delete; never re-order without bumping a "last updated" line. |
-| New sprint file `docs/spec/sprints/sprint-S<N>.md` | Use `docs/designs/_templates/` (BACKLOG_ENTRY adapted for sprint). Update `backlog-index.md`. |
+| `docs/project/STATUS.md` track row | **A008** — REPLACE, do not append. Move prior prose to `STATUS-archive.md` in the same commit. |
+| `docs/project/backlog.md` task row | Change status `[ ] → [~] → [x]` with date. **L087** — update immediately after task close, not deferred. **L049** — if discovery finds work already done, record `done (S## — reason)` instead of redoing it. Never delete; never re-order without bumping a "last updated" line. |
+| New sprint file `docs/project/sprints/sprint-S<N>.md` | Use `docs/designs/_templates/` (BACKLOG_ENTRY adapted for sprint). Update `backlog-index.md`. |
 | New task design doc `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` | **A005** — use `DESIGN_TEMPLATE.md`. Declare touched-files matrix (**L035**), acceptance criteria, applicable rules. **L008** — body field names here are the ONLY names impl may use. **L023** — enumerate side-effects of every write. **L022** — content with lifecycle needs a visibility matrix. **L076** — < 500 lines on a non-trivial task → emit "under-specified" warning. |
 | Long multi-session task | **L040** — keep a `PROGRESS.md` context bridge so state survives a `/clear`. |
-| Closing a sprint | **A009** — author retro at `docs/spec/retros/sprint-S<N>.md`. Move sprint file pointer to STATUS-archive. **L186** — capture single-day burndown if applicable. |
+| Closing a sprint | **A009** — author retro at `docs/project/retros/sprint-S<N>.md`. Move sprint file pointer to STATUS-archive. **L186** — capture single-day burndown if applicable. |
 | Keeping docs in sync | **L033** — root / area / deep docs are a 3-tier set; update the tier your change touches. |
 | Adding a new rule | Author it as **A011+** in `brain-hot.md` (or a `<slug>-local.md` rules file). Reference it from this map. Mention it in the next sprint retro. |
 

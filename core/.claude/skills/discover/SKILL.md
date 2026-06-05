@@ -6,7 +6,7 @@ user_invocable: true
 
 # /discover — Structured Requirement Capture
 
-Capture raw ideas into `docs/spec/discovery.md` (index) + `docs/spec/discovery/D<###>-<slug>.md` (detail file). Discovery is the staging area — nothing reaches the backlog without `/promote`.
+Capture raw ideas into `docs/project/ideas.md` (index) + `docs/project/ideas/D<###>-<slug>.md` (detail file). Discovery is the staging area — nothing reaches the backlog without `/promote`.
 
 ## Token budget (MANDATORY)
 
@@ -28,10 +28,10 @@ Capture raw ideas into `docs/spec/discovery.md` (index) + `docs/spec/discovery/D
 2. **Estimate complexity** — trivial/small → 3-4 follow-ups; medium → 5-8; large → 8-10. Don't over-ask small items.
 3. **Stage 2 — Scope**: target behaviour, explicit non-goals, related features, cross-component impact (events, persistence, UI entry points). Ask which areas of the system will need to change.
 4. **Stage 3 — Context**: urgency, technical constraints, deadlines, related discovery items.
-5. **Allocate next D### ID** — `Grep` `docs/spec/discovery.md` for the highest ID and increment.
-6. **Create the detail file** `docs/spec/discovery/D<###>-<slug>.md` with: User Stories, Acceptance Criteria, Affected Components, Cross-cutting Concerns (multi-tenancy / RBAC / observability if applicable to {{PROJECT_NAME}}), Open Questions.
-7. **Update the discovery index** `docs/spec/discovery.md` — append a new row: `D###`, title, state = `raw` or `refined`, owner.
-8. **Auto-scan for duplicates** — `Grep` `docs/spec/discovery.md` + `docs/spec/backlog.md` for title keywords. If a similar item exists, surface it and ask whether to merge.
+5. **Allocate next D### ID** — `Grep` `docs/project/ideas.md` for the highest ID and increment.
+6. **Create the detail file** `docs/project/ideas/D<###>-<slug>.md` with: User Stories, Acceptance Criteria, Affected Components, Cross-cutting Concerns (multi-tenancy / RBAC / observability if applicable to {{PROJECT_NAME}}), Open Questions.
+7. **Update the discovery index** `docs/project/ideas.md` — append a new row: `D###`, title, state = `raw` or `refined`, owner.
+8. **Auto-scan for duplicates** — `Grep` `docs/project/ideas.md` + `docs/project/backlog.md` for title keywords. If a similar item exists, surface it and ask whether to merge.
 
 ## Definition of Ready (used by `/discover review` and by `/promote`)
 
@@ -41,7 +41,7 @@ Capture raw ideas into `docs/spec/discovery.md` (index) + `docs/spec/discovery/D
 
 ## Rules
 
-- **Never modify `docs/spec/backlog.md`** — that is `/promote`'s job.
+- **Never modify `docs/project/backlog.md`** — that is `/promote`'s job.
 - Sequential D### IDs, never reused.
 - Auto-scan for duplicates on every new capture.
 - Discovery items can be `dropped` (state change) but the file is never deleted — keep the trail.

@@ -40,7 +40,7 @@ would write.
 
 > Sample project at [`examples/url-shortener-go-hex/`](examples/url-shortener-go-hex/)
 > — 3 sprints of real artifacts (STATUS, designs, retros, FOLLOWUPS).
-> ~20 min walkthrough starting at its `docs/spec/STATUS.md`.
+> ~20 min walkthrough starting at its `docs/project/STATUS.md`.
 
 ## The workflow
 
@@ -94,7 +94,7 @@ target-project/
 │   ├── playbooks/           # post-delegation-review (6-gate) · contract-first
 │   ├── designs/_templates/  # zero-fix DESIGN_TEMPLATE + size tiers
 │   ├── setup/               # workflow-master, lesson-trigger-map, …
-│   └── spec/                # STATUS · backlog · FOLLOWUPS · sprints/ · retros/
+│   └── project/                # STATUS · backlog · FOLLOWUPS · sprints/ · retros/
 └── .ai-workflows/
     └── manifest.json        # version + install metadata (drives upgrade)
 ```

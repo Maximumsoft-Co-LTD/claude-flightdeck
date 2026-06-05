@@ -53,7 +53,7 @@
 ## Backlog audit (HARD gate)
 
 ```
-grep -nE "S01\b" docs/spec/backlog.md | grep -vE "done S01|\[~\] Partial|moved to S"
+grep -nE "S01\b" docs/project/backlog.md | grep -vE "done S01|\[~\] Partial|moved to S"
 ```
 
 - Result: **0 mismatches.** 3 rows tagged S01 (B001, B002, B003); all three closed as `done S01`.

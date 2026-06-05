@@ -166,7 +166,7 @@
 - [2026-05-30] https://developers.openai.com/api/docs/guides/prompt-caching — OpenAI caching (50% off, exact-prefix match) — cross-provider "stable prefix" rule · q5  #sdlc-with-ai
 - [2026-05-30] https://code.claude.com/docs/en/headless — headless mode: `claude -p`, `--output-format json`, `--json-schema` for CI · q5  #sdlc-with-ai
 - [2026-05-30] https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html — Böckeler: Kiro vs spec-kit vs Tessl; spec-first/anchored/centric taxonomy · q5  #sdlc-with-ai
-- [2026-05-30] https://kiro.dev/docs/specs/ — AWS Kiro spec engine: requirements.md / design.md / tasks.md triad · q5  #sdlc-with-ai
+- [2026-05-30] https://kiro.dev/docs/projects/ — AWS Kiro spec engine: requirements.md / design.md / tasks.md triad · q5  #sdlc-with-ai
 - [2026-05-30] https://github.com/bmad-code-org/BMAD-METHOD — BMAD method (48k★): persona agents, PRD→architecture→sharded stories · q5  #sdlc-with-ai
 - [2026-05-30] https://alistairmavin.com/ears/ — EARS requirements syntax: 6-pattern grammar for unambiguous specs · q5  #sdlc-with-ai
 - [2026-05-30] https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/ — non-reproducibility root cause = batch-invariance, not float math · q5  #sdlc-with-ai
@@ -354,7 +354,7 @@
 - [2026-05-30] https://buf.build/docs/breaking/ — `buf breaking`: diff proto schema vs prior version, gate wire/JSON incompatibility · q5  #software-tech
 - [2026-05-30] https://github.com/stoplightio/spectral — Spectral: OpenAPI/AsyncAPI/Arazzo linter with custom style-guide rulesets · q5  #software-tech
 - [2026-05-30] https://blog.stoplight.io/api-design-first-vs-code-first — design-first vs code-first workflow (contract → mocks/docs → consumers) · q4  #software-tech
-- [2026-05-30] https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-agent-spans/ — OTel GenAI agent span semantic conventions (create_agent/invoke_agent/invoke_workflow) · q5  #software-tech
+- [2026-05-30] https://opentelemetry.io/docs/projects/semconv/gen-ai/gen-ai-agent-spans/ — OTel GenAI agent span semantic conventions (create_agent/invoke_agent/invoke_workflow) · q5  #software-tech
 - [2026-05-30] https://www.datadoghq.com/blog/llm-observability-at-datadog-security/ — build eval datasets from anonymized prod LLM spans + red-team · q4  #software-tech
 - [2026-05-30] https://github.com/traceloop/openllmetry — OpenLLMetry: OTel-based auto-instrumentation for 10+ LLM providers/frameworks · q5  #software-tech
 - [2026-05-30] https://langfuse.com/docs/observability/overview — Langfuse: trace/observation data model for the full LLM request lifecycle · q5  #software-tech

@@ -81,7 +81,7 @@ Meaning:
 ### Step 1 — Authorship is logged
 
 When the implementation agent commits, `audit.sh` writes a
-`PostToolUse` line to `docs/spec/audit/YYYY-MM.jsonl` with the
+`PostToolUse` line to `docs/project/audit/YYYY-MM.jsonl` with the
 `agent_id`, `subagent_type`, `task_id`, and `files_touched`. This is
 the **author** record.
 
@@ -89,7 +89,7 @@ the **author** record.
 
 When Gate 4 reviewers complete, their findings are committed to the
 PR description (or attached as a review log file at
-`docs/spec/reviews/sprint-S<N>-<task-id>.md`). The audit hook
+`docs/project/reviews/sprint-S<N>-<task-id>.md`). The audit hook
 records the dispatch.
 
 ### Step 3 — Acknowledgement lands as PR-APPROVER
@@ -142,8 +142,8 @@ approve. Both must agree for a regulated change to merge:
 | `.claude/rules/*.md` | `@{{PROJECT_SLUG}}-platform @{{PROJECT_SLUG}}-security` | `@{{PROJECT_SLUG}}-security` |
 | `.claude/hooks/**` | `@{{PROJECT_SLUG}}-platform` | `@{{PROJECT_SLUG}}-platform` |
 | `docs/playbooks/**` | `@{{PROJECT_SLUG}}-platform` | `@{{PROJECT_SLUG}}-platform` |
-| `docs/spec/audit/**` | `@{{PROJECT_SLUG}}-security` | `@{{PROJECT_SLUG}}-security` |
-| `docs/spec/**` (general) | `@{{PROJECT_SLUG}}-pm` | `@{{PROJECT_SLUG}}-pm` |
+| `docs/project/audit/**` | `@{{PROJECT_SLUG}}-security` | `@{{PROJECT_SLUG}}-security` |
+| `docs/project/**` (general) | `@{{PROJECT_SLUG}}-pm` | `@{{PROJECT_SLUG}}-pm` |
 
 ## Related
 

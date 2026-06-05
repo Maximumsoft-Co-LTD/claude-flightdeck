@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# audit-query — aggregate docs/spec/audit/*.jsonl into a markdown digest.
+# audit-query — aggregate docs/project/audit/*.jsonl into a markdown digest.
 #
 # Read-only. Fail-open on missing audit dir; exit 1 only if jq is missing.
 # Portable: macOS (BSD date) + Linux (GNU date) compatibility.
@@ -11,7 +11,7 @@
 #   --agent NAME         Filter by subagent_type
 #   --task ID            Filter by exact task_id
 #   --top files|agents|tasks   Emphasize a section (default: agents)
-#   --audit-dir PATH     Override docs/spec/audit (used by smoke tests)
+#   --audit-dir PATH     Override docs/project/audit (used by smoke tests)
 #   -h, --help           Print usage
 #
 # Output: markdown digest on stdout.
@@ -31,7 +31,7 @@ SPRINT=""
 AGENT=""
 TASK=""
 TOP="agents"
-AUDIT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}/docs/spec/audit"
+AUDIT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}/docs/project/audit"
 
 usage() {
   sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'

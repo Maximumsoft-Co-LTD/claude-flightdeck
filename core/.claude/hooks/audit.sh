@@ -4,7 +4,7 @@
 # Triggered as a PostToolUse hook on the `Agent` tool and as a
 # SubagentStop hook. Reads the tool event JSON from stdin, distills a
 # compact audit record, and appends one JSONL line (newline-delimited
-# JSON / ndjson) to docs/spec/audit/YYYY-MM.jsonl.
+# JSON / ndjson) to docs/project/audit/YYYY-MM.jsonl.
 #
 # JSONL schema (one object per line, ndjson-friendly for Splunk /
 # Datadog / ELK ingestion — see docs/setup/audit-trail.md):
@@ -32,7 +32,7 @@ set -uo pipefail
 command -v jq >/dev/null 2>&1 || exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
-AUDIT_DIR="$PROJECT_DIR/docs/spec/audit"
+AUDIT_DIR="$PROJECT_DIR/docs/project/audit"
 mkdir -p "$AUDIT_DIR" 2>/dev/null || exit 0
 
 MONTH="$(date -u +%Y-%m)"

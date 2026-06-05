@@ -37,8 +37,8 @@ memory/
 ## What does NOT go here
 
 - Project specs (those live in `docs/`)
-- Per-task work logs (those live in `docs/spec/sprints/`)
-- Per-task retros (those live in `docs/spec/retros/sprint-S<N>-tasks.md`)
+- Per-task work logs (those live in `docs/project/sprints/`)
+- Per-task retros (those live in `docs/project/retros/sprint-S<N>-tasks.md`)
 - Agent-specific feedback (that lives in `../agent-memory/<agent>/`)
 
 ## External Brain alternative

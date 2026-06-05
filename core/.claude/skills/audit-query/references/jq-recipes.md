@@ -5,7 +5,7 @@
 > investigations where the digest doesn't fit.
 >
 > All recipes assume `cwd` is the project root and audit files live at
-> `docs/spec/audit/YYYY-MM.jsonl` (see `docs/setup/audit-trail.md` for
+> `docs/project/audit/YYYY-MM.jsonl` (see `docs/setup/audit-trail.md` for
 > schema).
 
 ## All dispatches today
@@ -14,7 +14,7 @@
 
 ```bash
 jq -c 'select(.ts | startswith("'$(date -u +%Y-%m-%d)'"))' \
-  docs/spec/audit/*.jsonl
+  docs/project/audit/*.jsonl
 ```
 
 ## All dispatches for a specific task
@@ -22,7 +22,7 @@ jq -c 'select(.ts | startswith("'$(date -u +%Y-%m-%d)'"))' \
 **When:** forensics on a single task — every dispatch, every reviewer touch.
 
 ```bash
-jq -c 'select(.task_id == "URLSH-S03.04")' docs/spec/audit/*.jsonl
+jq -c 'select(.task_id == "URLSH-S03.04")' docs/project/audit/*.jsonl
 ```
 
 ## Slowest 10 dispatches lifetime
@@ -34,7 +34,7 @@ jq -s 'map(select(.duration_ms != null))
        | sort_by(-.duration_ms)
        | .[:10]
        | map({agent: .subagent_type, task: .task_id, ms: .duration_ms, ts})' \
-  docs/spec/audit/*.jsonl
+  docs/project/audit/*.jsonl
 ```
 
 ## Files most edited
@@ -42,7 +42,7 @@ jq -s 'map(select(.duration_ms != null))
 **When:** identify hot files that may need refactor / better tests / clearer boundary.
 
 ```bash
-jq -r '.files_touched[]?' docs/spec/audit/*.jsonl \
+jq -r '.files_touched[]?' docs/project/audit/*.jsonl \
   | sort | uniq -c | sort -rn | head -20
 ```
 
@@ -59,7 +59,7 @@ jq -s '
       avg_ms: (map(.duration_ms // 0) | add / length | floor)
     })
   | sort_by(-.avg_ms)
-' docs/spec/audit/*.jsonl
+' docs/project/audit/*.jsonl
 ```
 
 ## Cycle counts per task (gate retries)
@@ -73,7 +73,7 @@ jq -s '
   | map({task: .[0].task_id, dispatches: length})
   | sort_by(-.dispatches)
   | .[:10]
-' docs/spec/audit/*.jsonl
+' docs/project/audit/*.jsonl
 ```
 
 ## Dispatches in a date range
@@ -83,7 +83,7 @@ jq -s '
 ```bash
 jq -c --arg lo "2026-05-01T00:00:00Z" --arg hi "2026-05-15T23:59:59Z" \
   'select(.ts >= $lo and .ts <= $hi)' \
-  docs/spec/audit/2026-05.jsonl
+  docs/project/audit/2026-05.jsonl
 ```
 
 ## Subagent_type distribution this month
@@ -92,7 +92,7 @@ jq -c --arg lo "2026-05-01T00:00:00Z" --arg hi "2026-05-15T23:59:59Z" \
 
 ```bash
 jq -r '.subagent_type // "(unknown)"' \
-  "docs/spec/audit/$(date -u +%Y-%m).jsonl" \
+  "docs/project/audit/$(date -u +%Y-%m).jsonl" \
   | sort | uniq -c | sort -rn
 ```
 
@@ -102,7 +102,7 @@ jq -r '.subagent_type // "(unknown)"' \
 
 ```bash
 jq -c 'select(.reason != null and .reason != "")' \
-  docs/spec/audit/*.jsonl
+  docs/project/audit/*.jsonl
 ```
 
 ## Reconstruct one agent's history
@@ -111,7 +111,7 @@ jq -c 'select(.reason != null and .reason != "")' \
 
 ```bash
 jq -c 'select(.subagent_type == "backend-engineer")' \
-  docs/spec/audit/*.jsonl \
+  docs/project/audit/*.jsonl \
   | jq -s 'sort_by(.ts) | .[] | {ts, task_id, ms: .duration_ms, files: (.files_touched // [] | length)}'
 ```
 
@@ -121,7 +121,7 @@ jq -c 'select(.subagent_type == "backend-engineer")' \
 
 ```bash
 jq -c 'select((.files_touched // [] | length) > 1) | .files_touched' \
-  docs/spec/audit/*.jsonl \
+  docs/project/audit/*.jsonl \
   | sort | uniq -c | sort -rn | head -20
 ```
 

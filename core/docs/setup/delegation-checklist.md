@@ -82,7 +82,7 @@ Shortened "READ X THEN EXECUTE" prompts are BANNED — they skip blocks 1–5.
 - [ ] Wiring verified — new symbol / route / handler is referenced from the composition root / app bootstrap
 - [ ] Smoke test passes — `/verify-dev` or the targeted subset
 - [ ] Sprint file row status updated (`[x]` / `[~]`)
-- [ ] Per-task retro appended to `docs/spec/retros/sprint-XX-tasks.md`
+- [ ] Per-task retro appended to `docs/project/retros/sprint-XX-tasks.md`
 - [ ] Commit exists with conventional-commit message (agent should have made one; if not, make it yourself)
 - [ ] Any new lessons saved to brain / memory
 - [ ] Any new architectural decisions saved to brain / memory

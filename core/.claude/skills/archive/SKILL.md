@@ -6,7 +6,7 @@ user_invocable: true
 
 # /archive — Move Old Sprints to `historical/`
 
-Keep `docs/spec/sprints/`, `docs/designs/`, and `docs/spec/retros/` lean by moving anything older than the 3 most-recent sprints into a `historical/` (or `_archive/`) subfolder. Uses `git mv` — nothing is deleted.
+Keep `docs/project/sprints/`, `docs/designs/`, and `docs/project/retros/` lean by moving anything older than the 3 most-recent sprints into a `historical/` (or `_archive/`) subfolder. Uses `git mv` — nothing is deleted.
 
 ## Token budget (MANDATORY)
 
@@ -22,13 +22,13 @@ Keep `docs/spec/sprints/`, `docs/designs/`, and `docs/spec/retros/` lean by movi
 
 ## Steps
 
-1. **Scan** — `Glob` `docs/spec/sprints/sprint-*.md`, `docs/designs/sprint-*/`, `docs/spec/retros/sprint-*.md`.
+1. **Scan** — `Glob` `docs/project/sprints/sprint-*.md`, `docs/designs/sprint-*/`, `docs/project/retros/sprint-*.md`.
 2. **Sort by sprint number** (parse `S<N>` from the path).
 3. **Keep the latest 3 sprints active.** Everything older is a candidate for archive.
 4. **Show the preview**: list every file that will move + its destination path. Ask the user to confirm.
-5. **Execute `git mv`** for each candidate → `docs/spec/sprints/historical/`, `docs/designs/historical/sprint-S<N>/`, `docs/spec/retros/historical/`.
-6. **Update the historical INDEX** — `docs/spec/sprints/historical/INDEX.md` gets a new row per archived sprint with title + date archived.
-7. **Refresh slim indexes** via `/index-refresh` so `docs/spec/sprints/INDEX.md` and `docs/spec/backlog-index.md` reflect the move.
+5. **Execute `git mv`** for each candidate → `docs/project/sprints/historical/`, `docs/designs/historical/sprint-S<N>/`, `docs/project/retros/historical/`.
+6. **Update the historical INDEX** — `docs/project/sprints/historical/INDEX.md` gets a new row per archived sprint with title + date archived.
+7. **Refresh slim indexes** via `/index-refresh` so `docs/project/sprints/INDEX.md` and `docs/project/backlog-index.md` reflect the move.
 8. **Commit** — `docs(archive): move sprints older than the active window to historical/`.
 
 ## Restore flow

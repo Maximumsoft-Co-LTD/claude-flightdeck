@@ -19,7 +19,7 @@ skill, or onboarding friction.
   nothing unless invoked. There is no hook, no background poll.
 - Read `.ai-workflows/manifest.json` **once** (small — version + commit +
   presets + placeholders).
-- Read `docs/spec/retros/onboarding.md` with `limit: 100` **only** for
+- Read `docs/project/retros/onboarding.md` with `limit: 100` **only** for
   `onboarding`-type feedback — skip it for every other type.
 - Do NOT scan the codebase or Read large files. Feedback is about the
   **template**, not the user's project. If you find yourself grepping
@@ -66,7 +66,7 @@ below). See [`## For org-forks`](#for-org-forks) if your team forked it.
    - **rule** — which rule ID (A### / L### / B###) · what misfired · proposed wording.
    - **preset** — stack/framework · what it should scaffold · why core can't cover it.
    - **skill** — which skill · what was confusing/broken · expected behavior.
-   - **onboarding** — which stage · what stalled · suggestion. (Only here: read `docs/spec/retros/onboarding.md` `limit: 100` for context.)
+   - **onboarding** — which stage · what stalled · suggestion. (Only here: read `docs/project/retros/onboarding.md` `limit: 100` for context.)
 4. **Draft the issue body.** Structured markdown matching the form's
    sections, plus an auto-included environment block:
 

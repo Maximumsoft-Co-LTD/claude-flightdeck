@@ -204,11 +204,11 @@ assume any particular architecture is in place:
   merge + clean up after PR review.
 - If you made NO changes → confirm worktree exit is safe (auto-cleanup
   reclaims disk).
-- Update the relevant `docs/spec/sprints/sprint-S<N>.md` row
+- Update the relevant `docs/project/sprints/sprint-S<N>.md` row
   immediately after task complete — change `[ ] Not Started` → `[x]
   Done` or `[~] Partial`. Do NOT defer to sprint close.
 - Append the **live mini-retro** (A009 / L036) to
-  `docs/spec/retros/sprint-S<N>-tasks.md` before reporting back to the
+  `docs/project/retros/sprint-S<N>-tasks.md` before reporting back to the
   orchestrator.
 
 ## Origin

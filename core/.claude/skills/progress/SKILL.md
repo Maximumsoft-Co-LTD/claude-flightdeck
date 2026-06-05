@@ -16,7 +16,7 @@ A read-only mid-sprint snapshot. Never writes.
 
 ## Steps
 
-1. **Find the active sprint file** — `Glob` `docs/spec/sprints/sprint-*.md`, pick the one whose header marks it active (or the one referenced by `docs/spec/STATUS.md`).
+1. **Find the active sprint file** — `Glob` `docs/project/sprints/sprint-*.md`, pick the one whose header marks it active (or the one referenced by `docs/project/STATUS.md`).
 2. **Read the task table** with `limit: 200`.
 3. **Calculate metrics** — Total / Done / In Progress / Not Started / Blocked / Completion %.
 4. **Display the dashboard**:

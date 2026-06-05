@@ -6,8 +6,8 @@ row, never delete prose from this file once it lands. The file is
 append-only (newest at the top).
 
 This file is the **historical narrative**. `STATUS.md` is the live
-single-pane glance. `docs/spec/sprints/sprint-S<N>.md` is the per-task
-detail. `docs/spec/retros/sprint-S<N>.md` is the per-sprint retro.
+single-pane glance. `docs/project/sprints/sprint-S<N>.md` is the per-task
+detail. `docs/project/retros/sprint-S<N>.md` is the per-sprint retro.
 Together they form the audit trail.
 
 ## Conventions
@@ -16,8 +16,8 @@ Together they form the audit trail.
 - Below the H2: the exact prose that was in the live `STATUS.md` row
   at sprint close. Verbatim move — do not summarize or rewrite.
 - Optional: a 1-2 sentence post-mortem note added during the retro.
-- Links to `docs/spec/sprints/sprint-S<N>.md` and
-  `docs/spec/retros/sprint-S<N>.md` for detail.
+- Links to `docs/project/sprints/sprint-S<N>.md` and
+  `docs/project/retros/sprint-S<N>.md` for detail.
 
 ## Closed sprints (newest first)
 

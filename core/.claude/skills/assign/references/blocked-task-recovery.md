@@ -30,7 +30,7 @@ Current TG-S04.08 status: [~] Partial
 **Recovery script:**
 ```bash
 # Confirm the blocker's true status
-grep "TG-S04.08" docs/spec/sprints/sprint-S04.md
+grep "TG-S04.08" docs/project/sprints/sprint-S04.md
 # Read the blocker's design doc for context
 ls docs/designs/sprint-S04/*S04.08*.md
 ```
@@ -115,7 +115,7 @@ TG-S04.08 status: [~] Partial — contract committed, but consumer
 **Recovery:**
 ```bash
 # Check which part of the partial is missing
-grep "TG-S04.08" docs/spec/retros/sprint-S04-tasks.md | head -20
+grep "TG-S04.08" docs/project/retros/sprint-S04-tasks.md | head -20
 
 # Or read the partial task's design doc §Status section
 ```

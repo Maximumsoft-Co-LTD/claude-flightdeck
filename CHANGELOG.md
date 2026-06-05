@@ -32,6 +32,17 @@
     shrinks the onboarding surface, and the repo validator
     (`scripts/validate-skills.sh`) already covers structural integrity.
 
+### Changed
+
+- **State folder `docs/spec/` → `docs/project/`** (rename + all ~69 inbound
+  cross-references rewritten in lock-step), and the ideas-staging path
+  `discovery/` → `ideas/`. `install.sh` / `install.ps1` / the upgrade classifier
+  are updated in a later step (legacy `docs/spec/**` globs retained so existing
+  installs are never clobbered).
+  - **Why / how it's better:** "project" reads correctly to a new engineer and
+    avoids the false "immutable spec" implication; one rename collapses the
+    scattered references behind a single obvious path.
+
 ### Added
 
 - **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free

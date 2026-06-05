@@ -57,7 +57,7 @@ inside `docs/` (top level here) stays in this repo.
    between orchestrator and subagent.
 6. **Never write or run code in `core/.claude/memory/`** — that folder is
    shipped empty (with a README explaining the in-repo Brain fallback).
-   Same for `core/docs/spec/sprints/.gitkeep` and `retros/.gitkeep`.
+   Same for `core/docs/project/sprints/.gitkeep` and `retros/.gitkeep`.
 7. **Document every change — always.** No change to `core/`, `presets/`,
    `install.sh`, or this repo's docs lands without a written record of
    **what** changed, **why**, and **how it makes the template better**.

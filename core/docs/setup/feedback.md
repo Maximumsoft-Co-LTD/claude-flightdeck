@@ -61,7 +61,7 @@ showing you the preview first.
 ## High-signal: share your retro
 
 The single most useful thing you can send is a **sanitized** excerpt of
-your Stage-8 onboarding retro (`docs/spec/retros/onboarding.md`) or your
+your Stage-8 onboarding retro (`docs/project/retros/onboarding.md`) or your
 `/audit-query` digest. That data is pure signal:
 
 - which A-rules you ratified vs dropped

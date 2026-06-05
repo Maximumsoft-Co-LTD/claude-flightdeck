@@ -55,7 +55,7 @@ A redesign can pass thousands of unit tests + type-check + lint + a structural "
 1. Prefer the existing real-backend E2E harness — it already builds the app + seeds + drives login.
 2. For each in-scope route, navigate + screenshot at **1440px** (primary) plus **responsive 360 / 768 / 1024**.
 3. **Theme matrix** — capture each supported theme. If the app supports dark mode, capture both light and dark to verify token flow.
-4. Save to `docs/spec/reviews/_shots/sprint-S<N>/<route>-<theme>-<width>.png`.
+4. Save to `docs/project/reviews/_shots/sprint-S<N>/<route>-<theme>-<width>.png`.
 
 ### Step 3 — Automated checks (cheap, run first)
 
@@ -106,7 +106,7 @@ A redesign can pass thousands of unit tests + type-check + lint + a structural "
 
 ### Step 6 — Log findings (auto-append to backlog)
 
-For each finding, append to `docs/spec/backlog.md` under the sprint's follow-up section:
+For each finding, append to `docs/project/backlog.md` under the sprint's follow-up section:
 - `{{TASK_ID_PREFIX}}-S<N>-FU-DR-<n> | <P1/P2/P3> | [<lens: UX/Technical/Friendly>] <title> | impl <file:line> | Fix: <precise fix>`.
 - Token-leak / i18n-gap / parity<90% / axe-serious / boundary-violation → **P1**. Group by lens in the report.
 
@@ -118,7 +118,7 @@ For each finding, append to `docs/spec/backlog.md` under the sprint's follow-up 
 
 ### Step 8 — Report
 
-Write `docs/spec/reviews/sprint-S<N>-design-review.md`:
+Write `docs/project/reviews/sprint-S<N>-design-review.md`:
 - Scorecard table (route × lens × score + overall).
 - Per-route findings grouped by lens, with impl `file:line` + precise fix.
 - Verdict + the backlog IDs filed. Screenshot paths (`_shots/sprint-S<N>/...`).
@@ -145,5 +145,5 @@ If a finding **class recurs**, in the report:
 - **Never claim a route passes without an actual Playwright screenshot capture.** Structure-only / curl / unit-test-only verdicts are forbidden — that is the exact failure this gate replaces.
 - Run Step 3 automated checks BEFORE the manual lens review — they catch the mechanical bugs cheaply.
 - **Token leakage, i18n gap, visual correctness < 90%, axe serious / critical, or boundary / tsc / lint error → FIX-NOW → blocks the submodule-pointer bump / promote.** No "ship and polish later" for these classes.
-- Every finding lands in `docs/spec/backlog.md` with a precise fix + impl `file:line` — no vague "improve spacing".
+- Every finding lands in `docs/project/backlog.md` with a precise fix + impl `file:line` — no vague "improve spacing".
 - Feedback loop (Step 9) recommends rule / lesson edits but does not make them.

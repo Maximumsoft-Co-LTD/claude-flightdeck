@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         `/onboard` is the 8-stage setup wizard. The best signal comes
-        from your `docs/spec/retros/onboarding.md` (Stage 8) — feel free
+        from your `docs/project/retros/onboarding.md` (Stage 8) — feel free
         to paste a **sanitized** excerpt below.
   - type: dropdown
     id: version
@@ -57,5 +57,5 @@ body:
     id: retro
     attributes:
       label: Onboarding retro excerpt (optional, sanitized)
-      description: "Paste from docs/spec/retros/onboarding.md. Redact project names / secrets."
+      description: "Paste from docs/project/retros/onboarding.md. Redact project names / secrets."
       render: markdown

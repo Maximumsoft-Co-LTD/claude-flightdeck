@@ -1,12 +1,12 @@
 ---
 name: audit-query
-description: "Aggregate docs/spec/audit/*.jsonl into a human-readable digest — dispatches per agent, gate failures, slowest tasks, recurring task IDs, file-touch hotspots. Use when the user asks '/audit-query', 'show audit summary', 'where did time go last week', 'which agent is slowest', 'audit dashboard', or wants weekly / sprint-end insights from the audit log."
+description: "Aggregate docs/project/audit/*.jsonl into a human-readable digest — dispatches per agent, gate failures, slowest tasks, recurring task IDs, file-touch hotspots. Use when the user asks '/audit-query', 'show audit summary', 'where did time go last week', 'which agent is slowest', 'audit dashboard', or wants weekly / sprint-end insights from the audit log."
 user_invocable: true
 ---
 
 # /audit-query — Audit-log digest
 
-Aggregate `docs/spec/audit/*.jsonl` (written by `.claude/hooks/audit.sh`) into an opinionated markdown digest — dispatches per agent with p50/p95 latency, slowest individual dispatches, file-touch hotspots, task-ID retry counts, and gate-failure indicators.
+Aggregate `docs/project/audit/*.jsonl` (written by `.claude/hooks/audit.sh`) into an opinionated markdown digest — dispatches per agent with p50/p95 latency, slowest individual dispatches, file-touch hotspots, task-ID retry counts, and gate-failure indicators.
 
 ## Why this skill exists
 
@@ -39,7 +39,7 @@ Flags are additive — combine `--sprint S03 --agent backend-engineer` to slice 
    - Default: `--since` = today minus 7 days, `--until` = today (UTC).
    - If `--since` / `--until` provided, parse them as ISO dates (`YYYY-MM-DD`).
    - If `--sprint S<N>` provided, expand to a task-ID filter (`*-S<N>.*`) and use lifetime window unless `--since` is also set.
-2. **Locate audit files.** Glob `docs/spec/audit/*.jsonl` and keep only files whose `YYYY-MM` overlaps the window (cheap pre-filter — avoids `jq`'ing irrelevant months).
+2. **Locate audit files.** Glob `docs/project/audit/*.jsonl` and keep only files whose `YYYY-MM` overlaps the window (cheap pre-filter — avoids `jq`'ing irrelevant months).
 3. **Run aggregation.** Execute `scripts/query.sh` with the parsed flags. The script:
    - Streams matching JSONL lines through `jq` (filter by `ts`, `subagent_type`, `task_id`).
    - Groups by `subagent_type` for counts + p50 / p95 `duration_ms`.
@@ -50,7 +50,7 @@ Flags are additive — combine `--sprint S03 --agent backend-engineer` to slice 
 4. **Emit markdown digest** to stdout. The script writes the report directly; the skill body presents it without paraphrasing.
 5. **Pre-flight checks**, in this order:
    - `command -v jq` → if missing, the script exits 1 with `audit-query requires jq; install jq` on stderr. Surface that.
-   - `[ -d docs/spec/audit ]` → if missing, the script exits 0 with `no audit log found yet (enable the audit hook to start collecting)`. Tell the user how (link to `audit-trail.md` §Hook configuration).
+   - `[ -d docs/project/audit ]` → if missing, the script exits 0 with `no audit log found yet (enable the audit hook to start collecting)`. Tell the user how (link to `audit-trail.md` §Hook configuration).
    - No JSONL lines in window → the script exits 0 with `no dispatches in window`. Suggest widening `--since`.
 
 ## Output format
@@ -98,7 +98,7 @@ A real example (last 7 days on a small project):
 
 ## Gate-failure indicator
 3 events with a non-empty `reason` field. Inspect:
-  jq -c 'select(.reason != "" and .reason != null)' docs/spec/audit/2026-05.jsonl
+  jq -c 'select(.reason != "" and .reason != null)' docs/project/audit/2026-05.jsonl
 ```
 
 ## Common queries
@@ -118,13 +118,13 @@ A real example (last 7 days on a small project):
 
 ```bash
 # Does the audit dir exist?
-test -d docs/spec/audit || echo "audit hook not enabled — see docs/setup/audit-trail.md §Hook configuration"
+test -d docs/project/audit || echo "audit hook not enabled — see docs/setup/audit-trail.md §Hook configuration"
 
 # Is jq installed?
 command -v jq >/dev/null || echo "install jq: brew install jq (macOS) / apt install jq (Linux)"
 ```
 
-If `docs/spec/audit/` exists but is empty, the audit hook is wired but no agents have been dispatched since enablement — that's normal on a fresh template install.
+If `docs/project/audit/` exists but is empty, the audit hook is wired but no agents have been dispatched since enablement — that's normal on a fresh template install.
 
 ## Rules
 

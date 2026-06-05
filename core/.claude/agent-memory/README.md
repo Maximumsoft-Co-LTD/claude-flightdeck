@@ -38,7 +38,7 @@ write feedback.
 
 - File paths or symbol names from the current codebase (those rot fast
    — grep / LSP instead)
-- Ephemeral task state (use `TaskCreate` / `docs/spec/` instead)
+- Ephemeral task state (use `TaskCreate` / `docs/project/` instead)
 - Specs, plans, or design docs (those live in `docs/`)
 - Anything `.git`-tracked elsewhere (don't duplicate)
 

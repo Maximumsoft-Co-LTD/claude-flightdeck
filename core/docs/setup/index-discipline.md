@@ -16,19 +16,19 @@ Typical measured savings:
 
 | Index | Companion to | Shape | Max size | Consumer |
 |---|---|---|---|---|
-| `docs/spec/sprints/sprint-XX-index.md` | `sprint-XX.md` | 4-col: ID \| Component \| Status \| Depends | ~60 lines | `/next-task` Step 1, `/progress`, `/retro` |
+| `docs/project/sprints/sprint-XX-index.md` | `sprint-XX.md` | 4-col: ID \| Component \| Status \| Depends | ~60 lines | `/next-task` Step 1, `/progress`, `/retro` |
 | `docs/designs/sprint-XX/INDEX.md` | the dir of `DXXX-*.md` | 4-col: DXXX \| Title \| Status \| Task-ID | ~30 lines | `/next-task` Step 7, `/document` |
-| `docs/spec/backlog-index.md` | `backlog.md` | 3-col: Sprint \| Status \| Pointer | ~40 lines | `/next-task` Step 1 (sprint resolver), `/promote`, `/archive` |
-| `docs/spec/sprints/INDEX.md` | the dir of `sprint-*.md` | 3-col: Sprint \| Status \| Dates | ~30 lines | `/archive`, humans orienting |
+| `docs/project/backlog-index.md` | `backlog.md` | 3-col: Sprint \| Status \| Pointer | ~40 lines | `/next-task` Step 1 (sprint resolver), `/promote`, `/archive` |
+| `docs/project/sprints/INDEX.md` | the dir of `sprint-*.md` | 3-col: Sprint \| Status \| Dates | ~30 lines | `/archive`, humans orienting |
 
 ## Creation workflow (MANDATORY)
 
 ### Creating a new sprint
 
-1. `docs/spec/sprints/sprint-XX.md` — full file
-2. `docs/spec/sprints/sprint-XX-index.md` — **sibling, same commit**
-3. Append one row to `docs/spec/sprints/INDEX.md`
-4. Update `docs/spec/backlog-index.md`
+1. `docs/project/sprints/sprint-XX.md` — full file
+2. `docs/project/sprints/sprint-XX-index.md` — **sibling, same commit**
+3. Append one row to `docs/project/sprints/INDEX.md`
+4. Update `docs/project/backlog-index.md`
 
 ### Creating a new design-doc directory
 
@@ -42,7 +42,7 @@ Typical measured savings:
 |---|---|---|
 | `sprint-XX.md` task-row status | `sprint-XX-index.md` row | Yes |
 | Add a new `DXXX-*.md` | `docs/designs/sprint-XX/INDEX.md` row | Yes |
-| Close a sprint in `backlog.md` | `backlog-index.md` + `docs/spec/sprints/INDEX.md` | Yes |
+| Close a sprint in `backlog.md` | `backlog-index.md` + `docs/project/sprints/INDEX.md` | Yes |
 
 ## Staleness detection
 

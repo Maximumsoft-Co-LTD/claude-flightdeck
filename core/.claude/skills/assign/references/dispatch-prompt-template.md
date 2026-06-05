@@ -81,7 +81,7 @@ Test plan (from the design doc):
 
 [CROSS-CUTTING]
 - 6-gate review WILL be run after you return (see post-delegation-gate)
-- Live mini-retro WILL be required (append to docs/spec/retros/sprint-S<N>-tasks.md)
+- Live mini-retro WILL be required (append to docs/project/retros/sprint-S<N>-tasks.md)
 - DO NOT push to main; use branch feat/<task-id>-<slug>
 - Tests BEFORE implementation (TDD) — A001 non-negotiable for feat/fix/refactor
 - Multi-tenancy / RBAC checks if the task touches authn/authz surfaces
@@ -91,8 +91,8 @@ Test plan (from the design doc):
 - Stage and commit your work in the worktree
 - DO NOT push (the orchestrator pushes after review)
 - Update the sprint file row to [~] Partial or [x] Done
-  (path: docs/spec/sprints/sprint-S<N>.md)
-- Append a 6-field mini-retro to docs/spec/retros/sprint-S<N>-tasks.md:
+  (path: docs/project/sprints/sprint-S<N>.md)
+- Append a 6-field mini-retro to docs/project/retros/sprint-S<N>-tasks.md:
   • what went well
   • what didn't
   • lessons (L### candidates if any)
@@ -169,7 +169,7 @@ Test plan (from §Tests of D012):
 [CROSS-CUTTING]
 - 6-gate review (post-delegation-gate) will run after you return
 - This touches authn/authz → security review trigger (Phase 7)
-- Append mini-retro to docs/spec/retros/sprint-S04-tasks.md
+- Append mini-retro to docs/project/retros/sprint-S04-tasks.md
 - Branch: feat/TG-S04.12-tenant-invites
 - Tests BEFORE implementation — A001 non-negotiable
 

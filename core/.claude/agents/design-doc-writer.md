@@ -52,7 +52,7 @@ Execute every step in `.claude/rules/agent-pre-task-ritual.md`. Specific to desi
 2. Read `.claude/rules/brain-hot.md` — A-rules, especially A005 design-first
 3. Read `.claude/rules/lsp-first.md` — you'll use LSP for type verification
 4. Read `docs/setup/lesson-trigger-map.md` — used to embed lesson references
-5. Read backlog entry: `docs/spec/backlog.md` — find the row + any expanded section
+5. Read backlog entry: `docs/project/backlog.md` — find the row + any expanded section
 6. Read related task files in the same sprint to avoid touched-file collisions
 7. Read the design handoff source if the task touches UI (do not reverse-engineer layout from a screenshot — read the source structure)
 
@@ -84,7 +84,7 @@ If forced to ship under 500 for a feature task, surface that as a risk flag in y
 
 ## Output contract
 
-Your single output is one markdown file at the expected path (under `docs/designs/` or `docs/spec/sprints/`). After writing the file, your text response back to the orchestrator MUST include:
+Your single output is one markdown file at the expected path (under `docs/designs/` or `docs/project/sprints/`). After writing the file, your text response back to the orchestrator MUST include:
 
 1. **File path** of the doc you created
 2. **Line count** (and whether it meets the threshold)
@@ -156,5 +156,5 @@ After the orchestrator surfaces these and the user decides, the decisions are ap
 - `docs/setup/lesson-trigger-map.md` — trigger → lesson mapping
 - `docs/playbooks/parallel-conflict-prevention.md` — how the touched-files matrix feeds the 4-layer check
 - `docs/playbooks/post-delegation-review.md` — what the 6 gates look for, so you can pre-empt them
-- `docs/spec/backlog.md` — backlog rows you author docs for
+- `docs/project/backlog.md` — backlog rows you author docs for
 - `{{AGENT_PREFIX}}-orchestrator`, `senior-tech-lead`, `sprint-retro-author` — your peer agents

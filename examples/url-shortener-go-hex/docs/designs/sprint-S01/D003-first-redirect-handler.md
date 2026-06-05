@@ -28,7 +28,7 @@
 - Hot-path metric: `urlsh_http_request_duration_seconds{path,method,status}`
 
 **Out of scope:**
-- Idempotency on duplicate-body POST — surfaced as a real concern at gate; filed [F0001](../../spec/FOLLOWUPS.md) and consumed by URLSH-S02.03
+- Idempotency on duplicate-body POST — surfaced as a real concern at gate; filed [F0001](../../project/FOLLOWUPS.md) and consumed by URLSH-S02.03
 - Custom codes (user-supplied short code) — backlog item, no row yet
 - Auth / rate limits — S04
 - Click tracking — S03 (D007)

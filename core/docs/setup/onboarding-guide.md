@@ -153,7 +153,7 @@ Runs only AFTER your first sprint closes (i.e. after you've run
 `/retro` at least once). Invoke `/onboard retro` then. The wizard
 captures lessons about itself — which questions felt missing, which
 A-rule drafts were dropped + why, which gates were over- or
-under-applied. Output: `docs/spec/retros/onboarding.md`. Use it to
+under-applied. Output: `docs/project/retros/onboarding.md`. Use it to
 refine your team's control plane.
 
 ## 4. Reading the drafts before ratifying

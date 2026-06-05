@@ -11,7 +11,7 @@
 ## Where it lives
 
 ```
-docs/spec/audit/
+docs/project/audit/
 ├── 2026-05.jsonl          # current month
 ├── 2026-04.jsonl          # previous month
 └── …
@@ -58,7 +58,7 @@ Short summary below. **Full retention policy across all artifacts (sprints, retr
 Cron the rotation (example, monthly — full GitHub Actions recipe in [`retention-policy.md`](./retention-policy.md)):
 
 ```bash
-find docs/spec/audit -name '*.jsonl' -type f -mtime +365 -delete
+find docs/project/audit -name '*.jsonl' -type f -mtime +365 -delete
 ```
 
 ## PII / redaction guidance
@@ -78,13 +78,13 @@ find docs/spec/audit -name '*.jsonl' -type f -mtime +365 -delete
 
 Audit logs are project-policy. Two valid choices:
 
-1. **Track** (default) — `git add docs/spec/audit/*.jsonl`. Lets PR
+1. **Track** (default) — `git add docs/project/audit/*.jsonl`. Lets PR
    reviewers see the agent-dispatch history alongside the diff.
    Recommended for solo / small-team work, retros, and learning.
 2. **Ignore** — add to `.gitignore`:
 
    ```gitignore
-   docs/spec/audit/
+   docs/project/audit/
    ```
 
    Choose this if (a) you ship audit logs to an external SIEM and
@@ -102,13 +102,13 @@ See also: [`/audit-query` skill](../../.claude/skills/audit-query/SKILL.md) — 
 
 ```bash
 jq -c 'select(.subagent_type=="backend-engineer")' \
-  docs/spec/audit/2026-*.jsonl
+  docs/project/audit/2026-*.jsonl
 ```
 
 ### Dispatches against a specific task
 
 ```bash
-jq -c 'select(.task_id=="PROJ-S03.04")' docs/spec/audit/*.jsonl
+jq -c 'select(.task_id=="PROJ-S03.04")' docs/project/audit/*.jsonl
 ```
 
 ### All dispatches in the last 7 days
@@ -117,7 +117,7 @@ jq -c 'select(.task_id=="PROJ-S03.04")' docs/spec/audit/*.jsonl
 SEVEN_DAYS_AGO=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null \
   || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)
 jq -c --arg cut "$SEVEN_DAYS_AGO" \
-  'select(.ts >= $cut)' docs/spec/audit/*.jsonl
+  'select(.ts >= $cut)' docs/project/audit/*.jsonl
 ```
 
 ### Average duration per subagent type (this month)
@@ -128,20 +128,20 @@ jq -s '
   | map({type: .[0].subagent_type,
          n: length,
          avg_ms: (map(.duration_ms // 0) | add / length | floor)})
-' docs/spec/audit/$(date -u +%Y-%m).jsonl
+' docs/project/audit/$(date -u +%Y-%m).jsonl
 ```
 
 ### Gate failures (events where reason isn't 'complete' / 'success')
 
 ```bash
 jq -c 'select(.reason and (.reason | test("error|fail|abort"; "i")))' \
-  docs/spec/audit/*.jsonl
+  docs/project/audit/*.jsonl
 ```
 
 ### Touched-file frequency (files most agent-touched this month)
 
 ```bash
-jq -r '.files_touched[]?' docs/spec/audit/$(date -u +%Y-%m).jsonl \
+jq -r '.files_touched[]?' docs/project/audit/$(date -u +%Y-%m).jsonl \
   | sort | uniq -c | sort -rn | head -20
 ```
 
@@ -151,7 +151,7 @@ jq -r '.files_touched[]?' docs/spec/audit/$(date -u +%Y-%m).jsonl \
 
 ```conf
 # inputs.conf
-[monitor:///path/to/repo/docs/spec/audit/*.jsonl]
+[monitor:///path/to/repo/docs/project/audit/*.jsonl]
 sourcetype = ai_workflows_audit
 index = ai_workflows
 
@@ -166,7 +166,7 @@ TIME_FORMAT = %Y-%m-%dT%H:%M:%SZ
 ### Datadog (Vector / Fluent Bit)
 
 JSONL parses out-of-the-box as `parsing.format: json` with one
-record per line. Point your agent at `docs/spec/audit/*.jsonl`.
+record per line. Point your agent at `docs/project/audit/*.jsonl`.
 
 ### Loki / Promtail
 
@@ -177,7 +177,7 @@ scrape_configs:
       - targets: [localhost]
         labels:
           job: ai_workflows_audit
-          __path__: /path/to/repo/docs/spec/audit/*.jsonl
+          __path__: /path/to/repo/docs/project/audit/*.jsonl
     pipeline_stages:
       - json:
           expressions:
