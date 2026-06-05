@@ -90,6 +90,19 @@
     `/onboard` (onboard is already over the 250-line budget — folding would
     worsen a known issue; splitting onboard is a separate deferred pass).
 
+- **Installer + upgrade classifier updated for the new layout.** `install.sh` /
+  `install.ps1` next-steps now point at `docs/project/backlog.md` + the new verbs
+  (`/idea /work /review /retro`), and back up `docs/project/backlog.md` instead of
+  the removed `STATUS.md`. `core/.flightdeck-upgrade.json` adds `docs/project/**`
+  `user_owned` globs **and retains the legacy `docs/spec/**` globs** so a project
+  installed before the rename is never clobbered on upgrade.
+  - **Why / how it's better:** new installs get the lean layout; existing installs
+    upgrade safely with their old state preserved.
+- **Research loop closed** (`docs/research/`): two source notes (spec-driven
+  command-surface; autonomous fan-out), a synthesis, an `apply/shipped/` record,
+  and the INDEX scoreboard row — per the repo's "research must improve the
+  template, not just accumulate" rule.
+
 ### Added
 
 - **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free

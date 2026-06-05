@@ -494,7 +494,7 @@ backup_existing() {
 # settings.json gets soft-merge treatment below — DON'T back it up here, the
 # soft-merge function decides whether to overwrite or write the snippet
 # side-by-side.
-for p in "$TARGET/CLAUDE.md" "$TARGET/AGENTS.md" "$TARGET/docs/spec/STATUS.md"; do
+for p in "$TARGET/CLAUDE.md" "$TARGET/AGENTS.md" "$TARGET/docs/project/backlog.md"; do
   [[ -e "$p" ]] && backup_existing "$p"
 done
 # .claude/ as a whole: back it up only if --force is NOT set AND the target
@@ -757,7 +757,8 @@ echo
 note "Next steps:"
 cat <<EOF
   1. cd "$TARGET"
-  2. Edit docs/spec/STATUS.md — set your first sprint
+  2. Edit docs/project/backlog.md — seed your backlog (see docs/project/README.md
+     for the layout; /idea captures new ones)
   3. Append project-specific rules to .claude/rules/brain-hot.md
      (add your A001, A002, … local rules section)
   4. Edit CLAUDE.md — fill in the dispatch-routing table for your stack
@@ -765,9 +766,10 @@ cat <<EOF
         /plugin           — install 'pr-review-toolkit' (REQUIRED) and
                             'superpowers' from 'claude-plugins-official'
         /onboard          — setup wizard (Stage 0 verifies the plugins above)
-        /next-task        — pick something to work on
-        /design-review    — UI fidelity gate (if you ship UI)
-        /retro            — sprint close + audit
+        /idea             — capture + promote ideas into the backlog
+        /work             — pick (or name) a task → design-first → fan out → 6-gate
+        /review           — security · design · quality gates (auto-selected)
+        /retro            — sprint close + ratify rules
   6. Found a rough edge? Send feedback upstream:
         /flightdeck-feedback     — draft + send a GitHub issue (opt-in)
         or see docs/setup/feedback.md for prefilled issue links

@@ -359,7 +359,7 @@ function Backup-Existing {
 }
 
 # settings.json gets soft-merge treatment below — DON'T back it up here.
-foreach ($p in @((Join-Path $Target 'CLAUDE.md'), (Join-Path $Target 'docs/spec/STATUS.md'))) {
+foreach ($p in @((Join-Path $Target 'CLAUDE.md'), (Join-Path $Target 'docs/project/backlog.md'))) {
     if (Test-Path -LiteralPath $p) { Backup-Existing -Path $p }
 }
 
@@ -729,7 +729,8 @@ Write-Host ''
 Write-Note 'Next steps:'
 @"
   1. cd "$Target"
-  2. Edit docs/spec/STATUS.md — set your first sprint
+  2. Edit docs/project/backlog.md — seed your backlog (see docs/project/README.md;
+     /idea captures new ones)
   3. Append project-specific rules to .claude/rules/brain-hot.md
      (add your A001, A002, ... local rules section)
   4. Edit CLAUDE.md — fill in the dispatch-routing table for your stack
@@ -737,9 +738,10 @@ Write-Note 'Next steps:'
         /plugin           — install 'pr-review-toolkit' (REQUIRED) and
                             'superpowers' from 'claude-plugins-official'
         /onboard          — setup wizard (Stage 0 verifies the plugins above)
-        /next-task        — pick something to work on
-        /design-review    — UI fidelity gate (if you ship UI)
-        /retro            — sprint close + audit
+        /idea             — capture + promote ideas into the backlog
+        /work             — pick (or name) a task -> design-first -> fan out -> 6-gate
+        /review           — security · design · quality gates (auto-selected)
+        /retro            — sprint close + ratify rules
 "@ | Write-Host
 
 if (-not [string]::IsNullOrEmpty($Vars.BRAIN_PATH)) {
