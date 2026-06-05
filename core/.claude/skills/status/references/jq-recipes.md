@@ -1,6 +1,6 @@
 # jq Recipes — ad-hoc audit-log queries
 
-> Companion to the `/audit-query` skill. The skill emits an opinionated
+> Companion to the `/status audit` skill. The skill emits an opinionated
 > markdown digest; these recipes are the escape hatch for one-off
 > investigations where the digest doesn't fit.
 >
@@ -78,7 +78,7 @@ jq -s '
 
 ## Dispatches in a date range
 
-**When:** weekly / monthly retro — pre-`/audit-query` exploration when you want the raw rows.
+**When:** weekly / monthly retro — pre-`/status audit` exploration when you want the raw rows.
 
 ```bash
 jq -c --arg lo "2026-05-01T00:00:00Z" --arg hi "2026-05-15T23:59:59Z" \

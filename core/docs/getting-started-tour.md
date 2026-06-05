@@ -57,11 +57,11 @@ installer with `--force` after backing up, or hand-fix.
 
 ## Monday morning — capture & promote
 
-### Step 1 — `/discover` a new idea
+### Step 1 — `/idea` a new idea
 
-**You type**: `/discover the operator dashboard needs a status filter`
+**You type**: `/idea the operator dashboard needs a status filter`
 
-**What happens**: the [`/discover`](../.claude/skills/idea/SKILL.md)
+**What happens**: the [`/idea`](../.claude/skills/idea/SKILL.md)
 skill walks you through a 3-stage interview (Core → Scope →
 Context) sized to the idea's complexity. It allocates `D###`, scans
 for duplicates against the backlog and other discovery items, and
@@ -75,14 +75,14 @@ writes the detail file.
 ([`./setup/workflow-master.md`](./setup/workflow-master.md))
 
 **If it goes wrong**:
-- Duplicate flagged but you want to refine instead → `/discover refine D###`
+- Duplicate flagged but you want to refine instead → `/idea refine D###`
 - File didn't land → check `docs/project/ideas/` exists and is writable
 
-### Step 2 — `/promote` to backlog
+### Step 2 — `/idea promote` to backlog
 
-**You type**: `/promote D007`
+**You type**: `/idea promote D007`
 
-**What happens**: the [`/promote`](../.claude/skills/idea/SKILL.md)
+**What happens**: the [`/idea promote`](../.claude/skills/idea/SKILL.md)
 skill runs the Definition-of-Ready gate (≥1 user story, ≥3 AC,
 dependencies declared, no blocking questions, complexity estimate, no
 duplicate, affected components, cross-cutting concerns). If it
@@ -95,8 +95,8 @@ passes, an enriched row lands on the backlog.
 **Cross-links**: A008; backlog index ([`./setup/index-discipline.md`](./setup/index-discipline.md))
 
 **If it goes wrong**:
-- DoR gate fails → `/discover refine D007` to fill the missing slot,
-  then retry `/promote`
+- DoR gate fails → `/idea refine D007` to fill the missing slot,
+  then retry `/idea promote`
 
 ---
 
@@ -111,11 +111,11 @@ dedicated skill because planning rewards human deliberation.
 Once the sprint file exists, mark it the active sprint by updating
 `docs/project/sprints/S<N>/tasks.md` (this is the A008 source-of-truth move).
 
-### Step 3 — `/next-task`
+### Step 3 — `/work`
 
-**You type**: `/next-task`
+**You type**: `/work`
 
-**What happens**: the [`/next-task`](../.claude/skills/work/SKILL.md)
+**What happens**: the [`/work`](../.claude/skills/work/SKILL.md)
 skill reads the active sprint board (`docs/project/sprints/S<N>/tasks.md`), applies the Phase
 Matrix (type × phase lookup), finds the first un-started, un-blocked
 row, and confirms with you. It then either runs the design-doc gate
@@ -132,13 +132,15 @@ A008 (sprint state via STATUS), Phase Matrix
   Started` rows; verify dependencies are met
 - "no eligible tasks" in the sprint board → verify the board's Glance header names the active sprint and has unblocked `[ ] Not Started` rows (per A008)
 
+
+
 ---
 
 ## Tuesday — design + implement
 
 ### Step 4 — `design-doc-writer` agent
 
-**You type**: nothing — `/next-task` dispatches this automatically
+**You type**: nothing — `/work` dispatches this automatically
 when the task has no D-doc.
 
 **What happens**: the
@@ -165,7 +167,7 @@ mentions (L149), and writes a ≥500-line zero-fix D-doc using
 
 ### Step 5 — Implement (the preset engineer)
 
-**You type**: nothing — `/next-task` dispatches this once the D-doc
+**You type**: nothing — `/work` dispatches this once the D-doc
 exists.
 
 **What happens**: the engineer (`backend-engineer` or
@@ -194,12 +196,12 @@ git-workflow ([`../.claude/rules/git-workflow.md`](../.claude/rules/git-workflow
 
 ## Wednesday — the 6-gate review
 
-### Step 6 — `/post-delegation-gate`
+### Step 6 — `/review gates`
 
-**You type**: `/post-delegation-gate`
+**You type**: `/review gates`
 
 **What happens**: the
-[`/post-delegation-gate`](../.claude/skills/review/SKILL.md)
+[`/review gates`](../.claude/skills/review/SKILL.md)
 skill walks the 6-gate playbook
 ([`./playbooks/post-delegation-review.md`](./playbooks/post-delegation-review.md)):
 
@@ -215,7 +217,7 @@ skill walks the 6-gate playbook
 5. **Wiring** (L116) — composition root has the new code; migrations
    applied; observability emits; topics created; contracts in sync.
 6. **Integration smoke** — `make docker-up && make smoke` end-to-end
-   golden path. If UI changed → also `/design-review` (L182).
+   golden path. If UI changed → also `/review design` (L182).
 
 **Written**:
 - review log on the PR (or attached at
@@ -252,18 +254,18 @@ spent vs estimate / lessons / followups / done state).
 
 **If it goes wrong**:
 - you defer the retro to "Friday" → DON'T. The learning evaporates.
-  The retro must land before the next `/next-task`.
+  The retro must land before the next `/work`.
 
 ---
 
 ## Thursday — mid-sprint check + more tasks
 
-### Step 8 — `/progress`
+### Step 8 — `/status`
 
-**You type**: `/progress`
+**You type**: `/status`
 
 **What happens**: the
-[`/progress`](../.claude/skills/status/SKILL.md) skill prints a
+[`/status`](../.claude/skills/status/SKILL.md) skill prints a
 read-only dashboard: tasks done / in-progress / blocked, completion
 rate, per-component breakdown, blocking links. It does NOT write.
 
@@ -276,8 +278,8 @@ rate, per-component breakdown, blocking links. It does NOT write.
   Friday's retro; possibly re-plan the rest of the sprint
 
 Repeat **Steps 3-7** for each task until the sprint file's task
-table is all `[x] Done` or `[B] Blocked`. Use `/dispatch-parallel`
-for waves of independent tasks (run the Conflict Radar first —
+table is all `[x] Done` or `[B] Blocked`. Use `/work` with multiple
+task IDs for waves of independent tasks (auto-fans-out; run the Conflict Radar first —
 [`./playbooks/parallel-conflict-prevention.md`](./playbooks/parallel-conflict-prevention.md)).
 
 ---
@@ -341,14 +343,14 @@ rules" section.
 
 | Step | Audit trail |
 |---|---|
-| 1 (`/discover`) | `docs/project/ideas/D###.md`; index row |
-| 2 (`/promote`) | `docs/project/backlog.md` row |
-| 3 (`/next-task`) | dispatch in `docs/project/audit/YYYY-MM.jsonl` |
+| 1 (`/idea`) | `docs/project/ideas/D###.md`; index row |
+| 2 (`/idea promote`) | `docs/project/backlog.md` row |
+| 3 (`/work`) | dispatch in `docs/project/audit/YYYY-MM.jsonl` |
 | 4 (`design-doc-writer`) | `docs/project/sprints/S<N>/designs/D###.md`; dispatch in audit JSONL |
 | 5 (engineer agent) | git commits + branch; audit JSONL |
-| 6 (`/post-delegation-gate`) | review log on PR; reviewer dispatches in audit JSONL |
+| 6 (`/review gates`) | review log on PR; reviewer dispatches in audit JSONL |
 | 7 (live mini-retro) | `docs/project/sprints/S<N>/tasks.md` append |
-| 8 (`/progress`) | none (read-only) |
+| 8 (`/status`) | none (read-only) |
 | 9 (`/retro`) | `docs/project/sprints/S<N>/retro.md`; Glance prose moved from `tasks.md` into `retro.md` |
 | 10 (brain promotion) | `.claude/rules/brain-hot.md` diff |
 

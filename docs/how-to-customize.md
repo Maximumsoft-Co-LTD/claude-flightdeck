@@ -50,9 +50,9 @@ cp docs/designs/_templates/BACKLOG_ENTRY_TEMPLATE.md /tmp/_template-ref.md  # fo
 Then in Claude Code:
 
 ```
-/discover       # turn a free-text feature idea into a discovery doc
-/promote        # promote a backlog row into the sprint file
-/next-task      # pick the first task to work on
+/idea           # turn a free-text feature idea into a discovery doc
+/idea promote   # promote a backlog row into the sprint file
+/work           # pick the first task to work on
 ```
 
 ### 4. (Optional) Point the Brain at your Obsidian vault
@@ -216,7 +216,7 @@ There is no `install.sh upgrade` yet — diff manually.
 |---|---|---|
 | Bloating CLAUDE.md > 200 lines | Sessions slow to start; agents miss the bottom half | Push detail into `docs/setup/<topic>.md`; CLAUDE.md links to it |
 | Adding A### rules without a `## Token budget` section in derived skills | Skills blow out context | Audit `grep -L 'Token budget' .claude/skills/*/SKILL.md` |
-| Skipping the live mini-retro | Sprint close retro has nothing to aggregate | Make it part of `/post-delegation-gate` — fail the gate if no retro row added |
+| Skipping the live mini-retro | Sprint close retro has nothing to aggregate | Make it part of `/review gates` — fail the gate if no retro row added |
 | Letting the active sprint board grow past 1 screen | "Single-pane glance" stops being a glance | At sprint close, move the board's Glance prose into `docs/project/sprints/S<N>/retro.md` in the SAME commit |
 | Mocking the database in integration tests | Tests pass; prod migration fails | Use real DB (testcontainers or shared dev DB); reserve mocks for unit tests only |
-| Allowing self-summaries to replace the diff read | "Done" claims mask broken code | Make Gate 1 of `/post-delegation-gate` blocking — no merge without diff inspection |
+| Allowing self-summaries to replace the diff read | "Done" claims mask broken code | Make Gate 1 of `/review gates` blocking — no merge without diff inspection |

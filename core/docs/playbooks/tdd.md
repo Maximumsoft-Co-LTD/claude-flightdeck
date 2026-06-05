@@ -1,12 +1,12 @@
 ---
 name: tdd
-description: "Write a test that encodes INTENT, not theater — and apply TDD safely to code that has NO tests yet. Use when about to write or change a test, when the user says '/tdd', 'write a test for this', 'TDD this', 'add tests'; when touching legacy / untested code where a naive 'failing test first' rule would otherwise block work (→ characterization-first, never a blocked commit); or when a test 'passes but asserts nothing' (test theater). Operationalizes phase-4 (test-first) of the phase matrix and feeds Gate 4b of /post-delegation-gate."
+description: "Write a test that encodes INTENT, not theater — and apply TDD safely to code that has NO tests yet. Use when about to write or change a test, when the user says 'write a test for this', 'TDD this', 'add tests'; when touching legacy / untested code where a naive 'failing test first' rule would otherwise block work (→ characterization-first, never a blocked commit); or when a test 'passes but asserts nothing' (test theater). Operationalizes phase-4 (test-first) of the phase matrix and feeds Gate 4b of /review gates."
 user_invocable: true
 ---
 
-# /tdd — Test Discipline (intent over theater · legacy-safe)
+# TDD Playbook — Test Discipline (intent over theater · legacy-safe)
 
-> **Announce on start:** open your reply with "Using /tdd to write an intent-bearing test (mode: greenfield | characterization)." — naming the mode signals which path you took.
+> **Announce on start:** open your reply with "Following the TDD playbook to write an intent-bearing test (mode: greenfield | characterization)." — naming the mode signals which path you took.
 
 The operational front-end to [`docs/setup/test-discipline.md`](../setup/test-discipline.md). This is the lean checklist; that doc is the depth.
 
@@ -66,7 +66,7 @@ Quick reject list — the full table + the *why* is in [`test-discipline.md`](..
 ## Step 3 — Meta-check & handoff
 
 - **Mutation testing** is the objective answer to "is my coverage real?" — inject small faults into the code and confirm the tests *catch* them; surviving mutants are gaps. Run it periodically (or LLM-targeted) on a suite you suspect is theatrical.
-- When tests were added/changed, **Gate 4b of `/post-delegation-gate`** runs `pr-review-toolkit:pr-test-analyzer` to reject theater. Write the test to genuinely survive that gate, not to pass it superficially.
+- When tests were added/changed, **Gate 4b of `/review gates`** runs `pr-review-toolkit:pr-test-analyzer` to reject theater. Write the test to genuinely survive that gate, not to pass it superficially.
 - **Mechanical enforcement** (a hook that blocks a Write adding production code with no failing test) is **opt-in only** and explicitly cautioned for legacy repos — see the doc's "enforcement hook" section. The template's default posture is **rule + review-gate**, never a hard write-blocker.
 
 ## What to NEVER do

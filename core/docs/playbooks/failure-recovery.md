@@ -4,7 +4,7 @@
 > deep-dive that the `/recover` skill points at. Includes named
 > scenarios with full walkthroughs, a "when to recover vs leave
 > alone" decision tree, and specific guidance for the
-> `/dispatch-parallel` partial-success case.
+> `/work` parallel fanout partial-success case.
 >
 > **Core principle:** read state before acting. `reflog` before
 > destroying. Confirm before chaining destructive commands.
@@ -43,7 +43,7 @@ RECOVER. Use /recover or this playbook.   RECOVER. Same.
 - Commit went to `main` instead of a feature branch.
 - A branch you needed for a PR is gone.
 
-## Scenario 1 — `/dispatch-parallel` partial success
+## Scenario 1 — `/work` parallel fanout partial success
 
 The most common reason `/recover` is invoked. Two or three
 subagents were dispatched in parallel; one finished + committed, one
@@ -86,8 +86,8 @@ git worktree remove --force <B-worktree-path>
 git branch -D <B-feature-branch>
 
 # 4. Re-dispatch SERIALIZED:
-#    /assign <task-A>    → finish A inline / as single subagent
-#    /assign <task-B>    → after A merges, run B
+#    /work <task-A>    → finish A inline / as single subagent
+#    /work <task-B>    → after A merges, run B
 ```
 
 **Append to the backlog's Follow-ups section** (`docs/project/backlog.md` `## Follow-ups`):

@@ -16,7 +16,7 @@
 | 1. Root manual | [`../CLAUDE.md`](../CLAUDE.md) | Non-negotiables, dispatch routing table, workflow stage table |
 | 2. Auto-loaded rules | [`../.claude/rules/`](../.claude/rules/) | brain-hot, agent-pre-task-ritual, phase-matrix, programming-fundamentals, git-workflow, lsp-first, sub-agent-workflow |
 | 3. Specialized agents | [`../.claude/agents/`](../.claude/agents/) | orchestrator, design-doc-writer, senior-tech-lead, sprint-retro-author + preset agents |
-| 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 22 slash-commands driving the workflow |
+| 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 10 commands (6 verbs + 4 niche) driving the workflow |
 | 5. Playbooks + setup docs | [`./playbooks/`](./playbooks/) + [`./setup/`](./setup/) | Deep operational documents linked from rules |
 | 6. Templates + spec | [`./designs/_templates/`](./designs/_templates/) + [`./project/`](./project/) | Design templates, sprint boards (`sprints/S<N>/tasks.md`), sprint retros (`sprints/S<N>/retro.md`), backlog (with Follow-ups) |
 | 7. Memory | [`../.claude/memory/`](../.claude/memory/) or `{{BRAIN_PATH}}` | Cross-sprint lessons, retros, decisions |
@@ -33,12 +33,12 @@ Full architecture rationale:
 | **A001** TDD by default | Failing test FIRST | Phase Matrix Phase 4; engineer preset agents; `superpowers:test-driven-development` |
 | **A002** Zero-bug discipline | Ships green or doesn't ship | 6-gate review Gate 2 (build+test); `senior-tech-lead`; `pr-review-toolkit:silent-failure-hunter` |
 | **A003** Verification before completion | Real build + real test output | 6-gate Gate 2; `superpowers:verification-before-completion` |
-| **A004** 6-gate post-delegation review | Every coding agent passes 6 gates | `/post-delegation-gate` skill; `senior-tech-lead`; `pr-review-toolkit:*` |
-| **A005** Design-doc-first | D-doc merged before code | `/next-task` + `/assign` skills; `design-doc-writer` agent |
+| **A004** 6-gate post-delegation review | Every coding agent passes 6 gates | `/review gates` skill; `senior-tech-lead`; `pr-review-toolkit:*` |
+| **A005** Design-doc-first | D-doc merged before code | `/work` skill; `design-doc-writer` agent |
 | **A006** Subagent dispatch via `Agent` | Never `claude -p` | `.claude/rules/sub-agent-workflow.md`; all skills |
-| **A007** Parallel safety (4-layer) | Path declare, worktree iso, contract-first, task graph | `/dispatch-parallel` Conflict Radar; `docs/playbooks/parallel-conflict-prevention.md` |
-| **A008** STATUS+backlog source-of-truth | No deriving from chat | `/progress` skill; `/retro` audit; `docs/setup/index-discipline.md` |
-| **A009** Live per-task mini-retro | Append before moving on | `/next-task` Step 7; `/retro --task`; orchestrator's pre-task ritual |
+| **A007** Parallel safety (4-layer) | Path declare, worktree iso, contract-first, task graph | `/work` Conflict Radar; `docs/playbooks/parallel-conflict-prevention.md` |
+| **A008** STATUS+backlog source-of-truth | No deriving from chat | `/status` skill; `/retro` audit; `docs/setup/index-discipline.md` |
+| **A009** Live per-task mini-retro | Append before moving on | `/work` Step 7; `/retro --task`; orchestrator's pre-task ritual |
 | **A010** LSP-first navigation | Semantic = LSP, text = grep | `.claude/rules/lsp-first.md`; agent pre-task ritual Step 4 |
 | **A011+** Project-local | Your A### rules | `.claude/rules/brain-hot.md` "Project-specific rules" section |
 | **N1** Architecture boundary | The project's own (learned at onboard) | `.claude/rules/code-style.md`; 6-gate Gate 3 (`senior-tech-lead`) |
@@ -52,8 +52,8 @@ Full architecture rationale:
 
 | Lesson | Trigger | See |
 |---|---|---|
-| **L020** Selector contract | Any UI + E2E task | D-doc selector map; `/design-review` |
-| **L035** Touched-files matrix | Any task dispatched | D-doc; `/dispatch-parallel` Conflict Radar |
+| **L020** Selector contract | Any UI + E2E task | D-doc selector map; `/review design` |
+| **L035** Touched-files matrix | Any task dispatched | D-doc; `/work` Conflict Radar |
 | **L036** Live per-task mini-retro | After every task | A009; `/retro --task` |
 | **L076** D-doc ≥500L for non-trivial | Pre-impl D-doc | `docs/designs/_templates/DESIGN_TEMPLATE.md` |
 | **L087** Backlog sync per-task | Task done | A008; `docs/setup/index-discipline.md` |
@@ -62,32 +62,34 @@ Full architecture rationale:
 | **L147** LSP-first | All semantic queries | A010; `.claude/rules/lsp-first.md` |
 | **L149** AC type-contradiction scan | Pre-D-doc | `design-doc-writer` agent ritual |
 | **L156** LSP type verification | Pre-D-doc code paste | `design-doc-writer` agent ritual |
-| **L182** Visual fidelity ≠ structural | After FE sprint | `/design-review` |
+| **L182** Visual fidelity ≠ structural | After FE sprint | `/review design` |
 
 ---
 
-## Skills cheat-sheet (19 slash-commands)
+## Skills cheat-sheet (10 commands)
 
-| Skill | When to use | Sister skill | Writes |
-|---|---|---|---|
-| [`/discover`](../.claude/skills/idea/SKILL.md) | Capture a raw feature idea | `/promote` | `docs/project/ideas/D###-slug.md` |
-| [`/promote`](../.claude/skills/idea/SKILL.md) | Graduate discovery → backlog row | `/discover` | `docs/project/backlog.md` row |
-| [`/next-task`](../.claude/skills/work/SKILL.md) | Pick + dispatch next sprint task | `/assign` | dispatch + 6-gate review |
-| [`/assign`](../.claude/skills/work/SKILL.md) | Dispatch a specific task ID | `/next-task` | dispatch + 6-gate review |
-| [`/dispatch-parallel`](../.claude/skills/work/SKILL.md) | Run 2+ agents in parallel (with Conflict Radar) | `/assign` | N parallel commits |
-| [`/tdd`](./playbooks/tdd.md) | Write an intent-bearing test; legacy → characterization-first | (none) | test files (red → green) |
-| [`/post-delegation-gate`](../.claude/skills/review/SKILL.md) | 6-gate review on a returned agent | (none) | review log on PR |
-| [`/design-review`](../.claude/skills/review/SKILL.md) | UI fidelity gate after FE sprint | (none) | `docs/project/reviews/sprint-S<N>-design-review.md` |
-| [`/security-review`](../.claude/skills/review/SKILL.md) | Phase-7 security pass on the diff (+ slopsquatting) | (none) | findings + PASS/BLOCK verdict |
-| [`/progress`](../.claude/skills/status/SKILL.md) | Mid-sprint dashboard (read-only) | (none) | (status print) |
-| [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit | `/ratify-rules` | `docs/project/sprints/S<N>/retro.md` |
-| [`/ratify-rules`](../.claude/skills/retro/SKILL.md) | Land retro `## Candidate A-rules` into `brain-hot.md` (operator-gated) | `/retro` | `brain-hot.md` A011+ · trigger-map row |
-| [`/archive`](../.claude/skills/retro/SKILL.md) | Move old sprints to `historical/` | (none) | moves under `docs/project/sprints/historical/` |
-| [`/document`](../.claude/skills/document/SKILL.md) | Sync API / contract docs from code | (none) | API doc files |
-| [`/changelog`](../.claude/skills/ship/SKILL.md) | Build CHANGELOG.md from git history | (none) | `CHANGELOG.md` |
-| [`/deploy-preflight`](../.claude/skills/ship/SKILL.md) | Read-only deploy-readiness scan | `/deploy` | (report) |
-| [`/deploy`](../.claude/skills/ship/SKILL.md) | Drive a deployment through 5 phases | `/deploy-preflight` | deploy artifacts |
-| [`/recover`](../.claude/skills/recover/SKILL.md) | Undo a partial dispatch / orphan worktree | (none) | (restored state) |
+| Command | When to use | Writes |
+|---|---|---|
+| [`/idea`](../.claude/skills/idea/SKILL.md) | Capture a raw feature idea (`/idea <description>`), refine it (`/idea refine D###`), or review it (`/idea review D###`) | `docs/project/ideas/D###-slug.md` |
+| [`/idea promote`](../.claude/skills/idea/SKILL.md) | Graduate a discovery item to the backlog (`/idea promote D###`) — runs the Definition-of-Ready gate | `docs/project/backlog.md` row |
+| [`/work`](../.claude/skills/work/SKILL.md) | Pick + dispatch the next sprint task (`/work`), dispatch a specific task ID (`/work TG-42`), or fan out 2+ agents in parallel with Conflict Radar (auto-detects) | dispatch + 6-gate review |
+| [`/review gates`](../.claude/skills/review/SKILL.md) | Run the 6-gate post-delegation review on a returned agent (Inspect → Build+Test → Boundary → Spec-compliance → Quality → Wiring → Smoke) | review log on PR |
+| [`/review design`](../.claude/skills/review/SKILL.md) | UI fidelity gate after FE sprint — 3-lens visual fidelity check (L182) | `docs/project/reviews/sprint-S<N>-design-review.md` |
+| [`/review security`](../.claude/skills/review/SKILL.md) | Phase-7 security pass on the diff — diff-aware semantic pass + slopsquatting check | findings + PASS/BLOCK verdict |
+| [`/status`](../.claude/skills/status/SKILL.md) | Mid-sprint read-only dashboard (`/status`); deep audit query (`/status audit`) — never writes | (status print / audit digest) |
+| [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit (`/retro`); land Candidate A-rules into brain-hot.md (`/retro ratify`); move old sprints to historical/ (`/retro archive`) | `docs/project/sprints/S<N>/retro.md` · `brain-hot.md` A011+ · archived sprints |
+| [`/ship`](../.claude/skills/ship/SKILL.md) | Drive a deployment through 5 phases (`/ship`); read-only deploy-readiness scan first (`/ship --check`); build CHANGELOG.md from git history (`/ship changelog`) | deploy artifacts · `CHANGELOG.md` |
+| [`/onboard`](../.claude/skills/onboard/SKILL.md) | 8-stage hybrid wizard: scan codebase, mine git history, draft CLAUDE.md + A-rules + sprint board. Run once after install, or `/onboard refresh` to update | `CLAUDE.md` · `brain-hot.md` · `tasks.md` · `backlog.md` |
+
+**Niche commands** (always available):
+
+| Command | When to use |
+|---|---|
+| [`/recover`](../.claude/skills/recover/SKILL.md) | Undo a partial dispatch / orphan worktree / mid-merge abort |
+| [`/document`](../.claude/skills/document/SKILL.md) | Sync API / contract docs from code |
+| [`/flightdeck-feedback`](../.claude/skills/flightdeck-feedback/SKILL.md) | Draft a structured GitHub issue from your session + manifest |
+
+> **TDD** is not a command — it is a playbook at [`docs/playbooks/tdd.md`](./playbooks/tdd.md). Follow it when implementing any feature or bugfix (A001). The playbook classifies the change site: greenfield → red-green-refactor; untested legacy → characterization-first.
 
 ## Agents cheat-sheet (core)
 
@@ -119,7 +121,7 @@ Full architecture rationale:
 | Playbook | When you read it | What it answers |
 |---|---|---|
 | [`post-delegation-review`](./playbooks/post-delegation-review.md) | After every coding agent returns | The 6 gates — Inspect / Build+Test / Boundary / Spec-compliance (4a) → Quality (4b) / Wiring / Smoke |
-| [`parallel-conflict-prevention`](./playbooks/parallel-conflict-prevention.md) | Before `/dispatch-parallel` | The 4-layer Conflict Radar — path / worktree / contract / dep graph |
+| [`parallel-conflict-prevention`](./playbooks/parallel-conflict-prevention.md) | Before `/work` (parallel fanout) | The 4-layer Conflict Radar — path / worktree / contract / dep graph |
 | [`contract-first`](./playbooks/contract-first.md) | Any cross-service interface change | Contract commit first, code follows |
 | [`failure-recovery`](./playbooks/failure-recovery.md) | After a partial dispatch / mid-merge abort | Recovery decision tree; what `/recover` walks you through |
 
@@ -164,31 +166,31 @@ Full architecture rationale:
 
 ### Starting a new sprint
 
-1. `/discover <feature idea>` → captures `D###-slug.md`
-2. `/promote D###` → moves it to `docs/project/backlog.md`
+1. `/idea <feature idea>` → captures `D###-slug.md`
+2. `/idea promote D###` → moves it to `docs/project/backlog.md`
 3. (Sprint planning) edit `docs/project/sprints/S<N>/tasks.md` — pick tasks, assign fanout waves
-4. `/next-task` → dispatches first task with D-doc gate
+4. `/work` → dispatches first task with D-doc gate
 
 ### Fixing a bug
 
-1. `/next-task` (or `/assign <task>`) — picks the fix
+1. `/work` (or `/work <task-id>`) — picks the fix
 2. Phase Matrix says: type=fix → regression test FIRST (Phase 4)
 3. Implementation agent commits, returns
-4. `/post-delegation-gate` → 6 gates
+4. `/review gates` → 6 gates
 5. Live mini-retro (A009) appended to `sprint-S<N>-tasks.md`
 
 ### Shipping a UI feature
 
-1. `/next-task` picks the feature
+1. `/work` picks the feature
 2. `design-doc-writer` creates D-doc with selector map (L020)
-3. Implementation agent codes TDD-first
-4. `/post-delegation-gate` 6 gates
-5. **`/design-review`** — 3-lens visual fidelity (L182)
+3. Implementation agent codes TDD-first (see [`TDD playbook`](./playbooks/tdd.md))
+4. `/review gates` — 6 gates
+5. **`/review design`** — 3-lens visual fidelity (L182)
 6. Mini-retro + commit + next
 
 ### Auditing the last sprint
 
-1. `/progress` — read-only dashboard
+1. `/status` — read-only dashboard
 2. Open `docs/project/sprints/S<N>/retro.md` — the closing retro
 3. Open `docs/project/sprints/S<N>/tasks.md` — the live mini-retros
 4. Grep `docs/project/audit/YYYY-MM.jsonl` for the sprint's `task_id`
@@ -197,10 +199,10 @@ Full architecture rationale:
 
 ### Closing a sprint
 
-1. `/progress` — confirm all tasks `[x]` or `[B]`-blocked
+1. `/status` — confirm all tasks `[x]` or `[B]`-blocked
 2. `/retro` — sprint close + backlog audit (HARD gate)
 3. Manual: review the backlog's Follow-ups section (`docs/project/backlog.md` `## Follow-ups`); ack any P1/P2 with PR-APPROVER trailer
-4. `/archive` (if old sprints accumulate)
+4. `/retro archive` (if old sprints accumulate)
 
 ### Setting up org-wide adoption
 
@@ -215,7 +217,7 @@ Full architecture rationale:
 1. Read [`./getting-started-tour.md`](./getting-started-tour.md) — Monday-Friday walkthrough
 2. Read [`../CLAUDE.md`](../CLAUDE.md) §N1-N6 — non-negotiables
 3. Skim [`../.claude/rules/brain-hot.md`](../.claude/rules/brain-hot.md) — A001-A010
-4. Run `/next-task` against the current sprint (paired with someone)
+4. Run `/work` against the current sprint (paired with someone)
 5. Read the [`./playbooks/post-delegation-review.md`](./playbooks/post-delegation-review.md) — the 6-gate ritual
 
 ---
@@ -233,7 +235,7 @@ Full architecture rationale:
 | `./project/sprints/S<N>/tasks.md` | Live per-task mini-retros (A009) | Per-task learnings while context is hot |
 | `./project/sprints/S<N>/retro.md` | Sprint close retro | Audited sprint outcome |
 | `./project/audit/YYYY-MM.jsonl` | Agent dispatch audit JSONL | Compliance evidence (CC7.1 / AU-2) |
-| `./project/reviews/sprint-S<N>-design-review.md` | UI fidelity gate report | `/design-review` output |
+| `./project/reviews/sprint-S<N>-design-review.md` | UI fidelity gate report | `/review design` output |
 | `./project/sprints/S<N>/designs/D<NNN>-<slug>.md` | Per-task design doc | Source-of-truth for the task's how |
 
 ---
@@ -244,7 +246,7 @@ Full architecture rationale:
 |---|---|
 | [`./designs/_templates/DESIGN_TEMPLATE.md`](./designs/_templates/DESIGN_TEMPLATE.md) | ≥500L zero-fix D-doc (feat tasks) |
 | [`./designs/_templates/DESIGN_LIGHT_TEMPLATE.md`](./designs/_templates/DESIGN_LIGHT_TEMPLATE.md) | Light D-doc (fix / refactor) |
-| [`./designs/_templates/DESIGN_REVIEW_CHECKLIST.md`](./designs/_templates/DESIGN_REVIEW_CHECKLIST.md) | `/design-review` 3-lens checklist |
+| [`./designs/_templates/DESIGN_REVIEW_CHECKLIST.md`](./designs/_templates/DESIGN_REVIEW_CHECKLIST.md) | `/review design` 3-lens checklist |
 | [`./designs/_templates/SELF_REVIEW_CHECKLIST.md`](./designs/_templates/SELF_REVIEW_CHECKLIST.md) | Self-review before submitting PR |
 | [`./designs/_templates/SIZE_TIERS.md`](./designs/_templates/SIZE_TIERS.md) | When to use LIGHT vs FULL |
 | [`./designs/_templates/BACKLOG_ENTRY_TEMPLATE.md`](./designs/_templates/BACKLOG_ENTRY_TEMPLATE.md) | Format of a backlog row |

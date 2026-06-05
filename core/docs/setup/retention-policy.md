@@ -141,6 +141,6 @@ must persist. Coordinate with legal before scrubbing audit lines.
 - [`compliance-mapping.md`](./compliance-mapping.md) — SOC2 / HIPAA /
   ISO / GDPR / FedRAMP crosswalk; retention rows there link back here
 - [`../../.claude/skills/retro/SKILL.md`](../../.claude/skills/retro/SKILL.md)
-  — the canonical `/archive` skill for sprint rotation
+  — the canonical `/retro archive` skill for sprint rotation
 - [`../../.claude/skills/status/SKILL.md`](../../.claude/skills/status/SKILL.md)
-  — `/audit-query` skill for digesting `audit.jsonl` before rotation
+  — `/status audit` skill for digesting `audit.jsonl` before rotation

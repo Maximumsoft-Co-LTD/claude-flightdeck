@@ -5,8 +5,8 @@
 
 ## Token hygiene & Index discipline (L153 + L154)
 
-- **L153 — `/clear` between skill invocations**: before `/next-task` if prior turn ran `/progress` or `/retro`; cross-skill sprint+backlog Reads stack ~15 K of pollution.
-- **L154 — Index-first for sprint/backlog/design-doc creation**: New `sprint-XX.md` requires sibling `sprint-XX-index.md`; new `docs/project/sprints/XX/designs/` requires `INDEX.md`; `backlog.md` has slim `backlog-index.md`. Skills that mutate these files refresh the index same-commit. See `docs/setup/index-discipline.md` + run `/index-refresh`.
+- **L153 — `/clear` between skill invocations**: before `/work` if prior turn ran `/status` or `/retro`; cross-skill sprint+backlog Reads stack ~15 K of pollution.
+- **L154 — Index-first for sprint/backlog/design-doc creation**: New `sprint-XX.md` requires sibling `sprint-XX-index.md`; new `docs/project/sprints/XX/designs/` requires `INDEX.md`; `backlog.md` has slim `backlog-index.md`. Skills that mutate these files refresh the index same-commit. See `docs/setup/index-discipline.md` (indexes are derived from the board/backlog — no manual refresh needed).
 
 ## Visible Task Tracking (TaskCreate/TaskUpdate) — MANDATORY
 
@@ -14,8 +14,8 @@
 
 **Session Start:**
 1. Run `TaskList` — if empty and work has 2+ steps → create tasks
-2. `/next-task`: 1 task per phase (Design Doc → Delegate → Review → Retro)
-3. `/deploy`: 1 task per phase (Pre-flight → CI → Deploy → Health → Sign-off)
+2. `/work`: 1 task per phase (Design Doc → Delegate → Review → Retro)
+3. `/ship`: 1 task per phase (Pre-flight → CI → Deploy → Health → Sign-off)
 4. `/retro`: 1 task per step (Read data → User input → Write retro → Fix actions → Brain update)
 5. Ad-hoc work: create tasks per plan steps
 
@@ -285,7 +285,7 @@ Then follow all phases in the task file. Update PROGRESS.md when done.
 
 > **Every feature passes structured discovery before entering the backlog.**
 
-Pipeline: `/discover` → detail file → `/discover refine` → `/discover review` → `/promote` (gated) → backlog → sprint
+Pipeline: `/idea` → detail file → `/idea refine` → `/idea review` → `/idea promote` (gated) → backlog → sprint
 
 **Requirement Dimensions** (kept in `docs/project/ideas/D###-slug.md`):
 1. Problem/Opportunity 2. User Stories 3. Acceptance Criteria 4. User Scenarios
@@ -402,9 +402,9 @@ Definition source: `.claude/agents/<name>.md` — each agent has a frontmatter +
 
 | Tool | When to use |
 |---|---|
-| `Agent` (single dispatch) | One task → one specialized sub-agent. Use `/assign` skill. |
+| `Agent` (single dispatch) | One task → one specialized sub-agent. Use `/work <task-id>` skill. |
 | `Agent` with `run_in_background: true` | Long-running impl (>10 min) — main agent continues, harness notifies on completion. |
-| `dispatch-parallel` skill | 2+ independent tasks → Conflict Radar + EnterWorktree per agent + parallel Agent calls in a single message |
+| `/work` (auto-fans-out) | 2+ independent tasks → Conflict Radar + EnterWorktree per agent + parallel Agent calls in a single message |
 | `superpowers:subagent-driven-development` | Sequential plan execution (current-session, stacked dependencies) |
 
 **Forbidden:** `claude -p`, ad-hoc shell scripts for delegation. Route new work through the Agent tool.

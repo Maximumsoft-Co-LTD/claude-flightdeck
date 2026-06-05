@@ -52,7 +52,7 @@ This design doc is the specification. Every AC, API contract, business rule, and
 Every LoC estimate in §7 (Files You Will Touch) MUST be tagged:
 
 - **`[state-scan]`** — counted via verified ground-state at task-spec author time (e.g. `wc -l src/file` returned 26 just now → "26 lines [state-scan]")
-- **`[retro-approximated]`** — carried forward from prior retro/backlog/discovery doc without re-verification at task-spec time (must be upgraded to `[state-scan]` before delegating per `/next-task` Step 4)
+- **`[retro-approximated]`** — carried forward from prior retro/backlog/discovery doc without re-verification at task-spec time (must be upgraded to `[state-scan]` before delegating per `/work` Step 4)
 
 When labels mix in the same row, distinguish per number — e.g. `~80-150 code [state-scan] + ~50-100 test-infra [retro-approximated]`. Why: prevents premise drift mid-task.
 

@@ -1,6 +1,6 @@
 # GitOps with ArgoCD — Sync, Diff, Rollback
 
-> Loaded by `/deploy` Phase 3 when the project uses ArgoCD as its GitOps
+> Loaded by `/ship` Phase 3 when the project uses ArgoCD as its GitOps
 > controller. Assumes the `argocd` CLI is installed in-cluster (run from
 > a bastion / jump pod) and authenticated against the in-cluster API
 > server. For out-of-cluster CLI use, swap `argocd login --core` for the

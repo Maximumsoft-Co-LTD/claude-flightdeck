@@ -149,7 +149,7 @@ suffices. The cross-team prefix is only needed when:
 - Multiple teams share a monorepo
 - Agents are registered into a shared registry (e.g. Claude Agent SDK
   multi-project setup)
-- An org-wide `/dispatch-parallel` could route across team boundaries
+- An org-wide `/work` (parallel fanout) could route across team boundaries
 
 ## Quick start — set up a new org in 4 steps
 

@@ -1,6 +1,6 @@
 # Verification JSON — Schema
 
-> Loaded by `/assign` Step 8 (and by the dispatched agent's pre-task
+> Loaded by `/work` Step 8 (and by the dispatched agent's pre-task
 > ritual). This file defines the exact JSON the dispatched agent must
 > emit BEFORE writing any code. The orchestrator validates against
 > this schema and rejects work that ships without it.
@@ -175,5 +175,5 @@ NOT in `files_will_touch`, the gate fails — the agent strayed.
   prompts for this object
 - `../../../rules/agent-pre-task-ritual.md` — the broader ritual the
   agent runs to produce the object
-- `../../post-delegation-gate/SKILL.md` — Gate 1 cross-checks the
+- `../../review/SKILL.md` — `/review gates` Gate 1 cross-checks the
   declared files vs the diff

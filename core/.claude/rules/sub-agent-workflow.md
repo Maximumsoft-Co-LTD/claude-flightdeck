@@ -14,10 +14,9 @@
 
 ## §0 Announce the discipline
 
-When you invoke a discipline skill or gate (`/next-task`, `/assign`,
-`/dispatch-parallel`, `/post-delegation-gate`, `/design-review`,
-`/retro`), **open with one line naming it**: e.g. *"Using
-/post-delegation-gate to run the 6 gates on this diff."* This signals to
+When you invoke a discipline skill or gate (`/work`, `/review gates`,
+`/review design`, `/retro`), **open with one line naming it**: e.g. *"Using
+/review gates to run the 6 gates on this diff."* This signals to
 the user which discipline is active and makes a skipped step visible.
 (Adopted from the superpowers "announce at start" convention.)
 
@@ -265,7 +264,7 @@ Codified in [`../../CLAUDE.md`](../../CLAUDE.md) §N3 + full playbook at
 5. **Wiring (L116)** — composition root has the new code; migrations
    applied; instrumentation emits; topics created; contracts updated.
 6. **Integration smoke** — real system, golden path, end-to-end. UI
-   changed? Add `/design-review` for visual fidelity.
+   changed? Add `/review design` for visual fidelity.
 
 Failure at any gate → fix → re-run that gate. Do not skip gates.
 

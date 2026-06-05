@@ -44,7 +44,7 @@
 
 ## TDD pre-flight (when phase 4 is ✓ for this type)
 
-> **Invoke `/tdd`** to run this discipline — it classifies the change site
+> Follow the **TDD playbook (`docs/playbooks/tdd.md`)** for this discipline — it classifies the change site
 > (greenfield → red-green-refactor; untested legacy → characterization-first,
 > never a blocked commit) and self-checks against test theater.
 

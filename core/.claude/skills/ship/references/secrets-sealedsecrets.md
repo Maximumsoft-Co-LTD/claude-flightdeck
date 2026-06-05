@@ -1,6 +1,6 @@
 # Secrets — Sealed Secrets (Bitnami)
 
-> Loaded by `/deploy` Phase 1.4 when the project uses
+> Loaded by `/ship` Phase 1.4 when the project uses
 > [sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) to
 > commit encrypted secrets directly to Git.
 

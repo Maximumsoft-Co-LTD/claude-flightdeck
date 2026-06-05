@@ -193,7 +193,7 @@ without constraining behavior:
   if it were a spec. Acceptable ONLY when explicitly labeled a
   **characterization** test (locks behavior as a refactor safety net, not
   correctness — see [`../setup/test-discipline.md`](../setup/test-discipline.md)
-  / the `/tdd` skill).
+  / the TDD playbook (`docs/playbooks/tdd.md`)).
 - **Happy-path only** — no error / empty / boundary case for branches the
   code actually has.
 

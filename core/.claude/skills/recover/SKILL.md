@@ -1,13 +1,13 @@
 ---
 name: recover
-description: "Safely recover from partial-dispatch failures, orphan worktrees, mid-merge aborts, accidental main commits, and lost branches. Inventories git state, classifies the failure mode with the user's confirmation, then walks through the recovery options for that class with explicit per-step confirmation. Use when the user says 'undo', 'rollback', 'recover', 'orphan worktree', 'partial commit', 'failed dispatch', 'merge gone wrong', '/recover', or after `/dispatch-parallel` reports partial success."
+description: "Safely recover from partial-dispatch failures, orphan worktrees, mid-merge aborts, accidental main commits, and lost branches. Inventories git state, classifies the failure mode with the user's confirmation, then walks through the recovery options for that class with explicit per-step confirmation. Use when the user says 'undo', 'rollback', 'recover', 'orphan worktree', 'partial commit', 'failed dispatch', 'merge gone wrong', '/recover', or after `/work` reports partial success."
 user_invocable: true
 ---
 
 # /recover — Safe recovery from broken git state
 
 Walks the operator through a deliberate, **non-destructive** recovery
-from common failure modes that follow `/dispatch-parallel`, hand-edit
+from common failure modes that follow `/work` (parallel fanout), hand-edit
 mistakes, or interrupted merges.
 
 Canonical reference: `docs/playbooks/failure-recovery.md`.
@@ -55,7 +55,7 @@ match to the user with a one-line summary and ask them to confirm.
 
 | Class | Signals |
 |---|---|
-| **Partial dispatch** | `git status` shows changes from one path but not others declared by `/dispatch-parallel`; some worktrees committed and others didn't |
+| **Partial dispatch** | `git status` shows changes from one path but not others declared by `/work`; some worktrees committed and others didn't |
 | **Orphan worktree** | `git worktree list` shows worktrees with no recent activity / branches the user doesn't recognize |
 | **Dirty merge** | `git status -s` shows `UU` / `AA` markers, or a `MERGE_HEAD` file exists in `.git/` |
 | **Accidental main commit** | `git log --oneline -1` on `main` / `dev` / `integration` shows a commit you didn't intend there |
@@ -86,10 +86,10 @@ execution.
      git revert <sha-of-the-committed-half>          # committed half
      ```
    - **Fix forward** (keep committed half, complete the rest):
-     - Re-dispatch the uncommitted half via `/dispatch-parallel`
+     - Re-dispatch the uncommitted half via `/work`
        with `--only <task-id-2>` or by invoking the relevant agent
        directly.
-     - Confirm via `/post-delegation-gate` before merge.
+     - Confirm via `/review gates` before merge.
 
 Ask the user which path they want before running anything.
 

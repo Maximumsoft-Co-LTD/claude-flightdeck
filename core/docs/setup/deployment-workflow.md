@@ -429,7 +429,7 @@ git push origin v1.1.0
 ┌──────────────────────────────────────────────────────────────────┐
 │                    SDLC — Enterprise Grade                       │
 │                                                                  │
-│  1. PLAN          /discover → /promote → sprint plan             │
+│  1. PLAN          /idea → /idea promote → sprint plan            │
 │      ↓                                                           │
 │  2. DESIGN        Design Doc → 3-Tier Docs → Review              │
 │      ↓                                                           │

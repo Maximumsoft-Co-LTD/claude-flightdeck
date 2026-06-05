@@ -157,7 +157,7 @@ the wizard moving. Sprint mechanics are answered, not researched.
 - **Vague:** *"Anything."* → follow up: surface ONE — small + visible
   + low-risk.
 - **Downstream:** Stage 7 — quoted in the handoff as the recommended
-  first `/next-task`. Stage 8 (retro) — anchors the retrospective in
+  first `/work`. Stage 8 (retro) — anchors the retrospective in
   a concrete first-sprint experience.
 - **Default if skipped:** wizard suggests "Add a small healthcheck or
   doc edit to validate the workflow round-trip" as a generic pilot.

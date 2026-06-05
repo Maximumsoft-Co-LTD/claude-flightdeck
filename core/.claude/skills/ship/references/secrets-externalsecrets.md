@@ -1,6 +1,6 @@
 # Secrets — External Secrets Operator (ESO)
 
-> Loaded by `/deploy` Phase 1.4 when the project uses
+> Loaded by `/ship` Phase 1.4 when the project uses
 > [external-secrets.io](https://external-secrets.io) to pull secrets
 > from a backend (AWS Secrets Manager, Vault, GCP SM, Azure KV,
 > 1Password, etc.).

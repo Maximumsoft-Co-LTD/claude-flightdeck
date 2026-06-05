@@ -1,6 +1,6 @@
 # Phase Matrix — type × phase decision table (auto-loaded)
 
-> When `/next-task` (or any orchestrator) picks up a task, the type of
+> When `/work` (or any orchestrator) picks up a task, the type of
 > work changes which phases run, run lightly, or skip. This file is
 > the mechanical lookup. Adapted from battle-tested multi-project
 > workflow conventions.
@@ -52,7 +52,7 @@ pipeline (`docs/setup/workflow-master.md`). Cell legend:
 | 3. Gate / approval | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | 4. Test first (TDD — A001) | ✓ | ✓ (regression FIRST) | ✓ (behavior-equiv check) | skip | skip | skip | skip |
 | 5. Implement | ✓ | ✓ | ✓ | ✓ | ✓ (file edits) | ✓ (exploration) | ✓ (version bump) |
-| 6. Code review (gates 1, 3, 4 of `/post-delegation-gate`) | ✓ | ✓ | ✓ | ✓ | ⚠ | ⚠ light | ⚠ |
+| 6. Code review (gates 1, 3, 4 of `/review gates`) | ✓ | ✓ | ✓ | ✓ | ⚠ | ⚠ light | ⚠ |
 | 7. Security review | trig | trig | trig | trig | skip | skip | trig |
 | 8. Integration smoke | ✓ | ✓ | ✓ | ⚠ | skip | skip | ✓ |
 | 9. Design-fidelity review (UI only) | trig | trig | trig | skip | skip | skip | trig |
@@ -134,7 +134,7 @@ Phase 7 runs when the diff touches any of:
   squatted name (~19.7% of LLM-suggested packages don't exist → slopsquatting is
   install-time RCE). A package you can't confirm exists is a STOP.
 
-**Invoke [`/security-review`](../skills/review/SKILL.md)** to run Phase 7
+**Invoke [`/review security`](../skills/review/SKILL.md)** to run Phase 7
 — a diff-aware, semantic pass across the dimensions above with false-positive
 filtering so it stays signal not noise (it dispatches
 `pr-review-toolkit:silent-failure-hunter` + a security-focused `senior-tech-lead`
@@ -153,11 +153,11 @@ Phase 9 runs when the diff touches:
 - focus / hover / active states and accessibility-visible styling
   (focus rings, aria-visible style hooks)
 
-Dispatch `/design-review` for the 3-lens visual gate. Skip otherwise.
+Dispatch `/review design` for the 3-lens visual gate. Skip otherwise.
 
 ## How to apply
 
-1. **At task pickup** (`/next-task` step 2 / `/assign`): read the task
+1. **At task pickup** (`/work` step 2): read the task
    row's `Type:` slot. If missing, ask the user. Default = `feat`.
 2. **Pick the matrix row.** That row tells you the phase list for the
    rest of the work.
@@ -179,7 +179,7 @@ Dispatch `/design-review` for the 3-lens visual gate. Skip otherwise.
   the "test first" phase = a **characterization test** that pins current
   behavior *before* you change it — not a from-scratch new-behavior spec.
   This keeps the discipline legacy-safe (one test around the change site,
-  never a blocked commit). Invoke **`/tdd`** to run it (it picks the mode);
+  never a blocked commit). Follow the TDD playbook (`docs/playbooks/tdd.md`) (it picks the mode);
   recipe + the test-theater anti-patterns the gate rejects:
   [`../../docs/setup/test-discipline.md`](../../docs/setup/test-discipline.md).
 - **A005 (design-doc-first)** — phase 2. Matrix shows feat = ✓
@@ -197,7 +197,7 @@ Dispatch `/design-review` for the 3-lens visual gate. Skip otherwise.
   matrix specializes per-type
 - `docs/playbooks/post-delegation-review.md` — the 6-gate playbook
   (gates 1-6 land in phases 6 + 8)
-- `core/.claude/skills/work/SKILL.md` — looks up this matrix in
+- `core/.claude/skills/work/SKILL.md` — `/work` looks up this matrix in
   Step 2 of task pickup
 - `core/.claude/agents/orchestrator.md` — routing table cross-refs
   this matrix

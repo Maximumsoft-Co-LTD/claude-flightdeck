@@ -25,7 +25,7 @@ git clone https://github.com/Maximumsoft-Co-LTD/claude-flightdeck.git ~/code/cla
 
 # 3. Open in Claude Code; run /onboard (~4-6h interactive setup wizard)
 #    Then start working:
-#      /next-task   /post-delegation-gate   /retro   /ratify-rules
+#      /work   /review gates   /retro   /retro ratify
 ```
 
 **Prereqs:** `bash` + `git` · `jq` (`brew install jq` / `apt install jq`) ·
@@ -49,12 +49,12 @@ produces an artifact, and the next can't start until the previous lands.
 
 ```mermaid
 flowchart LR
-    Idea([💡 idea]) --> Discovery["🔍 /discover"] --> Promote["📥 /promote"] --> Next["📋 /next-task"]
+    Idea([💡 idea]) --> Discovery["🔍 /idea"] --> Promote["📥 /idea promote"] --> Next["📋 /work"]
     Next --> Design["📐 design-doc<br/>(≥500L zero-fix)"] --> Implement["⚙️ engineer<br/>(TDD first)"] --> Gate["🛡️ 6-gate review"]
     Gate -- ✅ --> MiniRetro["📓 live mini-retro"] --> Done([✅ done])
     Gate -- ❌ --> Implement
     Done -.->|every task| Next
-    Done ==>|sprint close| Retro["📊 /retro"] --> Brain([🧠 brain-hot.md])
+    Done ==>|sprint close| Retro["📊 /retro → /retro ratify"] --> Brain([🧠 brain-hot.md])
 
     classDef terminal fill:#d1fae5,stroke:#047857,color:#064e3b
     classDef gate fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
@@ -83,9 +83,8 @@ target-project/
 │   ├── agents/              # backend-engineer, frontend-engineer,
 │   │                        #   orchestrator, design-doc-writer,
 │   │                        #   senior-tech-lead, sprint-retro-author
-│   ├── skills/              # /onboard /next-task /assign /post-delegation-gate
-│   │                        #   /retro /ratify-rules /dispatch-parallel
-│   │                        #   /design-review /deploy /recover /document …
+│   ├── skills/              # /onboard /work /review /status
+│   │                        #   /retro /idea /ship /recover /document …
 │   ├── rules/               # brain-hot · agent-pre-task-ritual · phase-matrix
 │   │                        #   programming-fundamentals · git-workflow · lsp-first
 │   ├── hooks/               # PostToolUse lint (gofmt / ruff / eslint / prettier / …)

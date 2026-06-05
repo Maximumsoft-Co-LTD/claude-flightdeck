@@ -1,6 +1,6 @@
 # Database Migration Patterns — Idempotent, Reversible, Zero-Downtime
 
-> Loaded by `/deploy` Phase 1.5 (and `deploy-preflight`) when the
+> Loaded by `/ship` Phase 1.5 (and `/ship --check`) when the
 > deployment introduces schema changes. Covers idempotent runners,
 > expand-contract for online changes, `pt-online-schema-change` /
 > `gh-ost` for MySQL, and the rollback drill.

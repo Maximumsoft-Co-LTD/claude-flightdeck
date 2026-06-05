@@ -1,6 +1,6 @@
 # Health Probes — `readyz` vs `healthz` Semantics
 
-> Loaded by `/deploy` Phase 4. The two probes mean different things and
+> Loaded by `/ship` Phase 4. The two probes mean different things and
 > the deploy gate depends on understanding the difference.
 
 ## The two probes — one-line semantics

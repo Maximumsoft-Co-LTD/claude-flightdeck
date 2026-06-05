@@ -1,6 +1,6 @@
 # Dispatch Prompt — Canonical Template
 
-> Loaded by `/assign` Step 8 and `/next-task` Step 9.
+> Loaded by `/work` Step 8 and `/work` Step 9.
 >
 > **This block is the BRIEF-FILE content, not the inline `prompt`.**
 > Write it (with placeholders substituted) to
@@ -80,7 +80,7 @@ Test plan (from the design doc):
 - ...
 
 [CROSS-CUTTING]
-- 6-gate review WILL be run after you return (see post-delegation-gate)
+- 6-gate review WILL be run after you return (see `/review gates`)
 - Live mini-retro WILL be required (append to docs/project/sprints/S<N>/tasks.md)
 - DO NOT push to main; use branch feat/<task-id>-<slug>
 - Tests BEFORE implementation (TDD) — A001 non-negotiable for feat/fix/refactor
@@ -167,7 +167,7 @@ Test plan (from §Tests of D012):
 - Integration: handler end-to-end via test container (success + 403 path)
 
 [CROSS-CUTTING]
-- 6-gate review (post-delegation-gate) will run after you return
+- 6-gate review (`/review gates`) will run after you return
 - This touches authn/authz → security review trigger (Phase 7)
 - Append mini-retro to docs/project/sprints/S04/tasks.md
 - Branch: feat/TG-S04.12-tenant-invites
@@ -223,7 +223,7 @@ Acceptance criteria (verbatim from D015):
   patch that doesn't name the root cause will be rejected at the gate.
 - 3-strikes: if 3 fix attempts fail, STOP — report BLOCKED and question
   the architecture; do not attempt fix #4.
-- Regression test commits BEFORE the fix (so /post-delegation-gate
+- Regression test commits BEFORE the fix (so `/review gates`
   can verify "failed pre-fix, passes post-fix")
 - 6-gate review will run after you return
 - Mini-retro must address: how did this bug ship past A002 zero-bug?

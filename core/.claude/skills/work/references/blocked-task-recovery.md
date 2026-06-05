@@ -1,6 +1,6 @@
 # Blocked Task Recovery
 
-> Loaded by `/assign` Step 3 when the task readiness check finds a
+> Loaded by `/work` Step 3 when the task readiness check finds a
 > blocker. The goal is to never dispatch a task that will silently
 > stall — but also never refuse a task when the blocker has a clean
 > recovery path.
@@ -20,7 +20,7 @@ Current TG-S04.08 status: [~] Partial
   concern (e.g. tests pending) → **proceed with caution**. Warn the
   user, mention the partial state, ask for explicit go-ahead.
 - If `blockedBy` is `[ ] Not Started` → **refuse**. Suggest the user
-  pick the blocker first (`/assign <blocker>` or `/next-task`).
+  pick the blocker first (`/work <blocker>` or `/work`).
 - If `blockedBy` is `[!] Blocked` → **refuse**. Surface the upstream
   blocker; the user has to unblock that first.
 - If `blockedBy` is `[x] Done` → not actually blocked; the sprint
@@ -43,7 +43,7 @@ Task TG-S04.12 has no design doc at docs/project/sprints/S04/designs/D012-*.md
 
 **Decision:** **refuse dispatch.** A005 (design-doc-first) is
 non-negotiable. The recovery is to dispatch `design-doc-writer`
-FIRST, then resume `/assign` after the doc lands.
+FIRST, then resume `/work` after the doc lands.
 
 **Recovery sequence:**
 ```
@@ -51,7 +51,7 @@ FIRST, then resume `/assign` after the doc lands.
          prompt="Author the design doc for TG-S04.12 (see sprint row
                  + relevant CLAUDE.md)")
 2. Wait for the design doc to commit.
-3. Resume /assign TG-S04.12.
+3. Resume `/work TG-S04.12`.
 ```
 
 If the user insists "skip the design doc, just do it" — politely
@@ -93,7 +93,7 @@ work.
 1. Surface the Draft status to the user.
 2. Ask: "Approve the design doc as-is? (changes Status to `Approved`)
    Or send back to `design-doc-writer` for revisions?"
-3. After Approved, resume `/assign`.
+3. After Approved, resume `/work`.
 
 ### Reason 5 — Dependency is `[~] Partial`
 
@@ -128,7 +128,7 @@ Open PR #142 already modifies: internal/app/tenant/create_invite.go
 ```
 
 **Decision:** **refuse parallel dispatch.** This is the Conflict
-Radar Layer 1 territory (see `/dispatch-parallel`). Two
+Radar Layer 1 territory (see `/work` parallel fanout). Two
 simultaneous edits to the same file will conflict on merge.
 
 **Recovery:**
@@ -181,5 +181,5 @@ path. Never proceed silently past a block.
 - `dispatch-prompt-template.md` — the prompt the dispatch finally
   uses
 - `../SKILL.md` Step 3 — where this file is consulted
-- `../../next-task/SKILL.md` — sister skill that picks tasks and
+- `../SKILL.md` — the `/work` skill that picks tasks and
   applies the same blocker checks

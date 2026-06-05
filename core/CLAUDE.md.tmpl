@@ -65,7 +65,7 @@ Every coding subagent that returns MUST pass 6 gates before merge.
 5. **Wiring (L116)** — composition root has the new code; migrations
    applied; instrumentation emits
 6. **Integration smoke** — start the system, run the golden path
-   (+ `/design-review` if UI changed)
+   (+ `/review design` if UI changed)
 
 ### N4. Parallel coding conflict prevention (4-layer)
 
@@ -103,18 +103,18 @@ Canonical skills by stage:
 
 | Stage | Skill | Artifact |
 |---|---|---|
-| Discovery | `/discover` | `docs/project/ideas/D###-slug.md` |
-| Promote backlog → sprint | `/promote` | `docs/project/sprints/S<N>/tasks.md` row |
-| Pick next task | `/next-task` | (selects from sprint file) |
+| Discovery | `/idea` | `docs/project/ideas/D###-slug.md` |
+| Promote backlog → sprint | `/idea promote` | `docs/project/sprints/S<N>/tasks.md` row |
+| Pick next task | `/work` | (selects from sprint file) |
 | Author D-doc | `design-doc-writer` agent | `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` |
 | Single foreground dispatch | `Agent()` directly | code + tests |
-| Parallel fanout | `/dispatch-parallel` | N parallel commits in worktrees |
-| 6-gate post-dispatch review | `/post-delegation-gate` | review log |
-| UI design fidelity gate | `/design-review` | `docs/project/reviews/sprint-S<N>-design-review.md` |
-| Mid-sprint progress | `/progress` | (status print) |
+| Parallel fanout | `/work` (auto-fans-out) | N parallel commits in worktrees |
+| 6-gate post-dispatch review | `/review gates` | review log |
+| UI design fidelity gate | `/review design` | `docs/project/reviews/sprint-S<N>-design-review.md` |
+| Mid-sprint progress | `/status` | (status print) |
 | Live per-task retro | append manually or `/retro --task` | `docs/project/sprints/S<N>/tasks.md` |
 | Sprint close + audit | `/retro` | `docs/project/sprints/S<N>/retro.md` |
-| Archive old sprint files | `/archive` | move to `sprints/historical/` |
+| Archive old sprint files | `/retro archive` | move to `sprints/historical/` |
 
 ## Sources of truth + cadence
 
@@ -153,11 +153,11 @@ Canonical skills by stage:
 | If the user asks about… | Read first |
 |---|---|
 | First-time setup / "how do I start using this" | run `/onboard` (8-stage wizard) — see `docs/setup/onboarding-guide.md` |
-| Start a new sprint / pick next task | `docs/project/sprints/S<N>/tasks.md` + `docs/project/backlog.md` → `/next-task` |
-| Add a new feature | the relevant area CLAUDE.md → `/promote` → `/next-task` |
-| Review a UI sprint / catch "green tests but wrong UI" | `/design-review` |
+| Start a new sprint / pick next task | `docs/project/sprints/S<N>/tasks.md` + `docs/project/backlog.md` → `/work` |
+| Add a new feature | the relevant area CLAUDE.md → `/idea promote` → `/work` |
+| Review a UI sprint / catch "green tests but wrong UI" | `/review design` |
 | Sprint retro / sprint close | `/retro` |
-| Deploy / release | `docs/setup/deployment-workflow.md` + `/deploy` |
+| Deploy / release | `docs/setup/deployment-workflow.md` + `/ship` |
 | Local dev setup | this file `## Quick start` + project README |
 
 ## Quick start

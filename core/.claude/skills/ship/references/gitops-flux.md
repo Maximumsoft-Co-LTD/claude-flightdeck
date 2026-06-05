@@ -1,6 +1,6 @@
 # GitOps with Flux — Reconcile, Suspend, Image Automation
 
-> Loaded by `/deploy` Phase 3 when the project uses Flux v2 as its
+> Loaded by `/ship` Phase 3 when the project uses Flux v2 as its
 > GitOps controller. Assumes `flux` CLI installed locally and a kube
 > context pointing at the target cluster.
 

@@ -1,6 +1,6 @@
 # Repo / Component → Subagent Mapping
 
-> Loaded by `/assign` Step 1 when picking the `subagent_type` for the
+> Loaded by `/work` Step 1 when picking the `subagent_type` for the
 > dispatch. The right agent reads the project's learned conventions
 > (`.claude/rules/code-style.md`) and matches the codebase's real style.
 
@@ -22,7 +22,7 @@ specialized agents; route to those when installed.
 | Cross-service / cross-area architectural decision | `senior-tech-lead` |
 | Boundary / architectural review (Gate 3) | `senior-tech-lead` (reads the project's learned boundary conventions) |
 | ≥500-line design doc authoring | `design-doc-writer` |
-| Post-FE-sprint visual fidelity gate | `/design-review` (skill, not agent) |
+| Post-FE-sprint visual fidelity gate | `/review design` (skill, not agent) |
 
 Both engineers are **convention-driven**: they place new code where the
 project already puts that kind of code, name things the way the project does,
@@ -66,7 +66,7 @@ consumer") is split into TWO sub-tasks BEFORE dispatch:
 - Sub-task B (FE) → `frontend-engineer`
 
 The contract change goes in a third PR that lands FIRST (see
-`/dispatch-parallel` Conflict Radar Layer 3). Never dispatch a single agent to
+`/work` Conflict Radar Layer 3). Never dispatch a single agent to
 write both sides of a contract.
 
 ## Anti-patterns
@@ -81,4 +81,4 @@ write both sides of a contract.
 - `dispatch-prompt-template.md` — the brief-file content this mapping populates
 - `../../../rules/sub-agent-workflow.md` §2 — full subagent inventory
 - `../../../../docs/setup/conform-to-codebase.md` — how the engineers detect + conform
-- `/dispatch-parallel` — picks each agent when dispatching several at once
+- `/work` — picks each agent when dispatching several at once (auto-fans-out)

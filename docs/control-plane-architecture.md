@@ -48,10 +48,9 @@ The control plane is the codified counter-measure to all three.
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────┐
 │ 4. .claude/skills/  (user-invocable: true)                          │
-│    Slash-commands that drive the workflow:                          │
-│      /next-task /promote /discover /assign /progress /archive       │
-│      /retro /document /dispatch-parallel /design-review             │
-│      /post-delegation-gate /deploy /changelog /index-refresh        │
+│    10 commands (6 verbs + 4 niche) driving the workflow:            │
+│      /work /idea /review /status /retro /ship                       │
+│      /onboard /recover /document /flightdeck-feedback               │
 │    Each declares a TOKEN BUDGET so it doesn't blow up the session.  │
 └─────────────────────────────────────────────────────────────────────┘
                                 ↓
@@ -71,7 +70,7 @@ The control plane is the codified counter-measure to all three.
 │    Templates that force quality:                                    │
 │      designs/_templates/DESIGN_TEMPLATE     — ≥500-line zero-fix    │
 │      designs/_templates/DESIGN_LIGHT        — for surgical sweeps   │
-│      designs/_templates/DESIGN_REVIEW       — checklist for /design-review │
+│      designs/_templates/DESIGN_REVIEW       — checklist for /review design │
 │      designs/_templates/BACKLOG_ENTRY       — backlog row format    │
 │      project/sprints/S<N>/tasks.md                         — single-pane truth     │
 │      project/backlog.md                        — all work, ever        │
@@ -91,7 +90,7 @@ The control plane is the codified counter-measure to all three.
 
 ## How a typical task flows through the plane
 
-1. **User invokes `/next-task`** (skill, layer 4) — reads the active sprint board `docs/project/sprints/S<N>/tasks.md`
+1. **User invokes `/work`** (skill, layer 4) — reads the active sprint board `docs/project/sprints/S<N>/tasks.md`
    (layer 6), picks the next un-started task, confirms with user.
 2. **Skill enforces design-first (A005, layer 2)** — if the task has no
    design doc, dispatches `design-doc-writer` (agent, layer 3) to
@@ -105,7 +104,7 @@ The control plane is the codified counter-measure to all three.
 4. **Agent codes TDD-first (A001)** — failing test, implementation,
    green test. Invokes `superpowers:test-driven-development`.
 5. **Agent commits and returns.** Skill triggers
-   `/post-delegation-gate` (layer 4) which walks the 6-gate playbook
+   `/review gates` (layer 4) which walks the 6-gate playbook
    (layer 5). Gate 3 dispatches `senior-tech-lead` to check the diff
    against the project's own conventions.
 6. **Once green, skill prompts for live mini-retro** (A009 / L036) —
@@ -187,7 +186,7 @@ grep -q '_replace with your first sprint_' docs/project/sprints/S<N>/tasks.md &&
   echo "sprint board still has placeholder rows" || echo "ok"
 
 # 5. Sprint files exist for the active sprint
-ls docs/project/sprints/S*/tasks.md || echo "no sprint files yet — run /promote"
+ls docs/project/sprints/S*/tasks.md || echo "no sprint files yet — run /idea promote"
 
 # 6. Brain pointer is set
 grep -q '{{BRAIN_PATH}}' .claude/rules/brain-hot.md && \

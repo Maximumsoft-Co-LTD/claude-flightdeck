@@ -175,7 +175,7 @@ manifest update.
 - For Design Docs (`docs/project/sprints/S<N>/designs/D<NNN>.md`) — those are
   hand-curated by the `design-doc-writer` agent.
 - For the sprint file / backlog / retro — those are owned by
-  `/next-task` / `/promote` / `/retro` respectively.
+  `/work` / `/idea promote` / `/retro` respectively.
 
 ## Related references
 

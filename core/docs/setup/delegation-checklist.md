@@ -1,6 +1,6 @@
 # Delegation Checklist
 
-> Run through this list every time you delegate a task via `Agent` (foreground), `Agent` + `run_in_background: true`, or `/dispatch-parallel`. Missing any item = zero-fix delegation broken.
+> Run through this list every time you delegate a task via `Agent` (foreground), `Agent` + `run_in_background: true`, or `/work` (parallel fanout). Missing any item = zero-fix delegation broken.
 
 ## Pre-Delegation
 

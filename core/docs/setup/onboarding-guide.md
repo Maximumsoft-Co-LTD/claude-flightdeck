@@ -140,8 +140,8 @@ Two files: the active sprint board (`docs/project/sprints/S<N>/tasks.md`) and `b
 ### Stage 7 — Handoff
 
 Final summary: files written, A-rules ratified, suggested first task
-(your Round 3 Q11 answer). Run `/next-task` to dispatch the first
-task, or `/discover <idea>` if you want to capture more ideas first.
+(your Round 3 Q11 answer). Run `/work` to dispatch the first
+task, or `/idea <idea>` if you want to capture more ideas first.
 
 ### Stage 8 — Onboarding retro (deferred)
 

@@ -5,21 +5,21 @@
 
 ## Why
 
-Large markdown tables with a wide notes column are the #1 per-invocation token sink. A 40-line slim index answers the same "what is the next task?" question in ~1 K tokens vs the full-file Read of ~4 K. It compounds across `/next-task`, `/progress`, `/retro`, `/document`.
+Large markdown tables with a wide notes column are the #1 per-invocation token sink. A 40-line slim index answers the same "what is the next task?" question in ~1 K tokens vs the full-file Read of ~4 K. It compounds across `/work`, `/status`, `/retro`, `/document`.
 
 Typical measured savings:
-- `/next-task`: ~5 K → ~1.5 K
-- `/progress`: ~14 K → ~4 K
+- `/work`: ~5 K → ~1.5 K
+- `/status`: ~14 K → ~4 K
 - `/retro`: ~18 K → ~6 K
 
 ## The four index files
 
 | Index | Companion to | Shape | Max size | Consumer |
 |---|---|---|---|---|
-| `docs/project/sprints/XX/tasks.md` | `sprint-XX.md` | 4-col: ID \| Component \| Status \| Depends | ~60 lines | `/next-task` Step 1, `/progress`, `/retro` |
-| `docs/project/sprints/XX/designs/INDEX.md` | the dir of `DXXX-*.md` | 4-col: DXXX \| Title \| Status \| Task-ID | ~30 lines | `/next-task` Step 7, `/document` |
-| `docs/project/backlog-index.md` | `backlog.md` | 3-col: Sprint \| Status \| Pointer | ~40 lines | `/next-task` Step 1 (sprint resolver), `/promote`, `/archive` |
-| `docs/project/sprints/INDEX.md` | the dir of `sprint-*.md` | 3-col: Sprint \| Status \| Dates | ~30 lines | `/archive`, humans orienting |
+| `docs/project/sprints/XX/tasks.md` | `sprint-XX.md` | 4-col: ID \| Component \| Status \| Depends | ~60 lines | `/work` Step 1, `/status`, `/retro` |
+| `docs/project/sprints/XX/designs/INDEX.md` | the dir of `DXXX-*.md` | 4-col: DXXX \| Title \| Status \| Task-ID | ~30 lines | `/work` Step 7, `/document` |
+| `docs/project/backlog-index.md` | `backlog.md` | 3-col: Sprint \| Status \| Pointer | ~40 lines | `/work` Step 1 (sprint resolver), `/idea promote`, `/retro archive` |
+| `docs/project/sprints/INDEX.md` | the dir of `sprint-*.md` | 3-col: Sprint \| Status \| Dates | ~30 lines | `/retro archive`, humans orienting |
 
 ## Creation workflow (MANDATORY)
 
@@ -48,12 +48,12 @@ Typical measured savings:
 
 ```bash
 stat -f '%m' sprint-XX-index.md sprint-XX.md
-# index mtime < full-file mtime → warn + read full file + suggest /index-refresh
+# index mtime < full-file mtime → warn + read full file (indexes are derived from the board/backlog — no manual refresh needed)
 ```
 
-## Refresh helper skill
+## Index refresh
 
-`.claude/skills/index-refresh/SKILL.md` — single entry point.
+Indexes are derived from the board/backlog — no manual refresh command is needed. Skills that mutate sprint/backlog files must update the sibling index in the same commit.
 
 ## Related rules
 

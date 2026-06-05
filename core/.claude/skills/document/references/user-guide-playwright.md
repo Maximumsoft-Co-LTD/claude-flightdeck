@@ -217,5 +217,5 @@ imagination.
 - `manifest-format.md` — the index manifest pinned by capture
 - `api-openapi.md` / `api-proto.md` — sibling references for contract
   docs
-- `../../design-review/SKILL.md` — uses the same Playwright capture
-  machinery for the design-fidelity gate
+- `../../review/SKILL.md` — uses the same Playwright capture
+  machinery for the design-fidelity gate (`/review design`)

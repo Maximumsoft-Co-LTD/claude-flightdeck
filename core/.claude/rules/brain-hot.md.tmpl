@@ -66,7 +66,7 @@ overrides can append A011+ at the bottom.
      applied; instrumentation emits; topics created; contracts in sync.
      Compile-green ≠ feature-wired.
   6. **Integration smoke**: start the system, run the golden path
-     end-to-end. If UI changed: run `/design-review` for real-browser
+     end-to-end. If UI changed: run `/review design` for real-browser
      visual fidelity (green unit/type/lint ≠ correct UI).
 - **A005 — Design-doc-first.** Every non-trivial task needs a design doc
   in `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` MERGED before any code
@@ -119,7 +119,7 @@ external brain.
 - **L020 — Selector contract.** Every `data-testid` ships in the D-doc
   selector map BEFORE UI + E2E impl. Mismatch class kills hours.
 - **L035 — Touched-files matrix.** Every D-doc declares which files it
-  touches. Used by `/dispatch-parallel` Conflict Radar (Layer 1).
+  touches. Used by `/work` Conflict Radar (Layer 1).
 - **L076 — D-doc ≥500L for non-trivial impl tasks.** Empirical zero-fix
   threshold across 48+ sprints. Light template OK for surgical sweeps.
 - **L087 — Backlog sync per-task** (see A009 above for retro).
@@ -135,7 +135,7 @@ external brain.
   alone. The compiler doesn't know what production is doing.
 - **L182 — Visual fidelity ≠ structural review.** Unit + accessibility
   tree snapshots can pass while pixels / spacing / theme tokens are
-  wrong. UI sprints MUST run `/design-review` (3-lens visual gate)
+  wrong. UI sprints MUST run `/review design` (3-lens visual gate)
   before promote.
 
 ---
@@ -161,9 +161,9 @@ external brain.
 > dedicated rules file (e.g. `{{PROJECT_SLUG}}-local.md`) and link from here.
 >
 > **Don't hand-edit this section from a retro.** Recurring lessons become
-> rules through the operator-gated **`/ratify-rules`** loop:
+> rules through the operator-gated **`/retro ratify`** loop:
 > `sprint-retro-author` drafts them under a retro's `## Candidate A-rules`,
-> then `/ratify-rules` walks you through ratify / defer / drop and appends the
+> then `/retro ratify` walks you through ratify / defer / drop and appends the
 > approved ones here (next free A###) + a lesson-trigger-map row.
 
 - **A011 — _your first project rule_** — _one line_. → optional

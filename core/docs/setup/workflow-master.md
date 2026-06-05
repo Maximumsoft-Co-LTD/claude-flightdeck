@@ -6,11 +6,11 @@
 
 | Stage | Goal | Driver | Artifact | Rule(s) |
 |---|---|---|---|---|
-| **S1 Discovery** | Capture a user need / external requirement; classify it; seed a backlog row | `/discover` skill | `docs/project/ideas/D###-slug.md` + new row in `docs/project/backlog.md` | A008 |
-| **S2 Sprint planning** | Break discovery + backlog into a coherent sprint with task table + fanout waves | manual + `/promote` + orchestrator agent | `docs/project/sprints/S<N>/tasks.md` (status board + dependency waves + cross-task contracts) | A008 |
-| **S3 Design (per task)** | Author **D-doc per A005** BEFORE any code edit / agent dispatch | `/next-task` skill + `design-doc-writer` agent (for non-trivial tasks) | `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` (LIGHT or FULL template) | **A005** |
-| **S4 Implement** | TDD / impl following the D-doc + apply lesson-trigger-map rules | `Agent()` dispatch (foreground) OR `/dispatch-parallel` (fanout) | code in your services + tests | A001 / A002 / A003 / A010 |
-| **S5 Review (6-gate)** | Verify the dispatch result against the 6-gate review BEFORE merge | `/post-delegation-gate` skill + parallel reviewers | review log appended to PR or inline | root CLAUDE.md §N3 |
+| **S1 Discovery** | Capture a user need / external requirement; classify it; seed a backlog row | `/idea` skill | `docs/project/ideas/D###-slug.md` + new row in `docs/project/backlog.md` | A008 |
+| **S2 Sprint planning** | Break discovery + backlog into a coherent sprint with task table + fanout waves | manual + `/idea promote` + orchestrator agent | `docs/project/sprints/S<N>/tasks.md` (status board + dependency waves + cross-task contracts) | A008 |
+| **S3 Design (per task)** | Author **D-doc per A005** BEFORE any code edit / agent dispatch | `/work` skill + `design-doc-writer` agent (for non-trivial tasks) | `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` (LIGHT or FULL template) | **A005** |
+| **S4 Implement** | TDD / impl following the D-doc + apply lesson-trigger-map rules | `Agent()` dispatch (foreground) OR `/work` (auto-fans-out for parallel) | code in your services + tests | A001 / A002 / A003 / A010 |
+| **S5 Review (6-gate)** | Verify the dispatch result against the 6-gate review BEFORE merge | `/review gates` skill + parallel reviewers | review log appended to PR or inline | root CLAUDE.md §N3 |
 | **S6 Per-task retro (live)** | While context is hot, append a 6-field mini-retro to the sprint's task-retro file | manual write or `/retro --task` | `docs/project/sprints/S<N>/tasks.md` (append-only) | **A009** |
 | **S7 Sprint close + audit** | Aggregate task retros → full retro; **audit backlog for 0 mismatch** | `/retro` skill + `sprint-retro-author` agent | `docs/project/sprints/S<N>/retro.md` + Glance prose moved from `tasks.md` → `retro.md` | **A008** |
 
@@ -28,7 +28,7 @@
 
 1. **Sprint pre-flight** — read `docs/project/sprints/S<N>/tasks.md` track row + `docs/project/sprints/S<N>/tasks.md`. Confirm the active sprint via the 🚀 marker (A008).
 2. **Author per-task D-docs** (A005). One D-doc may cover multiple sibling tasks if they share source-of-authority (e.g., all UX/A11y tasks driven from a single gate report).
-3. **Fanout decision** — for each task: small surgical → inline in main session; medium → single `Agent()` foreground; multi-independent → `/dispatch-parallel` with worktree isolation + Conflict Radar.
+3. **Fanout decision** — for each task: small surgical → inline in main session; medium → single `Agent()` foreground; multi-independent → `/work` (auto-fans-out) with worktree isolation + Conflict Radar.
 4. **Per task or wave**:
    - dispatch (or inline impl)
    - 6-gate review (root CLAUDE.md §N3 gates 1–6)
@@ -59,17 +59,17 @@
 
 | Stage | Skill |
 |---|---|
-| Discovery | `/discover` |
-| Promote backlog row → sprint | `/promote` |
-| Pick next task in sprint | `/next-task` |
-| Author D-doc | `design-doc-writer` (agent, not skill) — invoked by `/next-task` |
+| Discovery | `/idea` |
+| Promote backlog row → sprint | `/idea promote` |
+| Pick next task in sprint | `/work` |
+| Author D-doc | `design-doc-writer` (agent, not skill) — invoked by `/work` |
 | Single foreground dispatch | `Agent()` directly |
-| **Parallel fanout** | `/dispatch-parallel` |
-| Post-dispatch 6-gate review | `/post-delegation-gate` |
-| Design fidelity (UI work) | `/design-review` |
-| Mid-sprint dashboard | `/progress` |
+| **Parallel fanout** | `/work` (auto-fans-out) |
+| Post-dispatch 6-gate review | `/review gates` |
+| Design fidelity (UI work) | `/review design` |
+| Mid-sprint dashboard | `/status` |
 | Sprint retro + close | `/retro` |
-| Archive old sprint files | `/archive` |
+| Archive old sprint files | `/retro archive` |
 | Verify local dev stack | `/verify-dev` |
 
 ## Related

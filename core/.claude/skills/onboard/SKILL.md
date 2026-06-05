@@ -268,7 +268,7 @@ Files written:
   docs/project/sprints/S<N>/tasks.md / backlog.md / FOLLOWUPS.md
 
 Next step: pilot the workflow on a small task from Stage 2 Round 3.
-Run /next-task to dispatch, or /discover <idea> if you want to
+Run `/work` to dispatch, or `/idea <idea>` if you want to
 capture more discovery items first.
 
 Stage 8 (onboarding retro) runs after that first sprint closes —

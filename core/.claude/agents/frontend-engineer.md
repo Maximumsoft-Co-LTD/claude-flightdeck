@@ -67,7 +67,7 @@ Stack-neutral UI quality that does NOT require a particular architecture:
 - **Programming fundamentals** (`.claude/rules/programming-fundamentals.md`) — clear names, deliberate error handling, complexity ceiling.
 - A genuinely harmful pattern → **design suggestion** + `DONE_WITH_CONCERNS`, never a unilateral re-architecture.
 
-> If the app touched UI, run `/design-review` after the gates for visual fidelity (it's stack-neutral).
+> If the app touched UI, run `/review design` after the gates for visual fidelity (it's stack-neutral).
 
 ## Tests
 

@@ -177,7 +177,7 @@ Every lesson below is defined here in one line — this IS the source of truth, 
 | L153 | Stale Reads pollute the next skill | `/clear` between skill invocations |
 | L154 | Sprint / backlog / D-doc created without index update | Index-first (see `index-discipline.md`) |
 | L156 | Hallucinated types in a D-doc code paste | LSP-verify types before pasting |
-| L182 | Visual fidelity assumed from passing unit tests | UI sprints run `/design-review` (3-lens visual gate) |
+| L182 | Visual fidelity assumed from passing unit tests | UI sprints run `/review design` (3-lens visual gate) |
 | L186 | Single-day burndown evidence lost | Capture in the sprint retro |
 | L227 | Migration authored but not auto-applied → UAT schema gap | Auto-apply on bootstrap |
 | L228 | Browser e2e non-waiting visibility check → race | Use proper wait conditions |

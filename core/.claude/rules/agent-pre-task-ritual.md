@@ -98,7 +98,7 @@ assume any particular architecture is in place:
 
 12. Match task class → invoke the right superpower skill:
     - **Implementation** → `superpowers:test-driven-development`
-      (failing test first) + **`/tdd`** (intent-not-theater; on untested
+      (failing test first) + the TDD playbook (`docs/playbooks/tdd.md`) (intent-not-theater; on untested
       legacy → characterization-first, never a blocked commit)
     - **Bug fix** → `superpowers:systematic-debugging` (RCA before fix)
     - **Design / planning** → `superpowers:writing-plans` or
@@ -106,7 +106,7 @@ assume any particular architecture is in place:
     - **All tasks** → `superpowers:verification-before-completion`
       BEFORE claiming done
     - **Multiple independent sub-tasks** →
-      `superpowers:dispatching-parallel-agents` + `/dispatch-parallel`
+      `superpowers:dispatching-parallel-agents` + `/work` (auto-fans-out)
 13. Invoke **LSP-first** navigation (A010 / L147):
     - LSP `documentSymbol` + `hover` on key files BEFORE Read/Grep when
       asking *what a symbol IS*
