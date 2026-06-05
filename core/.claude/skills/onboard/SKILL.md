@@ -47,20 +47,14 @@ alone has).
 ## Stage 0 — Pre-flight (auto)
 
 ```bash
-# Install-integrity health check (structure · placeholders · plugins ·
-# scaffolding · settings). Read-only; exits non-zero on any FAIL.
-.claude/skills/onboard/scripts/doctor.sh "$PROJECT_DIR"
-
 # Topology probe (languages / frameworks / areas / plugins / sibling installs)
 .claude/skills/onboard/scripts/detect-topology.sh "$PROJECT_DIR"
 ```
 
-**If `doctor.sh` reports any FAIL, stop and fix it before onboarding** — a
-leaked placeholder or missing core file means the install didn't complete and
-onboarding will build on a broken base. WARN items (code-style stub, empty
-spec scaffolding) are expected on a fresh install — `/onboard` clears them.
-This script is also the standalone post-install check: an adopter runs
-`bash .claude/skills/onboard/scripts/doctor.sh` right after `install.sh`.
+Before proceeding, confirm the required plugins are installed (`pr-review-toolkit`
+required, `superpowers` recommended) — see
+[`../../../docs/setup/plugin-dependencies.md`](../../../docs/setup/plugin-dependencies.md)
+§Verify for the one-line check.
 
 Read the topology JSON. Branch on:
 

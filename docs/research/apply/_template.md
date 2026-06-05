@@ -20,7 +20,7 @@ backward-compatible? — see repo CLAUDE.md placeholder & core/preset rules>
 
 ## Validation
 <how we'll know it works — e.g. run install.sh into /tmp, grep for stray
-placeholders, run doctor.sh, exercise the new skill/agent>
+placeholders, run scripts/validate-skills.sh, exercise the new skill/agent>
 
 ## Checklist
 - [ ] Respects `core/` de-domain-specification rule (if touching core/)

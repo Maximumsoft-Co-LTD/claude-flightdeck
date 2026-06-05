@@ -11,6 +11,27 @@
 
 ## Unreleased
 
+> **Lean Workflow Redesign (in progress)** — consolidating 22 skills → 6 verbs
+> (`/idea /work /review /ship /retro /status`) + 3 niche (`/onboard /recover
+> /document`), a hybrid sprint-folder state model under `docs/project/`, and a
+> single naming cheat-sheet. Goal: far fewer commands to learn, a cleaner folder
+> structure, and reference-on-demand detail — with design-first + the 6-gate
+> rigor unchanged. Research-grounded (spec-kit / Kiro / BMAD command-surface
+> studies; Anthropic + Cognition + MAST fan-out studies — see
+> `docs/research/`).
+
+### Removed
+
+- **`doctor.sh` post-install health-check script**
+  (`core/.claude/skills/onboard/scripts/doctor.sh`) and all references (onboard
+  Stage 0, README quick-start, `docs/setup/plugin-dependencies.md`, the usage
+  site). Plugin verification now points to the direct `jq` one-liner in
+  `plugin-dependencies.md`; topology detection (`detect-topology.sh`) still
+  drives `/onboard` Stage 0.
+  - **Why / how it's better:** the script was broken and redundant; removing it
+    shrinks the onboarding surface, and the repo validator
+    (`scripts/validate-skills.sh`) already covers structural integrity.
+
 ### Added
 
 - **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free

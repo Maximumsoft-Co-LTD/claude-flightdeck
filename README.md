@@ -23,10 +23,7 @@ git clone https://github.com/Maximumsoft-Co-LTD/claude-flightdeck.git ~/code/cla
 # 2. Install into your project (core is architecture-agnostic)
 ~/code/claude-flightdeck/install.sh ~/code/my-project
 
-# 3. Health check (exits non-zero on any FAIL)
-bash ~/code/my-project/.claude/skills/onboard/scripts/doctor.sh
-
-# 4. Open in Claude Code; run /onboard (~4-6h interactive setup wizard)
+# 3. Open in Claude Code; run /onboard (~4-6h interactive setup wizard)
 #    Then start working:
 #      /next-task   /post-delegation-gate   /retro   /ratify-rules
 ```

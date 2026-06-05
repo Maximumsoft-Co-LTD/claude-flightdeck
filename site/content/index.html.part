@@ -191,8 +191,8 @@ git clone __GH__.git ~/code/claude-flightdeck
 <span class="c"># 2 · install into your project (core is architecture-agnostic)</span>
 ~/code/claude-flightdeck/install.sh ~/code/my-project
 
-<span class="c"># 3 · health check, then open in Claude Code and run /onboard</span>
-bash ~/code/my-project/.claude/skills/onboard/scripts/doctor.sh</code></pre>
+<span class="c"># 3 · open in Claude Code and run /onboard (setup wizard)</span>
+cd ~/code/my-project</code></pre>
   <p class="muted">Prereqs: <code>bash</code> + <code>git</code> + <code>jq</code>. Plugins: <code>pr-review-toolkit</code> (required) + <code>superpowers</code> (recommended). Then drive it with <code>/next-task · /post-delegation-gate · /retro · /ratify-rules</code>.</p>
   <div class="cta">
     <a class="btn primary" href="__GH__#quick-start" target="_blank" rel="noopener">Full quick-start ↗</a>

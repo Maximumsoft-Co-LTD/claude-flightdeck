@@ -48,11 +48,9 @@ guarantees:
 
 ## Verify they're installed
 
-Run the post-install health check —
-`bash .claude/skills/onboard/scripts/doctor.sh` — its Plugins check reports
-`pr-review-toolkit` (FAIL if missing) and `superpowers` (WARN if missing).
-`/onboard` Stage 0 runs the same script and prints a `Plugins:` line. To check
-directly:
+Check directly — list installed plugins and confirm both are present
+(`pr-review-toolkit` required, `superpowers` recommended). `/onboard` Stage 0
+runs this same check during pre-flight:
 
 ```bash
 jq -r '.plugins | keys[]' ~/.claude/plugins/installed_plugins.json \
