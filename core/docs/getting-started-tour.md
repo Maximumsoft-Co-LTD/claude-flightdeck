@@ -13,7 +13,7 @@
 
 After `install.sh` lays down the templates, the next step is to make
 Claude Code **understand your project**. Don't try to fill in
-`CLAUDE.md` / A-rules / `STATUS.md` by hand — open Claude Code and
+`CLAUDE.md` / A-rules / the active sprint board by hand — open Claude Code and
 run:
 
 ```
@@ -32,7 +32,7 @@ After it finishes you'll have:
 - `.claude/rules/brain-hot.md` with project-local A011+ rules drafted
   from git history (you choose which to keep)
 - `docs/setup/codebase-orientation.md` + `team-conventions.md`
-- `docs/project/STATUS.md` + `backlog.md` + `FOLLOWUPS.md` seeded
+- `docs/project/sprints/S<N>/tasks.md` + `backlog.md` seeded (backlog includes the `## Follow-ups` section)
 
 ## Pre-flight (one-time, before the sprint starts)
 
@@ -45,7 +45,7 @@ You've already run:
 …and `/onboard` (above). Open the project in Claude Code. Confirm:
 
 - `CLAUDE.md` non-negotiables (N1-N6) read sensible
-- `docs/project/STATUS.md` shows your first sprint (or you're about to author it)
+- `docs/project/sprints/S<N>/tasks.md` shows your first sprint (or you're about to author it)
 - `docs/project/backlog.md` has at least one row
 - `.claude/settings.json` exists and matches the profile you chose
   ([`./setup/permission-profiles.md`](./setup/permission-profiles.md))
@@ -103,20 +103,20 @@ passes, an enriched row lands on the backlog.
 ## Monday afternoon — sprint planning + start
 
 Sprint planning is **manual** — open the new
-`docs/project/sprints/sprint-S<N>.md`, copy the backlog rows into the
+`docs/project/sprints/S<N>/tasks.md`, copy the backlog rows into the
 task table, pick fanout waves, write the cross-task contracts
 section. The orchestrator agent can help if you ask; there's no
 dedicated skill because planning rewards human deliberation.
 
 Once the sprint file exists, mark it the active sprint by updating
-`docs/project/STATUS.md` (this is the A008 source-of-truth move).
+`docs/project/sprints/S<N>/tasks.md` (this is the A008 source-of-truth move).
 
 ### Step 3 — `/next-task`
 
 **You type**: `/next-task`
 
 **What happens**: the [`/next-task`](../.claude/skills/next-task/SKILL.md)
-skill reads STATUS.md + the active sprint file, applies the Phase
+skill reads the active sprint board (`docs/project/sprints/S<N>/tasks.md`), applies the Phase
 Matrix (type × phase lookup), finds the first un-started, un-blocked
 row, and confirms with you. It then either runs the design-doc gate
 (A005) or dispatches the implementation agent.
@@ -130,8 +130,7 @@ A008 (sprint state via STATUS), Phase Matrix
 **If it goes wrong**:
 - "no eligible tasks" → check the sprint file for unblocked `[ ] Not
   Started` rows; verify dependencies are met
-- "STATUS not pointing at a sprint" → fix STATUS.md to mark the
-  active sprint (per A008)
+- "no eligible tasks" in the sprint board → verify the board's Glance header names the active sprint and has unblocked `[ ] Not Started` rows (per A008)
 
 ---
 
@@ -150,7 +149,7 @@ mentions (L149), and writes a ≥500-line zero-fix D-doc using
 [`./designs/_templates/DESIGN_TEMPLATE.md`](./designs/_templates/DESIGN_TEMPLATE.md)
 (or `DESIGN_LIGHT_TEMPLATE.md` for surgical sweeps — see Phase Matrix).
 
-**Written**: `docs/designs/sprint-S<N>/D###-<slug>.md` (the design doc).
+**Written**: `docs/project/sprints/S<N>/designs/D###-<slug>.md` (the design doc).
 
 **Cross-links**: A005 (design-doc-first), L076 (≥500L threshold), L149 + L156
 (type verification), agent pre-task ritual
@@ -231,7 +230,7 @@ fidelity), playbook
 **If it goes wrong**:
 - any gate red → **fix, re-run THAT gate, continue**. Never skip a
   gate. Never merge on red.
-- Gate 4 finding is too costly to fix in-session → log to FOLLOWUPS
+- Gate 4 finding is too costly to fix in-session → log to the backlog's Follow-ups section (`docs/project/backlog.md` `## Follow-ups`)
   with severity (P1 blocks; P2/P3 can defer with `PR-APPROVER` ack
   per N6)
 - preset-specific reviewer missing → use `senior-tech-lead` as the
@@ -240,14 +239,14 @@ fidelity), playbook
 ### Step 7 — Live mini-retro (A009 / L036)
 
 **You type**: append manually to
-`docs/project/retros/sprint-S<N>-tasks.md` — or invoke
+`docs/project/sprints/S<N>/tasks.md` — or invoke
 `/retro --task <id>`.
 
 **What happens**: 5 minutes while the context is still hot, you fill
 in the 6-field mini-retro template (what worked / what bit / time
 spent vs estimate / lessons / followups / done state).
 
-**Written**: append-only block in `docs/project/retros/sprint-S<N>-tasks.md`
+**Written**: append-only block in `docs/project/sprints/S<N>/tasks.md`
 
 **Cross-links**: A009, L036, A008 (sprint close aggregates these)
 
@@ -298,10 +297,10 @@ into fix-now vs defer, fixes the process bugs immediately, and writes
 the full retro file.
 
 **Written**:
-- `docs/project/retros/sprint-S<N>.md` (the closing retro)
-- updates to `docs/project/FOLLOWUPS.md` (deferred items + their
-  severity + `PR-APPROVER` ack per N6 if any)
-- STATUS prose moved to `docs/project/STATUS-archive.md` **in the same
+- `docs/project/sprints/S<N>/retro.md` (the closing retro)
+- updates to `docs/project/backlog.md` (deferred items + their
+  severity + `PR-APPROVER` ack per N6 if any; `## Follow-ups` section updated)
+- closing Glance prose moved from `docs/project/sprints/S<N>/tasks.md` into `docs/project/sprints/S<N>/retro.md` **in the same
   commit** (per A008)
 
 **Cross-links**: A009 / L036 (live retros aggregated here),
@@ -345,12 +344,12 @@ rules" section.
 | 1 (`/discover`) | `docs/project/ideas/D###.md`; index row |
 | 2 (`/promote`) | `docs/project/backlog.md` row |
 | 3 (`/next-task`) | dispatch in `docs/project/audit/YYYY-MM.jsonl` |
-| 4 (`design-doc-writer`) | `docs/designs/sprint-S<N>/D###.md`; dispatch in audit JSONL |
+| 4 (`design-doc-writer`) | `docs/project/sprints/S<N>/designs/D###.md`; dispatch in audit JSONL |
 | 5 (engineer agent) | git commits + branch; audit JSONL |
 | 6 (`/post-delegation-gate`) | review log on PR; reviewer dispatches in audit JSONL |
-| 7 (live mini-retro) | `docs/project/retros/sprint-S<N>-tasks.md` append |
+| 7 (live mini-retro) | `docs/project/sprints/S<N>/tasks.md` append |
 | 8 (`/progress`) | none (read-only) |
-| 9 (`/retro`) | `docs/project/retros/sprint-S<N>.md`; STATUS-archive move |
+| 9 (`/retro`) | `docs/project/sprints/S<N>/retro.md`; Glance prose moved from `tasks.md` into `retro.md` |
 | 10 (brain promotion) | `.claude/rules/brain-hot.md` diff |
 
 An auditor walking this chain end-to-end can answer: who/when

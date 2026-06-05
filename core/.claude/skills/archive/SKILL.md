@@ -22,7 +22,7 @@ Keep `docs/project/sprints/`, `docs/designs/`, and `docs/project/retros/` lean b
 
 ## Steps
 
-1. **Scan** — `Glob` `docs/project/sprints/sprint-*.md`, `docs/designs/sprint-*/`, `docs/project/retros/sprint-*.md`.
+1. **Scan** — `Glob` `docs/project/sprints/*/tasks.md`, `docs/project/sprints/*/designs/`, `docs/project/sprints/*/retro.md`.
 2. **Sort by sprint number** (parse `S<N>` from the path).
 3. **Keep the latest 3 sprints active.** Everything older is a candidate for archive.
 4. **Show the preview**: list every file that will move + its destination path. Ask the user to confirm.

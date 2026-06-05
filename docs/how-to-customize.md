@@ -43,8 +43,8 @@ Common project rules to consider:
 
 ```bash
 cp docs/designs/_templates/BACKLOG_ENTRY_TEMPLATE.md /tmp/_template-ref.md  # for reference
-# Edit docs/project/STATUS.md — fill in your project's active sprint pointer
-# Create docs/project/sprints/sprint-S01.md from scratch (use BACKLOG_ENTRY rows)
+# Edit docs/project/sprints/S<N>/tasks.md — fill in your project's active sprint pointer
+# Create docs/project/sprints/S01/tasks.md from scratch (use BACKLOG_ENTRY rows)
 ```
 
 Then in Claude Code:
@@ -217,6 +217,6 @@ There is no `install.sh upgrade` yet — diff manually.
 | Bloating CLAUDE.md > 200 lines | Sessions slow to start; agents miss the bottom half | Push detail into `docs/setup/<topic>.md`; CLAUDE.md links to it |
 | Adding A### rules without a `## Token budget` section in derived skills | Skills blow out context | Audit `grep -L 'Token budget' .claude/skills/*/SKILL.md` |
 | Skipping the live mini-retro | Sprint close retro has nothing to aggregate | Make it part of `/post-delegation-gate` — fail the gate if no retro row added |
-| Letting STATUS.md grow past 1 screen | "Single-pane glance" stops being a glance | Move closed sprints to STATUS-archive.md in the SAME commit |
+| Letting the active sprint board grow past 1 screen | "Single-pane glance" stops being a glance | At sprint close, move the board's Glance prose into `docs/project/sprints/S<N>/retro.md` in the SAME commit |
 | Mocking the database in integration tests | Tests pass; prod migration fails | Use real DB (testcontainers or shared dev DB); reserve mocks for unit tests only |
 | Allowing self-summaries to replace the diff read | "Done" claims mask broken code | Make Gate 1 of `/post-delegation-gate` blocking — no merge without diff inspection |

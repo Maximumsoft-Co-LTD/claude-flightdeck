@@ -1,0 +1,53 @@
+# Sprint S<N> — {{PROJECT_NAME}}
+
+> **The board.** This single file is the source of truth for the sprint: the
+> active-state glance (header below), the task list with inline `[ ]/[x]/[~]/[B]`
+> state, and the live per-task mini-retros (A009). Copy this template to
+> `docs/project/sprints/S<N>/tasks.md` when you open a sprint.
+>
+> Replaces the old split of `STATUS.md` (glance) + `sprints/sprint-S<N>.md`
+> (table) + `retros/sprint-S<N>-tasks.md` (mini-retros) — one board, no sync.
+
+## Glance
+
+| Field | Value |
+|---|---|
+| **Sprint** | S<N> — _(theme / goal in one line)_ |
+| **Status** | 🟡 planned · 🚀 active · ✅ closed |
+| **In-flight task** | _(task ID currently being worked, or —)_ |
+| **Branch** | `main` (or the active feature branch) |
+| **Last update** | YYYY-MM-DD |
+
+## Tasks
+
+> State legend: `[ ]` not started · `[~]` in progress / partial · `[x]` done ·
+> `[B]` blocked. Update the row the moment state changes — never defer to close.
+> Row format reference → `docs/designs/_templates/BACKLOG_ENTRY_TEMPLATE.md`.
+
+| ID | Type | Title | Pri | Size | State | Design |
+|----|------|-------|-----|------|-------|--------|
+| {{TASK_ID_PREFIX}}-S<N>.01 | feat | **Example task** — what it does | P1 | M | `[ ]` | `designs/D001-slug.md` |
+| {{TASK_ID_PREFIX}}-S<N>.02 | fix | **Example fix** — symptom | P2 | S | `[ ]` | — |
+
+## Live mini-retros (A009)
+
+> Each task appends a 6-field mini-retro here the moment it completes — while
+> context is hot. `/retro` aggregates these at sprint close into `retro.md`.
+
+<!-- Append one block per task:
+### {{TASK_ID_PREFIX}}-S<N>.01 — <title>
+- **Scope:** <what was in/out>
+- **Shipped:** <what landed>
+- **Slipped:** <what didn't, why>
+- **Lesson:** <the reusable takeaway>
+- **Next:** <follow-up, if any → also add to backlog ## Follow-ups>
+-->
+
+## See also
+
+> Paths are relative to this board's runtime home, `docs/project/sprints/S<N>/`.
+
+- `../../backlog.md` — cross-sprint backlog + follow-ups
+- `./retro.md` — this sprint's close retro (written by `/retro`)
+- `./designs/` — per-task design docs (size-tiered, read on demand)
+- `../../README.md` — the project-state model

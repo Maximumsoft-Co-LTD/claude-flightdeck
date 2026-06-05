@@ -7,12 +7,12 @@
 | Stage | Goal | Driver | Artifact | Rule(s) |
 |---|---|---|---|---|
 | **S1 Discovery** | Capture a user need / external requirement; classify it; seed a backlog row | `/discover` skill | `docs/project/ideas/D###-slug.md` + new row in `docs/project/backlog.md` | A008 |
-| **S2 Sprint planning** | Break discovery + backlog into a coherent sprint with task table + fanout waves | manual + `/promote` + orchestrator agent | `docs/project/sprints/sprint-S<N>.md` (status board + dependency waves + cross-task contracts) | A008 |
-| **S3 Design (per task)** | Author **D-doc per A005** BEFORE any code edit / agent dispatch | `/next-task` skill + `design-doc-writer` agent (for non-trivial tasks) | `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` (LIGHT or FULL template) | **A005** |
+| **S2 Sprint planning** | Break discovery + backlog into a coherent sprint with task table + fanout waves | manual + `/promote` + orchestrator agent | `docs/project/sprints/S<N>/tasks.md` (status board + dependency waves + cross-task contracts) | A008 |
+| **S3 Design (per task)** | Author **D-doc per A005** BEFORE any code edit / agent dispatch | `/next-task` skill + `design-doc-writer` agent (for non-trivial tasks) | `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` (LIGHT or FULL template) | **A005** |
 | **S4 Implement** | TDD / impl following the D-doc + apply lesson-trigger-map rules | `Agent()` dispatch (foreground) OR `/dispatch-parallel` (fanout) | code in your services + tests | A001 / A002 / A003 / A010 |
 | **S5 Review (6-gate)** | Verify the dispatch result against the 6-gate review BEFORE merge | `/post-delegation-gate` skill + parallel reviewers | review log appended to PR or inline | root CLAUDE.md §N3 |
-| **S6 Per-task retro (live)** | While context is hot, append a 6-field mini-retro to the sprint's task-retro file | manual write or `/retro --task` | `docs/project/retros/sprint-S<N>-tasks.md` (append-only) | **A009** |
-| **S7 Sprint close + audit** | Aggregate task retros → full retro; **audit backlog for 0 mismatch** | `/retro` skill + `sprint-retro-author` agent | `docs/project/retros/sprint-S<N>.md` + STATUS-archive move | **A008** |
+| **S6 Per-task retro (live)** | While context is hot, append a 6-field mini-retro to the sprint's task-retro file | manual write or `/retro --task` | `docs/project/sprints/S<N>/tasks.md` (append-only) | **A009** |
+| **S7 Sprint close + audit** | Aggregate task retros → full retro; **audit backlog for 0 mismatch** | `/retro` skill + `sprint-retro-author` agent | `docs/project/sprints/S<N>/retro.md` + Glance prose moved from `tasks.md` → `retro.md` | **A008** |
 
 ## Per-sprint timing (single-dev baseline — tune to team size)
 
@@ -22,11 +22,11 @@
 - **S4 Implement**: bulk of the sprint (1–5 days for a single-dev fanout sprint of 8–12 tasks)
 - **S5 Review**: 10–30min per task (6-gate)
 - **S6 Per-task retro (live)**: 5min per task while the context is still loaded — do NOT defer
-- **S7 Sprint close**: 30min retro write + backlog audit + STATUS move
+- **S7 Sprint close**: 30min retro write + backlog audit + Glance prose move into `retro.md`
 
 ## The "single-dev fanout sprint" playbook
 
-1. **Sprint pre-flight** — read `docs/project/STATUS.md` track row + `docs/project/sprints/sprint-S<N>.md`. Confirm the active sprint via the 🚀 marker (A008).
+1. **Sprint pre-flight** — read `docs/project/sprints/S<N>/tasks.md` track row + `docs/project/sprints/S<N>/tasks.md`. Confirm the active sprint via the 🚀 marker (A008).
 2. **Author per-task D-docs** (A005). One D-doc may cover multiple sibling tasks if they share source-of-authority (e.g., all UX/A11y tasks driven from a single gate report).
 3. **Fanout decision** — for each task: small surgical → inline in main session; medium → single `Agent()` foreground; multi-independent → `/dispatch-parallel` with worktree isolation + Conflict Radar.
 4. **Per task or wave**:
@@ -37,7 +37,7 @@
    - commit + push
    - update sprint file row `[ ] Not Started` → `[x] Done` / `[~] Partial`
    - **immediately sync backlog row to `done S<N>`** (A008)
-5. **Sprint close** — `/retro` aggregates mini-retros + runs the backlog-audit grep (mismatch ≠ 0 → blocker). Move STATUS prose to archive in the SAME commit (per A008 update protocol).
+5. **Sprint close** — `/retro` aggregates mini-retros + runs the backlog-audit grep (mismatch ≠ 0 → blocker). Move the board's closing Glance prose into that sprint's `retro.md` in the SAME commit (per A008 update protocol).
 
 ## Cross-track contracts (when one task's output feeds another)
 
@@ -47,7 +47,7 @@
 
 ## Doc sync
 
-`/document` skill runs on demand to verify Design Doc ↔ sprint file ↔ STATUS.md ↔ backlog.md drift. The four tiers must agree on: task status, AC list, applied rules, touched-files matrix. Drift detected at sprint close = blocker.
+`/document` skill runs on demand to verify Design Doc ↔ sprint board (`docs/project/sprints/S<N>/tasks.md`) ↔ backlog.md drift. The tiers must agree on: task status, AC list, applied rules, touched-files matrix. Drift detected at sprint close = blocker.
 
 ## Escape hatches
 

@@ -5,7 +5,7 @@
 ## Pre-Delegation
 
 - [ ] Brain / memory pre-search done (project tag, task keywords) — top 2 hits pasted into the task file
-- [ ] Design doc exists at `docs/designs/sprint-XX/DXXX-{slug}.md` with the full AC section
+- [ ] Design doc exists at `docs/project/sprints/XX/designs/DXXX-{slug}.md` with the full AC section
 - [ ] Sprint file row exists and references the design doc path
 - [ ] Repo-local task file exists at `{repo}/.claude/tasks/{TG#}-{slug}.md` (or the project's task convention)
 - [ ] Task file pastes the full AC and test plan (NOT just a link)
@@ -25,7 +25,7 @@ Agent(
 1. Read .claude/rules/agent-pre-task-ritual.md (the shared ritual)
 2. Read .claude/rules/brain-hot.md (always-apply rules)
 3. Read docs/setup/lesson-trigger-map.md (file → rule)
-4. Read docs/designs/sprint-XX/{DXXX}.md (design doc — specification)
+4. Read docs/project/sprints/XX/designs/{DXXX}.md (design doc — specification)
 5. Read .claude/tasks/{TG#}-{slug}.md (task spec — FOLLOW EVERY LINE)
 
 [VERIFICATION — output this JSON before any code]
@@ -82,7 +82,7 @@ Shortened "READ X THEN EXECUTE" prompts are BANNED — they skip blocks 1–5.
 - [ ] Wiring verified — new symbol / route / handler is referenced from the composition root / app bootstrap
 - [ ] Smoke test passes — `/verify-dev` or the targeted subset
 - [ ] Sprint file row status updated (`[x]` / `[~]`)
-- [ ] Per-task retro appended to `docs/project/retros/sprint-XX-tasks.md`
+- [ ] Per-task retro appended to `docs/project/sprints/XX/tasks.md`
 - [ ] Commit exists with conventional-commit message (agent should have made one; if not, make it yourself)
 - [ ] Any new lessons saved to brain / memory
 - [ ] Any new architectural decisions saved to brain / memory

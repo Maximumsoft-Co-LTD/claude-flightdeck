@@ -30,15 +30,15 @@ Current TG-S04.08 status: [~] Partial
 **Recovery script:**
 ```bash
 # Confirm the blocker's true status
-grep "TG-S04.08" docs/project/sprints/sprint-S04.md
+grep "TG-S04.08" docs/project/sprints/S04/tasks.md
 # Read the blocker's design doc for context
-ls docs/designs/sprint-S04/*S04.08*.md
+ls docs/project/sprints/S04/designs/*S04.08*.md
 ```
 
 ### Reason 2 — Design doc does not exist
 
 ```
-Task TG-S04.12 has no design doc at docs/designs/sprint-S04/D012-*.md
+Task TG-S04.12 has no design doc at docs/project/sprints/S04/designs/D012-*.md
 ```
 
 **Decision:** **refuse dispatch.** A005 (design-doc-first) is
@@ -61,7 +61,7 @@ than the time to write the doc.
 ### Reason 3 — Design doc exists but is <200 lines (under-specified)
 
 ```
-docs/designs/sprint-S04/D012-add-tenant-invites.md: 87 lines
+docs/project/sprints/S04/designs/D012-add-tenant-invites.md: 87 lines
 ```
 
 **Decision:** **proceed with a WARN.** The dispatched agent's
@@ -81,7 +81,7 @@ SendMessage(to: "design-doc-writer-running-agent",
 ### Reason 4 — Design doc says `Status: Draft` (not approved)
 
 ```
-docs/designs/sprint-S04/D012-*.md:
+docs/project/sprints/S04/designs/D012-*.md:
 > **Status:** Draft
 ```
 
@@ -115,7 +115,7 @@ TG-S04.08 status: [~] Partial — contract committed, but consumer
 **Recovery:**
 ```bash
 # Check which part of the partial is missing
-grep "TG-S04.08" docs/project/retros/sprint-S04-tasks.md | head -20
+grep "TG-S04.08" docs/project/sprints/S04/tasks.md | head -20
 
 # Or read the partial task's design doc §Status section
 ```

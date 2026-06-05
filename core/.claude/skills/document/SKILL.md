@@ -172,7 +172,7 @@ manifest update.
 
 ## When NOT to run this skill
 
-- For Design Docs (`docs/designs/sprint-S<N>/D<NNN>.md`) — those are
+- For Design Docs (`docs/project/sprints/S<N>/designs/D<NNN>.md`) — those are
   hand-curated by the `design-doc-writer` agent.
 - For the sprint file / backlog / retro — those are owned by
   `/next-task` / `/promote` / `/retro` respectively.

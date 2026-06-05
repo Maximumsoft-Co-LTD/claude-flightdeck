@@ -88,7 +88,7 @@ Backlog row format reference → [`../designs/_templates/BACKLOG_ENTRY_TEMPLATE.
 <details>
 <summary>B009 — Redis hot cache for resolver (active task URLSH-S03.02)</summary>
 
-**Source:** D008 (`docs/designs/sprint-S03/D008-redis-hot-cache.md`)
+**Source:** D008 (`docs/project/sprints/S03/designs/D008-redis-hot-cache.md`)
 **Dependencies:** B006 (related — wiring already landed in S02), B007 (related — same `urlcache.Redis` adapter; the fix exposed the missing invalidation hook on regenerate)
 
 **Key AC:**

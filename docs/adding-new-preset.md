@@ -69,7 +69,7 @@ Read:
 1. `.claude/rules/agent-pre-task-ritual.md`
 2. `.claude/rules/brain-hot.md`
 3. `.claude/rules/python-patterns.md` (this preset)
-4. The task design doc at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md`
+4. The task design doc at `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md`
 
 Failing to read any of these = automatic review reject (A006/A011).
 

@@ -69,7 +69,7 @@ overrides can append A011+ at the bottom.
      end-to-end. If UI changed: run `/design-review` for real-browser
      visual fidelity (green unit/type/lint ≠ correct UI).
 - **A005 — Design-doc-first.** Every non-trivial task needs a design doc
-  in `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` MERGED before any code
+  in `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` MERGED before any code
   edit. Sprint file = scope; D-doc = how. Skipping this is the single
   biggest cause of churn. **Iron Law: no code edit before the design doc
   is merged.**
@@ -91,13 +91,14 @@ overrides can append A011+ at the bottom.
 
 ### Sources of truth & rhythm
 
-- **A008 — `docs/project/STATUS.md` + `docs/project/backlog.md` are
+- **A008 — `docs/project/sprints/S<N>/tasks.md` (the active sprint board) + `docs/project/backlog.md` are
   source-of-truth** for "what's next". Never derive from chat history.
-  At sprint close, MOVE prose to `STATUS-archive.md` in the SAME commit
-  (do not append to live rows).
+  At sprint close, MOVE the board's closing Glance prose into that sprint's
+  `docs/project/sprints/S<N>/retro.md` in the SAME commit (each sprint board
+  is self-contained; there is no cross-sprint STATUS to maintain).
 - **A009 — Live per-task mini-retro (L036).** After each task passes the
   6-gate review, append a 6-field mini-retro to
-  `docs/project/retros/sprint-S<N>-tasks.md` BEFORE moving on. `/retro`
+  `docs/project/sprints/S<N>/tasks.md` BEFORE moving on. `/retro`
   aggregates these at sprint close. Deferring retros = losing the
   learning.
 - **A010 — LSP-first navigation** (see L147 below). For

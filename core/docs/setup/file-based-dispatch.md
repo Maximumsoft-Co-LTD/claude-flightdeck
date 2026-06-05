@@ -33,14 +33,14 @@ themselves template files the controller fills in.
 ### 1. Brief files live next to the design docs
 
 ```
-docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md
+docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-<role>.md
 ```
 
 - `<role>` is the agent's job: `design`, `impl`, `review`, `retro`, …
 - Examples:
-  - `docs/designs/sprint-S04/_briefs/PROJ-S04.12-design.md` (for `design-doc-writer`)
-  - `docs/designs/sprint-S04/_briefs/PROJ-S04.12-impl.md` (for the engineer)
-  - `docs/designs/sprint-S04/_briefs/PROJ-S04.12-review.md` (for a reviewer)
+  - `docs/project/sprints/S04/designs/_briefs/PROJ-S04.12-design.md` (for `design-doc-writer`)
+  - `docs/project/sprints/S04/designs/_briefs/PROJ-S04.12-impl.md` (for the engineer)
+  - `docs/project/sprints/S04/designs/_briefs/PROJ-S04.12-review.md` (for a reviewer)
 
 The `_briefs/` folder is committed by default — it's a useful audit
 trail of exactly what each agent was told. Projects that prefer
@@ -63,7 +63,7 @@ The only thing passed as `prompt` is a pointer:
 ```
 You are the <role> for <TASK_ID>.
 
-Your brief: docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md
+Your brief: docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-<role>.md
 Read it FIRST — it is your complete task input (intent, AC, context,
 constraints, reads-first list). The dispatch prompt is intentionally
 short; the detail is in the brief so this dispatch can't stall on an
@@ -98,7 +98,7 @@ Orchestrator, dispatching the design doc writer for `PROJ-S04.12`:
 
 ```
 1. Write the brief:
-   Write docs/designs/sprint-S04/_briefs/PROJ-S04.12-design.md
+   Write docs/project/sprints/S04/designs/_briefs/PROJ-S04.12-design.md
      <intent, AC, context grep excerpts, constraints, reads-first list>
 
 2. Dispatch with the short pointer:
@@ -106,12 +106,12 @@ Orchestrator, dispatching the design doc writer for `PROJ-S04.12`:
      subagent_type: "design-doc-writer",
      description: "design for PROJ-S04.12",
      prompt: "You are the design-doc-writer for PROJ-S04.12.
-              Your brief: docs/designs/sprint-S04/_briefs/PROJ-S04.12-design.md
+              Your brief: docs/project/sprints/S04/designs/_briefs/PROJ-S04.12-design.md
               Read it FIRST ... (short pointer) ..."
    )
 
 3. The agent reads the brief, runs its ritual, writes
-   docs/designs/sprint-S04/D012-<slug>.md, and reports back.
+   docs/project/sprints/S04/designs/D012-<slug>.md, and reports back.
 ```
 
 ## When inline is still fine

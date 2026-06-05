@@ -38,29 +38,29 @@ Start at the top of the control plane and walk down:
    project overview (~120 lines). What the team is building, where they
    are in the calendar, what conventions they're holding.
 
-2. **[`url-shortener-go-hex/docs/project/STATUS.md`](./url-shortener-go-hex/docs/project/STATUS.md)**
+2. **[`url-shortener-go-hex/docs/project/sprints/S<N>/tasks.md`](./url-shortener-go-hex/docs/project/sprints/S<N>/tasks.md)**
    — the single-pane glance. One row. Tells you the active sprint, in-flight
    task, current branch, latest movement.
 
-3. **[`docs/project/STATUS-archive.md`](./url-shortener-go-hex/docs/project/STATUS-archive.md)**
+3. **[`docs/project/sprints/S<N>/retro.md`](./url-shortener-go-hex/docs/project/sprints/S<N>/retro.md)**
    — closed-sprint narrative. Two entries: S01 (MVP) and S02
    (analytics + rate-limit). Each entry is the prose that was *moved out of*
    STATUS on sprint close.
 
-4. **[`docs/project/sprints/sprint-S03.md`](./url-shortener-go-hex/docs/project/sprints/sprint-S03.md)**
+4. **[`docs/project/sprints/S03/tasks.md`](./url-shortener-go-hex/docs/project/sprints/S03/tasks.md)**
    — the active sprint's task table. Five rows, one `[x] Done`, one
    `[~] In Progress`, three `[ ] Not Started`.
 
-5. **[`docs/designs/sprint-S03/D006-admin-login-handler.md`](./url-shortener-go-hex/docs/designs/sprint-S03/D006-admin-login-handler.md)**
+5. **[`docs/project/sprints/S03/designs/D006-admin-login-handler.md`](./url-shortener-go-hex/docs/project/sprints/S03/designs/D006-admin-login-handler.md)**
    — the L-tier design doc the in-flight task is following. Status: Draft.
    Phase 7 (security review) trigger pending.
 
-6. **[`docs/project/retros/sprint-S02.md`](./url-shortener-go-hex/docs/project/retros/sprint-S02.md)**
+6. **[`docs/project/sprints/S02/retro.md`](./url-shortener-go-hex/docs/project/sprints/S02/retro.md)**
    — the most recent closed retro. Includes a lesson promotion: a recurring
    observation about Redis fallback behaviour gets promoted into a new
    project-local A011 rule.
 
-7. **[`docs/project/FOLLOWUPS.md`](./url-shortener-go-hex/docs/project/FOLLOWUPS.md)**
+7. **[`docs/project/backlog.md`](./url-shortener-go-hex/docs/project/backlog.md)**
    — open carryover items (F0001 → F0005) plus closed ones consumed by
    tasks in S02.
 
@@ -76,7 +76,7 @@ When you want to start a new project from this template:
 
 Run that from the repo root. The installer drops `.claude/`, `docs/project/`,
 `docs/designs/`, the agent files, and the preset-specific rules into your
-target directory. After install, your `docs/project/STATUS.md` will look like
+target directory. After install, your `docs/project/sprints/S<N>/tasks.md` will look like
 the blank `.tmpl` — your job over the next sprint is to fill it in until
 it looks like the example below.
 

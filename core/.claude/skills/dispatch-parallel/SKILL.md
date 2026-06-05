@@ -31,7 +31,7 @@ The skill reads each task's design doc, extracts the declared paths, runs Confli
    For each task ID `{{TASK_ID_PREFIX}}-S<N>.<NN>`:
 
    ```
-   Read docs/designs/sprint-S<N>/D<NNN>-<slug>.md (limit: 120)
+   Read docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md (limit: 120)
    Extract: declared touched-files matrix, dependencies (blockedBy), subagent_type
    ```
 
@@ -54,7 +54,7 @@ The skill reads each task's design doc, extracts the declared paths, runs Confli
 
    When dispatching, include `isolation: "worktree"` in every `Agent()` call. The harness creates a temporary git worktree per subagent.
 
-   **Write one brief file per agent first** (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`, using the per-agent template below), then dispatch each with a SHORT pointer prompt — never inline the full spec (it stalls the agent; see `docs/setup/file-based-dispatch.md`):
+   **Write one brief file per agent first** (`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md`, using the per-agent template below), then dispatch each with a SHORT pointer prompt — never inline the full spec (it stalls the agent; see `docs/setup/file-based-dispatch.md`):
 
    ```
    # write N brief files (one per task) ...
@@ -102,10 +102,10 @@ The skill reads each task's design doc, extracts the declared paths, runs Confli
 
 ## Brief-file template (per parallel agent)
 
-Write this to `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`. The
+Write this to `docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md`. The
 inline `prompt` is just a pointer: *"You are the impl engineer for
 `<TASK_ID>` (parallel sprint-S<N> work). Your brief:
-`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md` — read it FIRST, run
+`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md` — read it FIRST, run
 your pre-task ritual, report per the output contract in the brief."*
 
 ```
@@ -113,7 +113,7 @@ You are dispatched as part of sprint S<N> parallel work. Execute the pre-task
 ritual MANDATORY (.claude/rules/agent-pre-task-ritual.md).
 
 Task: {{TASK_ID_PREFIX}}-S<N>.<NN> — <title>
-Design Doc: docs/designs/sprint-S<N>/D<NNN>-<slug>.md
+Design Doc: docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md
 Worktree: <harness-provided absolute path>
 Branch: <harness-provided feature branch>
 
@@ -145,7 +145,7 @@ Output contract (mandatory in your final reply):
 
 1. Bump any meta-submodule pointers for touched repos + push.
 2. **Backlog sync** — mark each task row done in `docs/project/backlog.md` immediately. Do NOT defer to sprint close.
-3. **Live mini-retro per task** — append a 6-field retro to `docs/project/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch.
+3. **Live mini-retro per task** — append a 6-field retro to `docs/project/sprints/S<N>/tasks.md` BEFORE moving to the next dispatch.
 4. `git worktree remove <path>` for any persistent worktrees you held open.
 5. `/retro` at sprint close (aggregates the mini-retros + audits the backlog).
 

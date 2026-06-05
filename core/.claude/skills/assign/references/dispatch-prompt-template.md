@@ -4,7 +4,7 @@
 >
 > **This block is the BRIEF-FILE content, not the inline `prompt`.**
 > Write it (with placeholders substituted) to
-> `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`, then dispatch the
+> `docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md`, then dispatch the
 > agent with the short **pointer prompt** below. Pasting this whole
 > template into the `Agent` `prompt` argument is what causes oversized
 > prompts to stall — write the file instead. See
@@ -15,7 +15,7 @@
 ```
 You are the impl engineer for <TASK_ID>.
 
-Your brief: docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md
+Your brief: docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md
 Read it FIRST — it is your complete task input (mandatory reads,
 verification JSON, AC, touched-files matrix, test plan, output contract).
 The dispatch prompt is short on purpose so it can't stall on an oversized
@@ -45,7 +45,7 @@ Agent(subagent_type="<mapped agent>",
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
 - .claude/rules/code-style.md          # the project's learned conventions
-- docs/designs/sprint-S<N>/D<NNN>-<slug>.md
+- docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md
 - <any custom-preset rules, if a preset is installed>
 
 [VERIFICATION]
@@ -81,7 +81,7 @@ Test plan (from the design doc):
 
 [CROSS-CUTTING]
 - 6-gate review WILL be run after you return (see post-delegation-gate)
-- Live mini-retro WILL be required (append to docs/project/retros/sprint-S<N>-tasks.md)
+- Live mini-retro WILL be required (append to docs/project/sprints/S<N>/tasks.md)
 - DO NOT push to main; use branch feat/<task-id>-<slug>
 - Tests BEFORE implementation (TDD) — A001 non-negotiable for feat/fix/refactor
 - Multi-tenancy / RBAC checks if the task touches authn/authz surfaces
@@ -91,8 +91,8 @@ Test plan (from the design doc):
 - Stage and commit your work in the worktree
 - DO NOT push (the orchestrator pushes after review)
 - Update the sprint file row to [~] Partial or [x] Done
-  (path: docs/project/sprints/sprint-S<N>.md)
-- Append a 6-field mini-retro to docs/project/retros/sprint-S<N>-tasks.md:
+  (path: docs/project/sprints/S<N>/tasks.md)
+- Append a 6-field mini-retro to docs/project/sprints/S<N>/tasks.md:
   • what went well
   • what didn't
   • lessons (L### candidates if any)
@@ -129,7 +129,7 @@ Your final reply MUST LEAD with a status line, then include the rest:
 - .claude/rules/phase-matrix.md
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
-- docs/designs/sprint-S04/D012-add-tenant-invites.md
+- docs/project/sprints/S04/designs/D012-add-tenant-invites.md
 - .claude/rules/code-style.md
 
 [VERIFICATION]
@@ -169,7 +169,7 @@ Test plan (from §Tests of D012):
 [CROSS-CUTTING]
 - 6-gate review (post-delegation-gate) will run after you return
 - This touches authn/authz → security review trigger (Phase 7)
-- Append mini-retro to docs/project/retros/sprint-S04-tasks.md
+- Append mini-retro to docs/project/sprints/S04/tasks.md
 - Branch: feat/TG-S04.12-tenant-invites
 - Tests BEFORE implementation — A001 non-negotiable
 
@@ -191,7 +191,7 @@ Test plan (from §Tests of D012):
 - .claude/rules/phase-matrix.md
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
-- docs/designs/sprint-S04/D015-fix-cascade-delete.md
+- docs/project/sprints/S04/designs/D015-fix-cascade-delete.md
 
 [VERIFICATION]
 {
@@ -244,7 +244,7 @@ Acceptance criteria (verbatim from D015):
 - .claude/rules/phase-matrix.md
 - .claude/rules/programming-fundamentals.md
 - .claude/rules/git-workflow.md
-- docs/designs/sprint-S04/D018-extract-invite-policy.md
+- docs/project/sprints/S04/designs/D018-extract-invite-policy.md
 - .claude/rules/code-style.md
 
 [VERIFICATION]

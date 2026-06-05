@@ -4,9 +4,9 @@ You are looking at what an AI-Workflows-driven project looks like
 **after 3 sprints of real adoption**. There is no Go code in this
 directory — the leverage is the *control-plane artifacts* — but
 everything is internally consistent: a task ID in
-`sprints/sprint-S02.md` matches a row in `backlog.md`, a design doc
-in `docs/designs/sprint-S02/`, a follow-up in `FOLLOWUPS.md`, and a
-per-task summary in `retros/sprint-S02.md`.
+`sprints/S02/tasks.md` matches a row in `backlog.md`, a design doc
+in `docs/project/sprints/S02/designs/`, a follow-up in `FOLLOWUPS.md`, and a
+per-task summary in `sprints/S02/retro.md`.
 
 The fictional project is an internal URL shortener for marketing
 campaigns. Go (hex layout), Postgres for storage, Redis for hot
@@ -26,7 +26,7 @@ in-flight on analytics (S03).
 Walk these in order — each one references the next, and the chain
 builds the mental model of the AI-Workflows discipline.
 
-### 1. [`docs/project/STATUS.md`](./docs/project/STATUS.md) (~30 lines, ~1 min)
+### 1. [`docs/project/sprints/S<N>/tasks.md`](./docs/project/sprints/S<N>/tasks.md) (~30 lines, ~1 min)
 
 The **single-pane glance**. One row per active track. Today it says
 S03 is active, the in-flight task is `URLSH-S03.02`, branch is
@@ -34,7 +34,7 @@ S03 is active, the in-flight task is `URLSH-S03.02`, branch is
 historical prose, no sprint logs, no commentary on S01 or S02 —
 just current-sprint pointer. That discipline is A008.
 
-### 2. [`docs/project/sprints/sprint-S03.md`](./docs/project/sprints/sprint-S03.md) (~80 lines, ~3 min)
+### 2. [`docs/project/sprints/S03/tasks.md`](./docs/project/sprints/S03/tasks.md) (~80 lines, ~3 min)
 
 The current sprint's task table. Notice the mix of statuses:
 `[x] Done`, `[~] In Progress`, `[ ] Not Started`. Each row points
@@ -42,7 +42,7 @@ to a design doc by ID. URLSH-S03.02 (active) points to D008.
 URLSH-S03.05 is XS — single `docs` task — and still has a design
 doc (D009) so you can see what XS looks like in practice.
 
-### 3. [`docs/designs/sprint-S03/D008-redis-hot-cache.md`](./docs/designs/sprint-S03/D008-redis-hot-cache.md) (~220 lines, ~5 min)
+### 3. [`docs/project/sprints/S03/designs/D008-redis-hot-cache.md`](./docs/project/sprints/S03/designs/D008-redis-hot-cache.md) (~220 lines, ~5 min)
 
 The **active task's design doc**. M-tier, in-progress. Notice:
 - it explicitly consumes follow-up F0004 (from S02)
@@ -51,7 +51,7 @@ The **active task's design doc**. M-tier, in-progress. Notice:
 - AC7 (hexagonal-reviewer gate) is unchecked because the task is
   still mid-flight
 
-### 4. [`docs/project/retros/sprint-S02.md`](./docs/project/retros/sprint-S02.md) (~120 lines, ~5 min)
+### 4. [`docs/project/sprints/S02/retro.md`](./docs/project/sprints/S02/retro.md) (~120 lines, ~5 min)
 
 The **closed-sprint retro** — the most-information-dense file in
 the tour. Notice:
@@ -65,7 +65,7 @@ the tour. Notice:
   sprint-touched rows left open) — the gate that protects the
   audit trail
 
-### 5. [`docs/project/FOLLOWUPS.md`](./docs/project/FOLLOWUPS.md) (~80 lines, ~3 min)
+### 5. [`docs/project/backlog.md`](./docs/project/backlog.md) (~80 lines, ~3 min)
 
 The **follow-up registry**. 8 rows total: 4 open, 4 closed. Trace
 F0004 backwards: it was opened by URLSH-S02.05 partial decision in
@@ -74,7 +74,7 @@ URLSH-S03.02 (the active task). Cross-reference with D008 §1 ("In
 scope: consume F0004 ✓"). This is the **audit trail** working as
 designed.
 
-### 6. [`docs/project/STATUS-archive.md`](./docs/project/STATUS-archive.md) (~80 lines, ~2 min)
+### 6. [`docs/project/sprints/S<N>/retro.md`](./docs/project/sprints/S<N>/retro.md) (~80 lines, ~2 min)
 
 The **closed-sprint prose**, newest first. The S02 + S01 closing
 notes that used to live in STATUS.md have been moved here verbatim,
@@ -84,18 +84,18 @@ is just a pointer.
 
 ### 7. Optional — pick one to round out the depth
 
-- [`docs/designs/sprint-S02/D004-postgres-persistence.md`](./docs/designs/sprint-S02/D004-postgres-persistence.md) (~280 lines) — what a **zero-fix L-tier** design doc looks like at full depth: before/after architecture, key decisions with alternatives, files-touched matrix, step-by-step with verify clauses + AC tags, risks table, rollback runbook, observability table.
-- [`docs/designs/sprint-S02/D006-fix-cache-stale-ttl.md`](./docs/designs/sprint-S02/D006-fix-cache-stale-ttl.md) (~100 lines) — what an **S-tier `fix`** looks like with the regression-test-first pattern (Step 1 = failing test that proves the bug).
-- [`docs/designs/sprint-S03/D009-typo-fix-admin-page-title.md`](./docs/designs/sprint-S03/D009-typo-fix-admin-page-title.md) (~30 lines) — what an **XS** design doc actually looks like (most sections deleted, not stubbed).
+- [`docs/project/sprints/S02/designs/D004-postgres-persistence.md`](./docs/project/sprints/S02/designs/D004-postgres-persistence.md) (~280 lines) — what a **zero-fix L-tier** design doc looks like at full depth: before/after architecture, key decisions with alternatives, files-touched matrix, step-by-step with verify clauses + AC tags, risks table, rollback runbook, observability table.
+- [`docs/project/sprints/S02/designs/D006-fix-cache-stale-ttl.md`](./docs/project/sprints/S02/designs/D006-fix-cache-stale-ttl.md) (~100 lines) — what an **S-tier `fix`** looks like with the regression-test-first pattern (Step 1 = failing test that proves the bug).
+- [`docs/project/sprints/S03/designs/D009-typo-fix-admin-page-title.md`](./docs/project/sprints/S03/designs/D009-typo-fix-admin-page-title.md) (~30 lines) — what an **XS** design doc actually looks like (most sections deleted, not stubbed).
 
 ## What you should take away
 
 After the tour you should be able to answer:
 
-1. **Where does current state live?** `STATUS.md` (single row), `sprints/sprint-S<N>.md` (active task table), `retros/sprint-S<N>-tasks.md` (live mini-retros).
+1. **Where does current state live?** `STATUS.md` (single row), `sprints/S<N>/tasks.md` (active task table), `sprints/S<N>/tasks.md` (live mini-retros).
 2. **How does work move from "I noticed a thing" to "we shipped it"?** Follow-up appended at retro → reviewed at next sprint open → consumed by a sprint task → marked `consumed-by:` and moved to Closed at sprint close.
 3. **Why three different design-doc tiers (XS / S / M / L)?** Same template, deleted sections at smaller tiers — see [`SIZE_TIERS.md`](../../core/docs/designs/_templates/SIZE_TIERS.md). XS = no logic, no behaviour change. L = breaking contract OR multi-subsystem.
-4. **How does a lesson become a rule?** Surface in retro → captured as `L###` in brain-hot.md → on 2nd occurrence, promoted to `A0##` project rule (see A012 promotion in [`retros/sprint-S02.md`](./docs/project/retros/sprint-S02.md)).
+4. **How does a lesson become a rule?** Surface in retro → captured as `L###` in brain-hot.md → on 2nd occurrence, promoted to `A0##` project rule (see A012 promotion in [`sprints/S02/retro.md`](./docs/project/sprints/S02/retro.md)).
 5. **What's the audit trail?** Every claim in this tour is checkable by `grep` — task IDs, design IDs, follow-up IDs, A-rule IDs, branch names — they all resolve.
 
 ## File map

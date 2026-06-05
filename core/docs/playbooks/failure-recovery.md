@@ -20,9 +20,9 @@ Is the current state                  Can you finish what you started
 acceptable as-is?                     by going forward (commits, fixes)?
    │ yes                                         │ yes
    ↓                                             ↓
-LEAVE ALONE. Document in                  FIX FORWARD.
-FOLLOWUPS.md if you want to               No recovery needed.
-remember it; don't touch git.             Commit, gate, ship.
+LEAVE ALONE. Document in the              FIX FORWARD.
+backlog Follow-ups section if you         No recovery needed.
+want to remember it; don't touch git.    Commit, gate, ship.
    │ no                                          │ no
    ↓                                             ↓
 RECOVER. Use /recover or this playbook.   RECOVER. Same.
@@ -90,7 +90,7 @@ git branch -D <B-feature-branch>
 #    /assign <task-B>    → after A merges, run B
 ```
 
-**Append to FOLLOWUPS.md:**
+**Append to the backlog's Follow-ups section** (`docs/project/backlog.md` `## Follow-ups`):
 
 ```markdown
 | 2026-05-22 | recovery | partial-dispatch | A finished, B agent timed out at gate 2 | reverted A on branch, re-ran both serialized |
@@ -270,7 +270,7 @@ git -C <wrong-repo> reset --soft HEAD~1   # if local-only
 # 4. Push the cherry-picked commit:
 git -C <correct-repo> push -u origin <branch>
 
-# 5. FOLLOWUPS.md row + reinforce: always `git -C`, never `cd`.
+# 5. Add a row to the backlog Follow-ups section + reinforce: always `git -C`, never `cd`.
 ```
 
 ## What to NEVER do
@@ -287,7 +287,7 @@ git -C <correct-repo> push -u origin <branch>
 - ❌ Pipe multiple destructive commands through `&&` without
   intermediate confirmation — partial failure leaves unpredictable
   state.
-- ❌ Skip the FOLLOWUPS.md row. The retro is how we stop the same
+- ❌ Skip the backlog Follow-ups row. The retro is how we stop the same
   recovery from happening again next sprint.
 
 ## Related
@@ -302,5 +302,5 @@ git -C <correct-repo> push -u origin <branch>
   scenario 1 next time
 - `docs/playbooks/post-delegation-review.md` — the gates that catch
   most issues before they need recovery
-- `docs/project/FOLLOWUPS.md` — where every recovery writes its
+- `docs/project/backlog.md` — where every recovery writes its
   post-mortem row

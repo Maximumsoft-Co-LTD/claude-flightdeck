@@ -12,13 +12,13 @@ re-stating the matrix.
 | Artifact | Default | Lower bound | Upper bound | Compliance driver |
 |---|---|---|---|---|
 | `docs/project/audit/*.jsonl` (agent dispatches + gate events) | **12 months** | 3 months (pre-prod, no compliance) | 6+ years (HIPAA) | SOC2 / ISO 27001 / HIPAA / FedRAMP |
-| `docs/project/sprints/sprint-S<N>.md` | indefinite (in-repo) | last 3 sprints active, older → `sprints/historical/` | indefinite | change-management evidence |
-| `docs/project/retros/sprint-S<N>.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | learning record + audit |
-| `docs/project/retros/sprint-S<N>-tasks.md` (live mini-retros) | until sprint close | aggregated into `sprint-S<N>.md` and can be archived | indefinite | learning record |
-| `docs/project/STATUS.md` | live only (single-pane) | n/a | n/a | latest state — moved to `STATUS-archive.md` at sprint close |
-| `docs/project/STATUS-archive.md` | indefinite (append-only) | n/a | n/a | historical narrative |
-| `docs/project/FOLLOWUPS.md` | indefinite | n/a | n/a | open items stay scannable; closed items are the audit trail |
-| `docs/designs/sprint-S<N>/D<NNN>-*.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | design-decision record |
+| `docs/project/sprints/S<N>/tasks.md` | indefinite (in-repo) | last 3 sprints active, older → `sprints/historical/` | indefinite | change-management evidence |
+| `docs/project/sprints/S<N>/retro.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | learning record + audit |
+| `docs/project/sprints/S<N>/tasks.md` (live mini-retros) | until sprint close | aggregated into `sprint-S<N>.md` and can be archived | indefinite | learning record |
+| `docs/project/sprints/S<N>/tasks.md` | live sprint board (Glance + task rows + mini-retros) | n/a | n/a | closing Glance prose moved into that sprint's `retro.md` at sprint close |
+| `docs/project/sprints/S<N>/retro.md` | indefinite (append-only) | n/a | n/a | historical narrative |
+| `docs/project/backlog.md` | indefinite | n/a | n/a | open items stay scannable; closed items are the audit trail |
+| `docs/project/sprints/S<N>/designs/D<NNN>-*.md` | indefinite (in-repo) | last 3 sprints active, older archived | indefinite | design-decision record |
 | `.claude/agent-memory/<agent>/MEMORY.md` | indefinite | n/a | n/a | accumulated learning per agent |
 
 ## Audit log specifics (`audit.jsonl`)
@@ -90,7 +90,7 @@ After 3 sprints close, move older sprint files to
 ```
 
 Archival is purely organizational — **never delete** sprint files. The
-retro records, FOLLOWUPS references, and design-doc links all assume
+retro records, backlog Follow-ups references, and design-doc links all assume
 the sprint file is reachable from the same repo. Loss of a closed
 sprint file breaks the audit chain.
 

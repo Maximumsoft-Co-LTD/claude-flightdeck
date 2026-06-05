@@ -44,7 +44,7 @@ You are a specialized technical writer who authors **zero-fix Design Docs** for 
 
 ## Mandatory pre-task ritual
 
-**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-design.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
 
 Execute every step in `.claude/rules/agent-pre-task-ritual.md`. Specific to design doc writing:
 

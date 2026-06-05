@@ -39,8 +39,8 @@ checks both. **Windows:** `install.ps1` or WSL —
 would write.
 
 > Sample project at [`examples/url-shortener-go-hex/`](examples/url-shortener-go-hex/)
-> — 3 sprints of real artifacts (STATUS, designs, retros, FOLLOWUPS).
-> ~20 min walkthrough starting at its `docs/project/STATUS.md`.
+> — 3 sprints of real artifacts (sprint boards, designs, retros, backlog Follow-ups).
+> ~20 min walkthrough starting at its `docs/project/sprints/S<N>/tasks.md`.
 
 ## The workflow
 
@@ -68,7 +68,7 @@ flowchart LR
 - **6-gate review (A004)** — inspect → build+test → boundary → spec-compliance →
   quality → wiring → smoke. No skips, ever.
 - **Live mini-retro (A009)** — every task captures learning before the next
-- **Carry-overs to FOLLOWUPS** — never evaporate
+- **Carry-overs to the backlog's Follow-ups section** — never evaporate
 
 Full picture: [`docs/control-plane-architecture.md`](docs/control-plane-architecture.md)
 (7 layers, every diagram).
@@ -94,7 +94,7 @@ target-project/
 │   ├── playbooks/           # post-delegation-review (6-gate) · contract-first
 │   ├── designs/_templates/  # zero-fix DESIGN_TEMPLATE + size tiers
 │   ├── setup/               # workflow-master, lesson-trigger-map, …
-│   └── project/                # STATUS · backlog · FOLLOWUPS · sprints/ · retros/
+│   └── project/                # sprints/S<N>/tasks.md · sprints/S<N>/retro.md · backlog (+ Follow-ups) · ideas/
 └── .ai-workflows/
     └── manifest.json        # version + install metadata (drives upgrade)
 ```
@@ -130,7 +130,7 @@ architectures (hex, FSD, …) come from presets:
 
 Installing puts the templates in place. To make Claude Code **understand
 your project** — fill `CLAUDE.md`, mine git history for project-local
-A-rules, draft per-area `CLAUDE.md`, seed STATUS/backlog/FOLLOWUPS —
+A-rules, draft per-area `CLAUDE.md`, seed the sprint board and backlog —
 open the project in Claude Code and run `/onboard`. The 8-stage hybrid
 wizard takes **~4-6 hours** and leaves you with a control plane filled
 from your project's real evidence, not placeholders. Multi-repo aware:
@@ -162,7 +162,7 @@ every file into **5 sections** via
 | **NEW** | Template-owned files added since install | Create (backup if exists) |
 | **NEEDS MERGE** | Seed-then-extends files (`CLAUDE.md`, `brain-hot.md`, `settings.json`) — would lose your customizations | **Skipped** — hand-merge |
 | **NEW seed** | Seed files the install never had | **Skipped** — hand-merge |
-| **SKIPPED** | User-owned (sprints, retros, designs, FOLLOWUPS, STATUS, agent memory) | **Never touched** |
+| **SKIPPED** | User-owned (sprint boards, retros, designs, backlog Follow-ups, agent memory) | **Never touched** |
 
 The scan also prints **migration notes** extracted from `CHANGELOG.md`
 between your installed version and the target. Backups land at

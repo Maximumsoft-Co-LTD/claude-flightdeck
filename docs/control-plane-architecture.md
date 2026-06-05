@@ -73,10 +73,10 @@ The control plane is the codified counter-measure to all three.
 │      designs/_templates/DESIGN_LIGHT        — for surgical sweeps   │
 │      designs/_templates/DESIGN_REVIEW       — checklist for /design-review │
 │      designs/_templates/BACKLOG_ENTRY       — backlog row format    │
-│      project/STATUS.md                         — single-pane truth     │
+│      project/sprints/S<N>/tasks.md                         — single-pane truth     │
 │      project/backlog.md                        — all work, ever        │
-│      project/sprints/sprint-S<N>.md            — task table per sprint │
-│      project/retros/sprint-S<N>-tasks.md       — live mini-retros      │
+│      project/sprints/S<N>/tasks.md            — task table per sprint │
+│      project/sprints/S<N>/tasks.md       — live mini-retros      │
 └─────────────────────────────────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -91,12 +91,11 @@ The control plane is the codified counter-measure to all three.
 
 ## How a typical task flows through the plane
 
-1. **User invokes `/next-task`** (skill, layer 4) — reads STATUS.md
-   (layer 6), picks the next un-started task from the active sprint
-   file (layer 6), confirms with user.
+1. **User invokes `/next-task`** (skill, layer 4) — reads the active sprint board `docs/project/sprints/S<N>/tasks.md`
+   (layer 6), picks the next un-started task, confirms with user.
 2. **Skill enforces design-first (A005, layer 2)** — if the task has no
    design doc, dispatches `design-doc-writer` (agent, layer 3) to
-   author one to `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` using
+   author one to `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` using
    `DESIGN_TEMPLATE.md` (layer 6).
 3. **Skill dispatches the implementation agent** via the `Agent` tool
    (`backend-engineer` or `frontend-engineer`). The agent executes the
@@ -111,12 +110,12 @@ The control plane is the codified counter-measure to all three.
    against the project's own conventions.
 6. **Once green, skill prompts for live mini-retro** (A009 / L036) —
    user appends a 6-field row to
-   `docs/project/retros/sprint-S<N>-tasks.md` (layer 6).
-7. **Skill updates STATUS.md** and prompts for the next task.
+   `docs/project/sprints/S<N>/tasks.md` (layer 6).
+7. **Skill updates the active sprint board** and prompts for the next task.
 
 At sprint close, `/retro` (layer 4) aggregates the mini-retros, audits
-the backlog (A017), moves STATUS.md prose to STATUS-archive.md, and
-writes `docs/project/retros/sprint-S<N>.md`. Lessons that emerged become
+the backlog (A017), moves the board's closing Glance prose into `docs/project/sprints/S<N>/retro.md` in the same commit, and
+writes the full retro. Lessons that emerged become
 new L### entries in the Brain (layer 7), cited from `brain-hot.md` if
 always-applicable.
 
@@ -147,7 +146,7 @@ removing one collapses the next two.
 - The 4-layer parallel safety
 - The design-first principle + ≥500-line zero-fix threshold
 - The live mini-retro pattern
-- The STATUS / backlog / sprints / retros source-of-truth convention
+- The sprint board / backlog (with Follow-ups) / sprints / retros source-of-truth convention
 - LSP-first navigation
 - The 10 always-apply A-rules
 
@@ -163,7 +162,7 @@ removing one collapses the next two.
 
 **Project-local (you fill in):**
 - A011+ rules in `brain-hot.md`'s "Project-specific rules" section
-- Your sprint cadence in `STATUS.md`
+- Your sprint cadence in `docs/project/sprints/S<N>/tasks.md` (the active sprint board)
 - Your task ID prefix (set at install time via `TASK_ID_PREFIX`)
 - Your specific lessons in `.claude/memory/` (or your Obsidian Brain)
 
@@ -183,12 +182,12 @@ for s in .claude/skills/*/SKILL.md; do
   grep -q '## Token budget' "$s" || echo "missing budget: $s"
 done
 
-# 4. STATUS.md is filled in (not just the template)
-grep -q '_replace with your first sprint_' docs/project/STATUS.md && \
-  echo "STATUS.md still has placeholder rows" || echo "ok"
+# 4. Active sprint board is filled in (not just the template)
+grep -q '_replace with your first sprint_' docs/project/sprints/S<N>/tasks.md && \
+  echo "sprint board still has placeholder rows" || echo "ok"
 
 # 5. Sprint files exist for the active sprint
-ls docs/project/sprints/sprint-S*.md || echo "no sprint files yet — run /promote"
+ls docs/project/sprints/S*/tasks.md || echo "no sprint files yet — run /promote"
 
 # 6. Brain pointer is set
 grep -q '{{BRAIN_PATH}}' .claude/rules/brain-hot.md && \

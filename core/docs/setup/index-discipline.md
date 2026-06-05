@@ -16,8 +16,8 @@ Typical measured savings:
 
 | Index | Companion to | Shape | Max size | Consumer |
 |---|---|---|---|---|
-| `docs/project/sprints/sprint-XX-index.md` | `sprint-XX.md` | 4-col: ID \| Component \| Status \| Depends | ~60 lines | `/next-task` Step 1, `/progress`, `/retro` |
-| `docs/designs/sprint-XX/INDEX.md` | the dir of `DXXX-*.md` | 4-col: DXXX \| Title \| Status \| Task-ID | ~30 lines | `/next-task` Step 7, `/document` |
+| `docs/project/sprints/XX/tasks.md` | `sprint-XX.md` | 4-col: ID \| Component \| Status \| Depends | ~60 lines | `/next-task` Step 1, `/progress`, `/retro` |
+| `docs/project/sprints/XX/designs/INDEX.md` | the dir of `DXXX-*.md` | 4-col: DXXX \| Title \| Status \| Task-ID | ~30 lines | `/next-task` Step 7, `/document` |
 | `docs/project/backlog-index.md` | `backlog.md` | 3-col: Sprint \| Status \| Pointer | ~40 lines | `/next-task` Step 1 (sprint resolver), `/promote`, `/archive` |
 | `docs/project/sprints/INDEX.md` | the dir of `sprint-*.md` | 3-col: Sprint \| Status \| Dates | ~30 lines | `/archive`, humans orienting |
 
@@ -25,15 +25,15 @@ Typical measured savings:
 
 ### Creating a new sprint
 
-1. `docs/project/sprints/sprint-XX.md` — full file
-2. `docs/project/sprints/sprint-XX-index.md` — **sibling, same commit**
+1. `docs/project/sprints/XX/tasks.md` — full file
+2. `docs/project/sprints/XX/tasks.md` — **sibling, same commit**
 3. Append one row to `docs/project/sprints/INDEX.md`
 4. Update `docs/project/backlog-index.md`
 
 ### Creating a new design-doc directory
 
-1. `docs/designs/sprint-XX/DXXX-name.md` — full file
-2. First design doc in a new dir: create `docs/designs/sprint-XX/INDEX.md`
+1. `docs/project/sprints/XX/designs/DXXX-name.md` — full file
+2. First design doc in a new dir: create `docs/project/sprints/XX/designs/INDEX.md`
 3. Every subsequent design doc: **append one row** to INDEX.md same commit
 
 ### Mutating any of these files
@@ -41,7 +41,7 @@ Typical measured savings:
 | You change | You MUST also update | Same commit? |
 |---|---|---|
 | `sprint-XX.md` task-row status | `sprint-XX-index.md` row | Yes |
-| Add a new `DXXX-*.md` | `docs/designs/sprint-XX/INDEX.md` row | Yes |
+| Add a new `DXXX-*.md` | `docs/project/sprints/XX/designs/INDEX.md` row | Yes |
 | Close a sprint in `backlog.md` | `backlog-index.md` + `docs/project/sprints/INDEX.md` | Yes |
 
 ## Staleness detection

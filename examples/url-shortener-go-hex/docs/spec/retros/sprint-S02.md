@@ -17,7 +17,7 @@
 | URLSH-S02.03 | Done clean | 2d → 2d | 1 gate fix (silent-failure-hunter: replay path swallowed Redis error on prior-response lookup) | Consumed F0001 from S01 (duplicate-body 409 semantic) |
 | URLSH-S02.04 | Done with drift | 2d → 3d | 1 gate fix (hexagonal-reviewer flagged config struct in `cmd/server` referencing adapter directly) | **No design doc** — see drift finding below. Filed F0005 (refactor) for the duplication. |
 | URLSH-S02.05 | Partial | 2d → 1d done, then deferred | n/a (deferred mid-sprint) | Read path lifted out — see L201 + F0004 |
-| URLSH-S02.06 | Done clean | 0.5d → 0.5d | 0 gate fixes | Canonical fix-with-regression-test path; design [`D006`](../../designs/sprint-S02/D006-fix-cache-stale-ttl.md); consumed F0003 |
+| URLSH-S02.06 | Done clean | 0.5d → 0.5d | 0 gate fixes | Canonical fix-with-regression-test path; design [`D006`](../../project/sprints/S02/designs/D006-fix-cache-stale-ttl.md); consumed F0003 |
 
 ## What went well
 

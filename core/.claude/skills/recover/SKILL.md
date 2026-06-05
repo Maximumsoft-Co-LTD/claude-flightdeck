@@ -200,7 +200,7 @@ unpredictable state.
 
 ## Step 5 — Post-mortem hook (always run)
 
-After recovery succeeds, append a row to `docs/project/FOLLOWUPS.md` so
+After recovery succeeds, append a row to `docs/project/backlog.md` so
 the sprint retro picks it up. Format:
 
 ```markdown
@@ -239,4 +239,4 @@ process can improve, not just the immediate state.
   partial-dispatch happens
 - `docs/playbooks/parallel-conflict-prevention.md` — preventing the
   failure in the first place
-- `docs/project/FOLLOWUPS.md` — where Step 5 writes
+- `docs/project/backlog.md` — where Step 5 writes

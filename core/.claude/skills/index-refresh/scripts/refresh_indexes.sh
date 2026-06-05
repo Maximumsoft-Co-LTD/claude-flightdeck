@@ -3,9 +3,9 @@
 #
 # Indexes rebuilt:
 #   1. docs/project/sprints/INDEX.md          (from sprint-S*.md files)
-#   2. docs/project/sprints/sprint-S<N>-index.md  (per active sprint)
+#   2. docs/project/sprints/S<N>/tasks.md  (per active sprint)
 #   3. docs/project/backlog-index.md          (from backlog.md sprint sections)
-#   4. docs/designs/sprint-S<N>/INDEX.md   (per sprint design dir)
+#   4. docs/project/sprints/S<N>/designs/INDEX.md   (per sprint design dir)
 #
 # Usage: refresh_indexes.sh [REPO_ROOT]
 #   REPO_ROOT defaults to $(git rev-parse --show-toplevel) or PWD.
@@ -88,7 +88,7 @@ build_sprints_index() {
 }
 
 # ---------------------------------------------------------------
-# Index 2 — docs/project/sprints/sprint-S<N>-index.md (per sprint)
+# Index 2 — docs/project/sprints/S<N>/tasks.md (per sprint)
 # ---------------------------------------------------------------
 build_sprint_task_index() {
   local sprint_file="$1"
@@ -224,7 +224,7 @@ build_backlog_index() {
 }
 
 # ---------------------------------------------------------------
-# Index 4 — docs/designs/sprint-S<N>/INDEX.md (per sprint design dir)
+# Index 4 — docs/project/sprints/S<N>/designs/INDEX.md (per sprint design dir)
 # ---------------------------------------------------------------
 build_design_index() {
   local design_dir="$1"

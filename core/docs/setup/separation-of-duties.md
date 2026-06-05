@@ -98,8 +98,8 @@ The human approver:
 
 1. Reads the Gate 4 findings.
 2. Either: fixes the findings (commits land on the branch), OR
-   accepts the deferral (adds a `Deferred:` row to the FOLLOWUPS
-   register with severity + reasoning).
+   accepts the deferral (adds a `Deferred:` row to the backlog's Follow-ups section
+   (`docs/project/backlog.md` `## Follow-ups`) with severity + reasoning).
 3. Adds the `PR-APPROVER:` / `PR-APPROVER-TEAM:` /
    `PR-APPROVER-ACK-COMMIT:` trailer to the PR description.
 4. Approves the PR through GitHub's review UI (so CODEOWNERS gate
@@ -125,7 +125,7 @@ within the sprint window:
 
 - **Block the PR.** Do not merge. SoD violations are not "we'll fix
   it next sprint" — they're "this work waits for an approver."
-- **Annotate the FOLLOWUPS register** with the PR + the blocking
+- **Annotate the backlog's Follow-ups section** (`docs/project/backlog.md` `## Follow-ups`) with the PR + the blocking
   reason.
 - **In the sprint retro**, surface the blockage as a process issue.
   Recurring SoD blockages mean the approver pool is too small;

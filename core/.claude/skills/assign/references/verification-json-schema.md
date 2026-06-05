@@ -149,7 +149,7 @@ if ! echo "$first_message" | jq -e '.design_doc_read == true' >/dev/null; then
 fi
 
 # Cross-check against the design doc's Touched Files matrix
-expected=$(grep -A 50 'Touched Files' docs/designs/sprint-S<N>/D<NNN>*.md | \
+expected=$(grep -A 50 'Touched Files' docs/project/sprints/S<N>/designs/D<NNN>*.md | \
            grep -oE '\S+\.\w+' | sort -u)
 actual=$(echo "$first_message" | jq -r '.files_will_touch[]' | sort -u)
 

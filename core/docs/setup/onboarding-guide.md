@@ -21,7 +21,7 @@ conventions, its fragile spots, its first sprint." It writes:
 - `brain-hot.md` candidates for A011+ project-local rules
 - `docs/setup/codebase-orientation.md` — the first-day-reader map
 - `docs/setup/team-conventions.md` — softer conventions tier
-- Initial `STATUS.md` / `backlog.md` / `FOLLOWUPS.md`
+- Initial `docs/project/sprints/S<N>/tasks.md` (the active sprint board) / `backlog.md` (with `## Follow-ups`)
 
 Runtime: 4-6 hours interactive on a medium project. Most of that is
 the wizard working; your input is concentrated in the ~30 min
@@ -135,11 +135,7 @@ is the canonical one.
 
 ### Stage 6 — State capture
 
-Three small files: `STATUS.md`, `backlog.md`, `FOLLOWUPS.md`. The
-wizard pre-fills from your interview. The backlog step has a paste
-prompt — copy 5-10 rows from Jira / Linear / Issues into the textbox;
-the wizard reformats to the template's `BACKLOG_ENTRY_TEMPLATE.md`
-shape. Skip if you'd rather seed it during the first sprint.
+Two files: the active sprint board (`docs/project/sprints/S<N>/tasks.md`) and `backlog.md` (which includes the `## Follow-ups` section). The wizard pre-fills from your interview. The backlog step has a paste prompt — copy 5-10 rows from Jira / Linear / Issues into the textbox; the wizard reformats to the template's `BACKLOG_ENTRY_TEMPLATE.md` shape. Skip if you'd rather seed it during the first sprint.
 
 ### Stage 7 — Handoff
 

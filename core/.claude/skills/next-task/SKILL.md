@@ -21,7 +21,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 1. **Find the active sprint pointer**
 
    ```
-   Grep docs/project/STATUS.md for the project row (or the active-sprint marker)
+   Grep docs/project/sprints/S<N>/tasks.md for the project row (or the active-sprint marker)
    ```
 
    Extract: active sprint number, in-flight task ID, branch, last update.
@@ -31,7 +31,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 2. **Find the next un-started task in the sprint file**
 
    ```
-   Read docs/project/sprints/sprint-S<N>.md with limit: 80 (header + task table only)
+   Read docs/project/sprints/S<N>/tasks.md with limit: 80 (header + task table only)
    Scan for the first row with status [ ] Not Started
    ```
 
@@ -42,7 +42,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
 2b. **Check FOLLOWUPS.md** — concrete scan rules:
 
-   - `Grep docs/project/FOLLOWUPS.md` `## Open` section for **(a)** the task's component path or directory (e.g. `apps/web/features/auth`), **(b)** the design-doc slug (`D<NNN>-<slug>` token), and **(c)** any backlog keyword present in the candidate row's Item cell.
+   - `Grep docs/project/backlog.md` `## Open` section for **(a)** the task's component path or directory (e.g. `apps/web/features/auth`), **(b)** the design-doc slug (`D<NNN>-<slug>` token), and **(c)** any backlog keyword present in the candidate row's Item cell.
    - **Surface ALL `Priority=high` open rows unconditionally** — even if the keyword grep didn't hit. High-priority follow-ups are always candidates for bundling.
    - For each surfaced row, ask the user: "Open follow-up `F####` looks related — should we bundle it into this task?". Never silently consume a follow-up.
    - Cite scanned IDs in the dispatch summary (e.g. `Follow-ups scanned: F0007, F0012` or `Follow-ups scanned: none matched`).
@@ -68,7 +68,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    | # | Check | Required for |
    |---|---|---|
-   | 1 | Design doc at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` | All tasks |
+   | 1 | Design doc at `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` | All tasks |
    | 2 | Dependencies marked Done / Partial | All |
    | 3 | Contract update committed if cross-service | Tasks touching event/REST/RPC shape |
    | 4 | Idempotent migration pattern declared | Tasks with persistence schema changes |
@@ -81,7 +81,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    Display: task ID, one-line description, target component(s), AC, readiness result. Ask: "Confirm dispatch? (yes / pick different / write design doc first)".
 
-6b. **Mid-sprint follow-up consumption** — if the user confirmed bundling an open follow-up (from Step 2b) into this dispatch, update the row in `docs/project/FOLLOWUPS.md`:
+6b. **Mid-sprint follow-up consumption** — if the user confirmed bundling an open follow-up (from Step 2b) into this dispatch, update the row in `docs/project/backlog.md`:
 
    - Change its `Status` cell from `open` to `in-progress`.
    - Keep the row in `## Open` for now (it transitions to `## Closed` only at sprint-close `/retro` once status becomes `consumed-by:<task-id>` or `wont-do`).
@@ -99,12 +99,12 @@ Find and execute the next task from the active sprint. Every task requires a Des
    **Dispatch via a brief file, not a long inline prompt** (oversized prompts stall the agent — see `docs/setup/file-based-dispatch.md`):
 
    ```
-   1. Write docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md
+   1. Write docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-design.md
       <intent, AC, context grep excerpts, constraints, reads-first list, target D-doc path>
    2. Agent(subagent_type="design-doc-writer",
             description="design for <TASK_ID>",
             prompt="You are the design-doc-writer for <TASK_ID>.
-                    Your brief: docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md
+                    Your brief: docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-design.md
                     Read it FIRST, run your pre-task ritual, write the D-doc, report per your output contract.")
    ```
 
@@ -164,7 +164,7 @@ Find and execute the next task from the active sprint. Every task requires a Des
 
    The engineers are architecture-agnostic — they read `.claude/rules/code-style.md` + sample the codebase and conform to its real style. A custom preset may add specialized agents; route to those when installed. Full table: `.claude/skills/assign/references/repo-to-agent-mapping.md`.
 
-   **Write the task spec to a brief file, then dispatch with a short pointer prompt** — never paste the full spec into `prompt` (it stalls the agent). Write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md` from `references/dispatch-prompt-template.md`, then `Agent(subagent_type=..., prompt="<short pointer to the brief>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`). Full convention: `docs/setup/file-based-dispatch.md`.
+   **Write the task spec to a brief file, then dispatch with a short pointer prompt** — never paste the full spec into `prompt` (it stalls the agent). Write `docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md` from `references/dispatch-prompt-template.md`, then `Agent(subagent_type=..., prompt="<short pointer to the brief>")`. Single foreground dispatch (parallel dispatch only if multiple independent sub-tasks — use `/dispatch-parallel`). Full convention: `docs/setup/file-based-dispatch.md`.
 
 10. **Wait for subagent return; act on its status, then run the 6-gate post-delegation review** (`/post-delegation-gate`)
 
@@ -182,13 +182,13 @@ Find and execute the next task from the active sprint. Every task requires a Des
 11. **Close the task**
 
     - Update the sprint file: change `[ ] Not Started` → `[x] Done` (or `[~] Partial` if scope cut)
-    - Update `docs/project/STATUS.md` project row (REPLACE, don't append history; move closed prose to `STATUS-archive.md`)
+    - Update `docs/project/sprints/S<N>/tasks.md` project row (REPLACE, don't append history; move closed prose to `STATUS-archive.md`)
     - Bump any submodule pointer if a nested repo was edited
     - Commit + push
 
 12. **Append the live mini-retro for this task**
 
-    Append a 6-field entry to `docs/project/retros/sprint-S<N>-tasks.md` BEFORE moving to the next dispatch (what went well / what didn't / lessons / verdict).
+    Append a 6-field entry to `docs/project/sprints/S<N>/tasks.md` BEFORE moving to the next dispatch (what went well / what didn't / lessons / verdict).
 
 13. **Decide what's next**
 

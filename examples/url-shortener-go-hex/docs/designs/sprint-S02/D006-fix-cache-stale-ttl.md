@@ -76,7 +76,7 @@ still takes `{long_url}` and returns `{code, short_url, long_url}`.
 | 2 | Add `urlcache.Redis.Invalidate(ctx, code)` call in `app.Regenerate` — one-line fix | [x] |
 | 3 | Run both tests; both green | [x] |
 | 4 | Run full test suite; no other tests changed | [x] |
-| 5 | Verify F0003 row in [`../../project/FOLLOWUPS.md`](../../project/FOLLOWUPS.md) moves Open → Closed with `consumed-by:URLSH-S02.06` | [x] |
+| 5 | Verify F0003 row in [`../../project/backlog.md`](../../project/backlog.md) moves Open → Closed with `consumed-by:URLSH-S02.06` | [x] |
 
 ## Acceptance Criteria
 

@@ -18,17 +18,17 @@ Keep the four slim index files in sync with their wide source files. Every skill
 
 | # | Index file | Source file | Grep pattern | Fields |
 |---|---|---|---|---|
-| 1 | `docs/project/sprints/sprint-S<N>-index.md` | `docs/project/sprints/sprint-S<N>.md` | `^\| TG\|^\| S` (task rows) | `ID`, `Component`, `Status`, `Depends` |
-| 2 | `docs/designs/sprint-S<N>/INDEX.md` | `docs/designs/sprint-S<N>/D*.md` | `^#\s+Design:\|^> \*\*Status\*\*\|^> \*\*Task Group\*\*` | `DXXX`, `Title`, `Status`, `TG#` |
+| 1 | `docs/project/sprints/S<N>/tasks.md` | `docs/project/sprints/S<N>/tasks.md` | `^\| TG\|^\| S` (task rows) | `ID`, `Component`, `Status`, `Depends` |
+| 2 | `docs/project/sprints/S<N>/designs/INDEX.md` | `docs/project/sprints/S<N>/designs/D*.md` | `^#\s+Design:\|^> \*\*Status\*\*\|^> \*\*Task Group\*\*` | `DXXX`, `Title`, `Status`, `TG#` |
 | 3 | `docs/project/backlog-index.md` | `docs/project/backlog.md` | `^### Sprint \|^## 🚀` | `Sprint`, `Status`, `Pointer` |
-| 4 | `docs/project/sprints/INDEX.md` | `docs/project/sprints/sprint-*.md` | `^> \*\*Status\*\*\|^# Sprint` | `Sprint`, `Status`, `Opened`, `Closed` |
+| 4 | `docs/project/sprints/INDEX.md` | `docs/project/sprints/*/tasks.md` | `^> \*\*Status\*\*\|^# Sprint` | `Sprint`, `Status`, `Opened`, `Closed` |
 
 ## Staleness detection
 
 A consumer skill does:
 
 ```bash
-stat -f '%m' docs/project/sprints/sprint-S<N>-index.md docs/project/sprints/sprint-S<N>.md
+stat -f '%m' docs/project/sprints/S<N>/tasks.md docs/project/sprints/S<N>/tasks.md
 ```
 
 If `mtime(index) < mtime(source)`:
@@ -48,9 +48,9 @@ If `mtime(index) < mtime(source)`:
 Rebuilds the four index pairs idempotently:
 
 - `docs/project/sprints/INDEX.md` — list of every `sprint-S*.md` with status/opened/closed
-- `docs/project/sprints/sprint-S<N>-index.md` — per active sprint, the task row → ID/Component/Status/Depends extracted from the wide sprint file
+- `docs/project/sprints/S<N>/tasks.md` — per active sprint, the task row → ID/Component/Status/Depends extracted from the wide sprint file
 - `docs/project/backlog-index.md` — every `### Sprint S<N>` section in `backlog.md` with status + anchor link
-- `docs/designs/sprint-S<N>/INDEX.md` — per sprint design dir, every `D<NNN>-*.md` with title/status/task
+- `docs/project/sprints/S<N>/designs/INDEX.md` — per sprint design dir, every `D<NNN>-*.md` with title/status/task
 
 Standard tools only (`grep`, `sed`, `awk`, `find`, `sort`). No external deps. Running twice in a row produces identical output (idempotency-verified).
 
@@ -62,7 +62,7 @@ Standard tools only (`grep`, `sed`, `awk`, `find`, `sort`). No external deps. Ru
 | `/retro` | Sprint close | `sprint-S<N>-index.md` + `backlog-index.md` + `sprints/INDEX.md` |
 | `/promote` | New backlog item | `backlog-index.md` |
 | `/archive` | Moving old sprint | `sprints/INDEX.md` + `backlog-index.md` |
-| `/document` | New design doc | `designs/sprint-S<N>/INDEX.md` |
+| `/document` | New design doc | `project/sprints/S<N>/designs/INDEX.md` |
 | Manual sprint creation | New `sprint-S<N>.md` | All four |
 
 ## Rules

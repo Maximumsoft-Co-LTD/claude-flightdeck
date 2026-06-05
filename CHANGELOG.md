@@ -43,6 +43,26 @@
     avoids the false "immutable spec" implication; one rename collapses the
     scattered references behind a single obvious path.
 
+- **Hybrid sprint-folder state model** — the five scattered state surfaces
+  collapse into a self-contained per-sprint folder:
+  - `STATUS.md` + `STATUS-archive.md` + `FOLLOWUPS.md` are **eliminated**.
+  - `docs/project/sprints/S<N>/tasks.md` is now **the board** — active-state
+    glance (header) + task rows with `[ ]/[x]/[~]/[B]` state + live mini-retros,
+    all in one file (replaces the STATUS glance + the old sprint table + the
+    `retros/sprint-S<N>-tasks.md` mini-retro file).
+  - `docs/project/sprints/S<N>/retro.md` is the sprint-close narrative (replaces
+    `STATUS-archive.md` closing prose + the old `retros/sprint-S<N>.md`).
+  - Follow-ups become a `## Follow-ups` section of `backlog.md` (`F####` IDs).
+  - Per-task design docs move under the sprint: `sprints/S<N>/designs/D<NNN>-…`.
+  - New scaffolds `docs/project/_templates/{tasks.md.tmpl, retro.md.tmpl}`, a
+    folder map `docs/project/README.md`, and an id cheat-sheet
+    `docs/project/NAMING.md`. `ideas/` (was `discovery/`) + `audit/` retained.
+  - Rule **A008** restated: each sprint board is self-contained; at close, move
+    the board's Glance prose into that sprint's `retro.md` (no cross-sprint
+    STATUS to maintain). All non-skill references rewritten; skills updated next.
+  - **Why / how it's better:** one board per sprint = no cross-file sync, a
+    single source of truth, and a folder you can read top-to-bottom.
+
 ### Added
 
 - **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free

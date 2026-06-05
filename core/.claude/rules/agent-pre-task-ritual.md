@@ -17,7 +17,7 @@
 ### Step 0 — Read your brief (if the dispatch named one)
 
 If your dispatch prompt references a **brief file** — typically
-`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md` — **Read it
+`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-<role>.md` — **Read it
 FIRST, before anything else.** It is your complete, primary task input:
 intent, acceptance criteria, context excerpts, constraints, the
 reads-first list, and your output contract. The dispatch prompt is kept
@@ -85,7 +85,7 @@ assume any particular architecture is in place:
 
 8. If invoked with a task ID (e.g. `{{TASK_ID_PREFIX}}-S03.04`), Read the
    task design doc:
-   - `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` (active sprint), or
+   - `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` (active sprint), or
    - `docs/designs/_archive/<sprint>/...` (historical reference only).
 9. Confirm: AC list, touched-files matrix, applicable A/L rules,
    dependencies, blockedBy.
@@ -204,11 +204,11 @@ assume any particular architecture is in place:
   merge + clean up after PR review.
 - If you made NO changes → confirm worktree exit is safe (auto-cleanup
   reclaims disk).
-- Update the relevant `docs/project/sprints/sprint-S<N>.md` row
+- Update the relevant `docs/project/sprints/S<N>/tasks.md` row
   immediately after task complete — change `[ ] Not Started` → `[x]
   Done` or `[~] Partial`. Do NOT defer to sprint close.
 - Append the **live mini-retro** (A009 / L036) to
-  `docs/project/retros/sprint-S<N>-tasks.md` before reporting back to the
+  `docs/project/sprints/S<N>/tasks.md` before reporting back to the
   orchestrator.
 
 ## Origin

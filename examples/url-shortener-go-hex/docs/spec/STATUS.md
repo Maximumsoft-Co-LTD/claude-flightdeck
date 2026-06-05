@@ -2,7 +2,7 @@
 
 > Source of truth for the url-shortener track. Each session updates its row when sprint state changes.
 >
-> **Discipline (per A008 source-of-truth rule)**: Each row holds **CURRENT-SPRINT STATE ONLY** (1-3 sentences). When a sprint closes, **MOVE its prose to `STATUS-archive.md` in the SAME commit** — do NOT append to your row. Active-sprint detail lives in `sprints/sprint-NN.md`, closed-sprint detail in `retros/sprint-NN.md`. `STATUS.md` is a single-pane glance, not a ledger.
+> **Discipline (per A008 source-of-truth rule)**: Each row holds **CURRENT-SPRINT STATE ONLY** (1-3 sentences). When a sprint closes, **MOVE its prose to `STATUS-archive.md` in the SAME commit** — do NOT append to your row. Active-sprint detail lives in `sprints/NN/tasks.md`, closed-sprint detail in `sprints/NN/retro.md`. `STATUS.md` is a single-pane glance, not a ledger.
 
 ## Active per track
 
@@ -32,13 +32,13 @@ When a session changes its track row:
 When opening a new sprint:
 
 1. Update this row (REPLACE, not append) + move closed sprint prose to `STATUS-archive.md` in same commit.
-2. Create sprint file at `docs/project/sprints/sprint-S<NN>.md`.
+2. Create sprint file at `docs/project/sprints/S<NN>/tasks.md`.
 3. Update `backlog.md` so each newly-scheduled row tags the sprint.
 
 ## See also
 
 - Active backlog: [`backlog.md`](./backlog.md)
 - Closed-sprint prose: [`STATUS-archive.md`](./STATUS-archive.md)
-- Active sprint detail: [`sprints/sprint-S03.md`](./sprints/sprint-S03.md)
-- Live mini-retros (this sprint): [`retros/sprint-S03-tasks.md`](./retros/sprint-S03-tasks.md)
+- Active sprint detail: [`sprints/S03/tasks.md`](./sprints/S03/tasks.md)
+- Live mini-retros (this sprint): [`sprints/S03/tasks.md`](./sprints/S03/tasks.md)
 - Follow-up registry: [`FOLLOWUPS.md`](./FOLLOWUPS.md)

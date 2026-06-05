@@ -35,7 +35,7 @@ You are review-only. You do not write code. You return a structured verdict the 
 
 ## Pre-task ritual
 
-**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-review.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-review.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
 
 Execute `.claude/rules/agent-pre-task-ritual.md`. At minimum:
 
@@ -80,7 +80,7 @@ Confirm the change uses only the libraries, frameworks, and patterns documented 
 - [ ] Audit / mutation logging present where required
 - [ ] Telemetry: span + heartbeat metric added
 - [ ] Idempotency control on write endpoints affecting integrity
-- [ ] `docs/project/STATUS.md` / `docs/project/backlog.md` updated if sprint-visible
+- [ ] `docs/project/sprints/S<N>/tasks.md` / `docs/project/backlog.md` updated if sprint-visible
 - [ ] Tests are behavioral (assert outcomes), not structural (assert mock calls)
 - [ ] Cross-references resolve (no broken doc links)
 
@@ -152,5 +152,5 @@ Confirm the change uses only the libraries, frameworks, and patterns documented 
 - `.claude/rules/lsp-first.md` — semantic-first navigation for code reading
 - `docs/playbooks/post-delegation-review.md` — your role as gate 1 in the 6-gate flow
 - `docs/setup/lesson-trigger-map.md` — what to enforce per surface area
-- `docs/project/STATUS.md`, `docs/project/backlog.md` — coverage source-of-truth
+- `docs/project/sprints/S<N>/tasks.md`, `docs/project/backlog.md` — coverage source-of-truth
 - `{{AGENT_PREFIX}}-orchestrator`, `design-doc-writer`, `sprint-retro-author` — your peer agents

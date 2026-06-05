@@ -6,7 +6,7 @@
 ## Token hygiene & Index discipline (L153 + L154)
 
 - **L153 — `/clear` between skill invocations**: before `/next-task` if prior turn ran `/progress` or `/retro`; cross-skill sprint+backlog Reads stack ~15 K of pollution.
-- **L154 — Index-first for sprint/backlog/design-doc creation**: New `sprint-XX.md` requires sibling `sprint-XX-index.md`; new `docs/designs/sprint-XX/` requires `INDEX.md`; `backlog.md` has slim `backlog-index.md`. Skills that mutate these files refresh the index same-commit. See `docs/setup/index-discipline.md` + run `/index-refresh`.
+- **L154 — Index-first for sprint/backlog/design-doc creation**: New `sprint-XX.md` requires sibling `sprint-XX-index.md`; new `docs/project/sprints/XX/designs/` requires `INDEX.md`; `backlog.md` has slim `backlog-index.md`. Skills that mutate these files refresh the index same-commit. See `docs/setup/index-discipline.md` + run `/index-refresh`.
 
 ## Visible Task Tracking (TaskCreate/TaskUpdate) — MANDATORY
 
@@ -38,7 +38,7 @@
 ```
 Per task group (after review + smoke test):
   1. Compliance check passed
-  2. Write mini retro → append to docs/project/retros/sprint-XX-tasks.md
+  2. Write mini retro → append to docs/project/sprints/XX/tasks.md
      - What Happened, Issues, Fixes, Lessons, Verdict
   3. Mark task done in sprint file
   4. **Backlog Sync (L087):** update backlog.md status immediately
@@ -51,7 +51,7 @@ End of sprint: /retro reads sprint-XX-tasks.md → aggregates into full retro
 
 **Why:** context vanishes after a task finishes — if not captured live, the sprint retro is missing the load-bearing detail.
 **No need to ask the user** — auto-write after every review.
-**File:** `docs/project/retros/sprint-XX-tasks.md` (1 file per sprint, append per task)
+**File:** `docs/project/sprints/XX/tasks.md` (1 file per sprint, append per task)
 
 ## E2E-Per-Task Rule (L021) — MANDATORY when project has E2E
 
@@ -92,8 +92,8 @@ Tech Lead (Root PM):
      b. git checkout -b feature/{{TASK_ID_PREFIX}}-{sprint}.{task}-{short-desc}
      c. Agent works on this feature branch
   1. Create Design Doc from template (docs/designs/_templates/)
-     - Root: docs/designs/sprint-XX/DXXX-name.md (overview + contract)
-     - Per-repo: {repo}/docs/designs/sprint-XX/DXXX-name.md (detail)
+     - Root: docs/project/sprints/XX/designs/DXXX-name.md (overview + contract)
+     - Per-repo: {repo}/docs/project/sprints/XX/designs/DXXX-name.md (detail)
   1.5. Run Design Review Checklist (docs/designs/_templates/DESIGN_REVIEW_CHECKLIST.md)
      - Check every item: API contract, Routes, Menu, RBAC, E2E selectors, Side-effects,
        Component Spec, Interactive Behavior Map, User Journey
@@ -149,7 +149,7 @@ Root PM (Post-Delegation Review — 6-gate, MANDATORY):
        h. **Cross-role:** if RBAC was touched → also log in as non-admin → inspect sidebar
   6. **Cross-reference AC**: open repo design doc → check each AC → mark done/fail
   7. If FAIL → delegate fix task before mark done
-  8. **Retro by Task**: append to `docs/project/retros/sprint-XX-tasks.md`
+  8. **Retro by Task**: append to `docs/project/sprints/XX/tasks.md`
      - Every claim must be evidence-based (count, don't estimate)
   9. Update sprint status + design doc tasks
   10. **Backlog Sync**: update `docs/project/backlog.md` immediately
@@ -197,10 +197,10 @@ Frontend implementation in **4 Phases**:
 > **Every non-trivial task has 3 levels of documentation that stay in sync.**
 
 ```
-1. Root Design Doc: docs/designs/sprint-XX/DXXX-name.md
+1. Root Design Doc: docs/project/sprints/XX/designs/DXXX-name.md
    → Source of truth, full spec, overview + cross-repo contract
 
-2. Repo Design Doc: {repo}/docs/designs/sprint-XX/DXXX-name.md
+2. Repo Design Doc: {repo}/docs/project/sprints/XX/designs/DXXX-name.md
    → Agent READS THIS FIRST — MUST COPY verbatim from Root: S1, S2.5-S2.8, S3, S6, S8, S9, S10
    → PLUS repo-specific implementation contracts
    → Never summarize, abridge, or reformat (L035)
@@ -252,7 +252,7 @@ Do NOT switch branches or push. Just implement the task and leave changes uncomm
 
 Read these files FIRST before writing any code:
 1. {repo}/PROGRESS.md                              ← context from previous tasks
-2. {repo}/docs/designs/sprint-XX/DXXX-name.md      ← repo design doc
+2. {repo}/docs/project/sprints/XX/designs/DXXX-name.md      ← repo design doc
 3. {repo}/.claude/tasks/X.X-name.md                 ← task file (execute this)
 Then follow all phases in the task file. Update PROGRESS.md when done.
 ```

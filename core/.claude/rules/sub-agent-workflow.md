@@ -122,7 +122,7 @@ Core (always available):
 
 | Subagent | Use for | Reads first |
 |---|---|---|
-| `<prefix>-orchestrator` | Pick next task; orchestrate a sprint phase; multi-step PM work | `docs/project/STATUS.md` + backlog |
+| `<prefix>-orchestrator` | Pick next task; orchestrate a sprint phase; multi-step PM work | `docs/project/sprints/S<N>/tasks.md` + backlog |
 | `backend-engineer` | Any server-side feature (handler, use-case/service, data access, migration, worker, producer/consumer). Architecture-agnostic — conforms to the project's style | `.claude/rules/code-style.md` + area CLAUDE.md + design doc |
 | `frontend-engineer` | Any client-side feature (page, component, state, form, API call, i18n). Architecture-agnostic — conforms to the app's style | `.claude/rules/code-style.md` + area CLAUDE.md + design doc |
 | `design-doc-writer` | Author a ≥500-line zero-fix design doc per task | task brief + relevant area CLAUDE.md |
@@ -164,7 +164,7 @@ Preset agents (only appear after `--preset` install):
 > **File-based dispatch (default for non-trivial work).** Do NOT paste a
 > long spec into `prompt` — oversized inline prompts can stall/hang the
 > dispatch. Write the spec to a **brief file**
-> (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-<role>.md`) and pass a
+> (`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-<role>.md`) and pass a
 > short pointer prompt. The agent reads its brief first (pre-task ritual
 > Step 0). Inline only for a tiny (~≤30-line) instruction. Full
 > convention: [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
@@ -173,14 +173,14 @@ Preset agents (only appear after `--preset` install):
 
 ```
 # 1. Write the brief file (full spec: reads-first, AC, matrix, test plan, contract)
-Write docs/designs/sprint-S<N>/_briefs/{{TASK_ID_PREFIX}}-S02.03-impl.md  <full spec>
+Write docs/project/sprints/S<N>/designs/_briefs/{{TASK_ID_PREFIX}}-S02.03-impl.md  <full spec>
 
 # 2. Dispatch with a SHORT pointer prompt
 Agent(
   description: "Implement {{TASK_ID_PREFIX}}-S02.03 (some handler)",
   subagent_type: "<engineer-of-choice>",
   prompt: "You are the impl engineer for {{TASK_ID_PREFIX}}-S02.03.
-           Your brief: docs/designs/sprint-S<N>/_briefs/{{TASK_ID_PREFIX}}-S02.03-impl.md
+           Your brief: docs/project/sprints/S<N>/designs/_briefs/{{TASK_ID_PREFIX}}-S02.03-impl.md
            Read it FIRST, run your pre-task ritual, report per your output contract."
 )
 ```

@@ -34,7 +34,7 @@ failure mode you exist to avoid.
 
 ## Pre-task ritual (MANDATORY)
 
-**Step 0 — read your brief.** If the dispatch named a brief file (`docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
+**Step 0 — read your brief.** If the dispatch named a brief file (`docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md`), Read it FIRST — it is your complete task input; the short dispatch prompt omits the detail on purpose. See [`../../docs/setup/file-based-dispatch.md`](../../docs/setup/file-based-dispatch.md).
 
 Execute `.claude/rules/agent-pre-task-ritual.md` before touching any code. You do NOT inherit the main session's context. At minimum:
 

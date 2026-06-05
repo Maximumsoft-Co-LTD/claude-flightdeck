@@ -242,7 +242,7 @@ ratified yet and `/onboard rules` can re-run mining later.
 
 Walk the operator through filling three files:
 
-1. **`docs/project/STATUS.md`** — `AskUserQuestion`:
+1. **`docs/project/sprints/S<N>/tasks.md`** — `AskUserQuestion`:
    - Currently active sprint? (default: "S00 — Onboarding")
    - In-flight task? (default: none)
    - Branch convention from Stage 2 Round 2 — pre-fill
@@ -250,7 +250,7 @@ Walk the operator through filling three files:
    "Paste any current backlog rows (export from Jira/Linear/Issues).
    I'll reformat to the `BACKLOG_ENTRY_TEMPLATE.md` shape.
    Or skip — we can seed it during the first sprint."
-3. **`docs/project/FOLLOWUPS.md`** — `AskUserQuestion` from Round 3
+3. **`docs/project/backlog.md`** — `AskUserQuestion` from Round 3
    answers — list the top 3 known carry-overs as F-rows.
 
 ## Stage 7 — First-feature shakedown handoff
@@ -265,7 +265,7 @@ Files written:
   .claude/rules/brain-hot.md (A011 ... A0<NN>)
   docs/setup/codebase-orientation.md
   docs/setup/team-conventions.md
-  docs/project/STATUS.md / backlog.md / FOLLOWUPS.md
+  docs/project/sprints/S<N>/tasks.md / backlog.md / FOLLOWUPS.md
 
 Next step: pilot the workflow on a small task from Stage 2 Round 3.
 Run /next-task to dispatch, or /discover <idea> if you want to

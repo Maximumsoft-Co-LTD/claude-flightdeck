@@ -1,10 +1,11 @@
 # {{PROJECT_NAME}} — Backlog
 
 > **Track**: {{PROJECT_NAME}} (`{{AGENT_PREFIX}}-`)
-> **Source-of-truth**: this file. `STATUS.md` reflects the row of the active sprint.
+> **Source-of-truth**: this file (cross-sprint — all work, ever). The active
+> sprint's board (`sprints/S<N>/tasks.md`) holds in-flight state.
 > **Discipline**: append-only; close items by changing status, never delete. Re-prioritize via row order.
 > **Last updated**: YYYY-MM-DD
-> **Next ID**: B001
+> **Next ID**: B001 · **Next follow-up**: F0001
 
 Backlog row format reference → [`../designs/_templates/BACKLOG_ENTRY_TEMPLATE.md`](../designs/_templates/BACKLOG_ENTRY_TEMPLATE.md).
 
@@ -64,3 +65,29 @@ Backlog row format reference → [`../designs/_templates/BACKLOG_ENTRY_TEMPLATE.
 |----|------|-------|-----|------|--------|
 
 </details>
+
+---
+
+## Follow-ups
+
+> Work surfaced by a retro that didn't fit its original scope (formerly the
+> separate `FOLLOWUPS.md`). `/retro` **appends** here at sprint close; `/work`
+> **reads** here before picking the next task and asks whether any open item is
+> now in scope. `F####` IDs serialize through the integration base — see
+> [`NAMING.md`](./NAMING.md) for the full convention. Columns: `ID · From ·
+> Item · Type · Priority · Opened · Owner · Status`.
+
+### Open
+
+<!-- First retro appends here; F0001 is the first ID. -->
+
+| ID | From task / sprint | Item | Type | Priority | Opened | Owner | Status |
+|----|--------------------|------|------|----------|--------|-------|--------|
+
+### Closed
+
+> A row moves Open → Closed by appending `Consumed by` + `Date consumed` when its
+> status becomes `consumed-by:<task-id>` or `wont-do`.
+
+| ID | From task / sprint | Item | Type | Priority | Opened | Owner | Status | Consumed by | Date consumed |
+|----|--------------------|------|------|----------|--------|-------|--------|-------------|---------------|

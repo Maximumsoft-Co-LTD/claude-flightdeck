@@ -18,7 +18,7 @@
 | 3. Specialized agents | [`../.claude/agents/`](../.claude/agents/) | orchestrator, design-doc-writer, senior-tech-lead, sprint-retro-author + preset agents |
 | 4. User-invocable skills | [`../.claude/skills/`](../.claude/skills/) | 22 slash-commands driving the workflow |
 | 5. Playbooks + setup docs | [`./playbooks/`](./playbooks/) + [`./setup/`](./setup/) | Deep operational documents linked from rules |
-| 6. Templates + spec | [`./designs/_templates/`](./designs/_templates/) + [`./project/`](./project/) | Design templates, STATUS, backlog, sprints, retros |
+| 6. Templates + spec | [`./designs/_templates/`](./designs/_templates/) + [`./project/`](./project/) | Design templates, sprint boards (`sprints/S<N>/tasks.md`), sprint retros (`sprints/S<N>/retro.md`), backlog (with Follow-ups) |
 | 7. Memory | [`../.claude/memory/`](../.claude/memory/) or `{{BRAIN_PATH}}` | Cross-sprint lessons, retros, decisions |
 
 Full architecture rationale:
@@ -80,7 +80,7 @@ Full architecture rationale:
 | [`/design-review`](../.claude/skills/design-review/SKILL.md) | UI fidelity gate after FE sprint | (none) | `docs/project/reviews/sprint-S<N>-design-review.md` |
 | [`/security-review`](../.claude/skills/security-review/SKILL.md) | Phase-7 security pass on the diff (+ slopsquatting) | (none) | findings + PASS/BLOCK verdict |
 | [`/progress`](../.claude/skills/progress/SKILL.md) | Mid-sprint dashboard (read-only) | (none) | (status print) |
-| [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit | `/ratify-rules` | `docs/project/retros/sprint-S<N>.md` |
+| [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit | `/ratify-rules` | `docs/project/sprints/S<N>/retro.md` |
 | [`/ratify-rules`](../.claude/skills/ratify-rules/SKILL.md) | Land retro `## Candidate A-rules` into `brain-hot.md` (operator-gated) | `/retro` | `brain-hot.md` A011+ · trigger-map row |
 | [`/archive`](../.claude/skills/archive/SKILL.md) | Move old sprints to `historical/` | (none) | moves under `docs/project/sprints/historical/` |
 | [`/document`](../.claude/skills/document/SKILL.md) | Sync API / contract docs from code | (none) | API doc files |
@@ -94,10 +94,10 @@ Full architecture rationale:
 
 | Agent | When to dispatch | Reads first | Writes to |
 |---|---|---|---|
-| [`{{AGENT_PREFIX}}-orchestrator`](../.claude/agents/orchestrator.md) | Pick next task; orchestrate sprint phase | `docs/project/STATUS.md` + backlog | dispatch decisions; updates STATUS |
-| [`design-doc-writer`](../.claude/agents/design-doc-writer.md) | Author ≥500L zero-fix design doc | task brief + area CLAUDE.md | `docs/designs/sprint-S<N>/D<NNN>-<slug>.md` |
+| [`{{AGENT_PREFIX}}-orchestrator`](../.claude/agents/orchestrator.md) | Pick next task; orchestrate sprint phase | `docs/project/sprints/S<N>/tasks.md` + backlog | dispatch decisions; updates STATUS |
+| [`design-doc-writer`](../.claude/agents/design-doc-writer.md) | Author ≥500L zero-fix design doc | task brief + area CLAUDE.md | `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` |
 | [`senior-tech-lead`](../.claude/agents/senior-tech-lead.md) | Cross-service / architectural review | task D-doc + relevant CLAUDE.md | review notes on PR |
-| [`sprint-retro-author`](../.claude/agents/sprint-retro-author.md) | Sprint close + retro write | sprint files + live mini-retros | `docs/project/retros/sprint-S<N>.md` |
+| [`sprint-retro-author`](../.claude/agents/sprint-retro-author.md) | Sprint close + retro write | sprint files + live mini-retros | `docs/project/sprints/S<N>/retro.md` |
 | _Preset engineers_ (after `--preset`) | Implementation of a service feature | preset rule + design doc | code + tests |
 
 ## Built-in agents (always available)
@@ -167,7 +167,7 @@ Full architecture rationale:
 
 1. `/discover <feature idea>` → captures `D###-slug.md`
 2. `/promote D###` → moves it to `docs/project/backlog.md`
-3. (Sprint planning) edit `docs/project/sprints/sprint-S<N>.md` — pick tasks, assign fanout waves
+3. (Sprint planning) edit `docs/project/sprints/S<N>/tasks.md` — pick tasks, assign fanout waves
 4. `/next-task` → dispatches first task with D-doc gate
 
 ### Fixing a bug
@@ -190,17 +190,17 @@ Full architecture rationale:
 ### Auditing the last sprint
 
 1. `/progress` — read-only dashboard
-2. Open `docs/project/retros/sprint-S<N>.md` — the closing retro
-3. Open `docs/project/retros/sprint-S<N>-tasks.md` — the live mini-retros
+2. Open `docs/project/sprints/S<N>/retro.md` — the closing retro
+3. Open `docs/project/sprints/S<N>/tasks.md` — the live mini-retros
 4. Grep `docs/project/audit/YYYY-MM.jsonl` for the sprint's `task_id`
    prefix
-5. Open `docs/project/FOLLOWUPS.md` — deferred items + acknowledgements
+5. Open `docs/project/backlog.md` — deferred items + acknowledgements
 
 ### Closing a sprint
 
 1. `/progress` — confirm all tasks `[x]` or `[B]`-blocked
 2. `/retro` — sprint close + backlog audit (HARD gate)
-3. Manual: review FOLLOWUPS; ack any P1/P2 with PR-APPROVER trailer
+3. Manual: review the backlog's Follow-ups section (`docs/project/backlog.md` `## Follow-ups`); ack any P1/P2 with PR-APPROVER trailer
 4. `/archive` (if old sprints accumulate)
 
 ### Setting up org-wide adoption
@@ -225,17 +225,17 @@ Full architecture rationale:
 
 | Path | What | Source-of-truth for |
 |---|---|---|
-| [`./project/STATUS.md`](./project/STATUS.md) | Single-pane current state | "what sprint are we in" |
-| [`./project/STATUS-archive.md`](./project/STATUS-archive.md) | Historical STATUS prose | Past sprint snapshots |
+| [`./project/sprints/S<N>/tasks.md`](./project/sprints/S<N>/tasks.md) | Single-pane current state (Glance + task rows + inline mini-retros) | "what sprint are we in" |
+| [`./project/sprints/S<N>/retro.md`](./project/sprints/S<N>/retro.md) | Sprint-close narrative (replaces closed Glance prose) | Past sprint snapshots |
 | [`./project/backlog.md`](./project/backlog.md) | All work, ever | "is this idea already tracked" |
-| [`./project/FOLLOWUPS.md`](./project/FOLLOWUPS.md) | Deferred items + ack | "what got pushed past sprint close" |
+| [`./project/backlog.md`](./project/backlog.md) `## Follow-ups` | Open / closed follow-up registry (F#### IDs) | "what got pushed past sprint close" |
 | `./project/ideas/D###-slug.md` | Pre-backlog ideas | Discovery before commitment |
-| `./project/sprints/sprint-S<N>.md` | Active sprint task table | Tasks, fanout waves, dependencies |
-| `./project/retros/sprint-S<N>-tasks.md` | Live per-task mini-retros (A009) | Per-task learnings while context is hot |
-| `./project/retros/sprint-S<N>.md` | Sprint close retro | Audited sprint outcome |
+| `./project/sprints/S<N>/tasks.md` | Active sprint task table | Tasks, fanout waves, dependencies |
+| `./project/sprints/S<N>/tasks.md` | Live per-task mini-retros (A009) | Per-task learnings while context is hot |
+| `./project/sprints/S<N>/retro.md` | Sprint close retro | Audited sprint outcome |
 | `./project/audit/YYYY-MM.jsonl` | Agent dispatch audit JSONL | Compliance evidence (CC7.1 / AU-2) |
 | `./project/reviews/sprint-S<N>-design-review.md` | UI fidelity gate report | `/design-review` output |
-| `./designs/sprint-S<N>/D<NNN>-<slug>.md` | Per-task design doc | Source-of-truth for the task's how |
+| `./project/sprints/S<N>/designs/D<NNN>-<slug>.md` | Per-task design doc | Source-of-truth for the task's how |
 
 ---
 

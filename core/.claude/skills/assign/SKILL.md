@@ -35,7 +35,7 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
 
 1. **Parse repo + task ID.** Map repo → directory.
 2. **Find the task row (lazy — do not Read full sprint file)**:
-   - `Glob` for the active sprint file in `docs/project/sprints/sprint-*.md`
+   - `Glob` for the active sprint file in `docs/project/sprints/*/tasks.md`
    - `Grep` for the task ID with `-A 5 -B 1` → extract row + context
    - `Read` with `limit: 80` only if the Grep didn't resolve it
 3. **Check dependencies** — warn / refuse if `blockedBy` is open.
@@ -43,7 +43,7 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
    - Determine task type from the title prefix (e.g. `[BE]`, `[FE]`, `[BE+FE]`, `[Infra]`)
    - If FE work and your project uses design references → verify the design / Figma node IDs exist (if missing → **BLOCK**, request design)
 5. **Show task details, ask user to confirm.**
-6. **Check / create the Design Doc** — at `docs/designs/sprint-S<N>/D<NNN>-<slug>.md`. If missing, dispatch the `design-doc-writer` agent first (via a brief file — write `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-design.md`, dispatch with a short pointer prompt; see `docs/setup/file-based-dispatch.md`), then resume.
+6. **Check / create the Design Doc** — at `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md`. If missing, dispatch the `design-doc-writer` agent first (via a brief file — write `docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-design.md`, dispatch with a short pointer prompt; see `docs/setup/file-based-dispatch.md`), then resume.
 
 6b. **Surface design-doc risk + ambiguity before approval** — read three doc sections in order and bundle every unresolved row into `AskUserQuestion`. Order matters because each tier can BLOCK dispatch:
    - **§1.5.2 Knowledge Gaps** — any unresolved row means BLOCK (the doc should have come back `NEEDS_CONTEXT`). Bundle each into a question with `What I need to know` + `Why` + `Likely source` + `Impact if I guess wrong`. After resolution, `SendMessage` the design-doc-writer to complete the doc body before continuing.
@@ -53,16 +53,16 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
    After answers, update the doc in-place (`Resolved? → [x]`, fill `Default picked` / knowledge-gap answer, append Change Log row per resolved section), commit, then proceed. See `/next-task` Step 8b for the canonical procedure.
 
 7. **Cross-cutting pre-checks** — multi-tenancy / RBAC / contract-first, per the rules that apply to {{PROJECT_NAME}}.
-8. **Delegate** — pick the `subagent_type` from `references/repo-to-agent-mapping.md`, then instantiate `references/dispatch-prompt-template.md` with the task ID, type, design-doc path, AC list, touched-files matrix, and test plan (verbatim from the design doc) and **write it to a brief file** `docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md`. Dispatch with the short **pointer prompt** (NOT the full template inline — that stalls the agent; see `docs/setup/file-based-dispatch.md`). The dispatched agent emits a JSON object matching `references/verification-json-schema.md` BEFORE writing code.
+8. **Delegate** — pick the `subagent_type` from `references/repo-to-agent-mapping.md`, then instantiate `references/dispatch-prompt-template.md` with the task ID, type, design-doc path, AC list, touched-files matrix, and test plan (verbatim from the design doc) and **write it to a brief file** `docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md`. Dispatch with the short **pointer prompt** (NOT the full template inline — that stalls the agent; see `docs/setup/file-based-dispatch.md`). The dispatched agent emits a JSON object matching `references/verification-json-schema.md` BEFORE writing code.
 
    ```
    # 1. write the brief
-   Write docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md  <instantiated template>
+   Write docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md  <instantiated template>
    # 2. dispatch the pointer
    Agent(subagent_type="<mapped agent>",
          description="impl for <TASK_ID>",
          prompt="You are the impl engineer for <TASK_ID>. Your brief:
-                 docs/designs/sprint-S<N>/_briefs/<TASK_ID>-impl.md — read it FIRST,
+                 docs/project/sprints/S<N>/designs/_briefs/<TASK_ID>-impl.md — read it FIRST,
                  run your pre-task ritual, report per the output contract in the brief.",
          isolation="worktree")
    ```
@@ -70,7 +70,7 @@ Default mapping (the core engineers are architecture-agnostic — they read `.cl
    If any blocker is detected during Steps 3-7, consult `references/blocked-task-recovery.md` for the recovery path — do NOT silently proceed past a block.
 
 9. **Act on the agent's return status, then run the gates** — the reply leads with `DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT`. `DONE` → gates. `DONE_WITH_CONCERNS` → read concerns, resolve correctness/scope ones first. `NEEDS_CONTEXT` → add the missing context to the brief + re-dispatch (`SendMessage`). `BLOCKED` → assess (more context / more capable model / split / escalate); never retry the same model unchanged. Then invoke `/post-delegation-gate` which runs all 6 gates (incl. 4a spec-compliance → 4b quality) in order. Do NOT mark Done until every gate passes.
-10. **Live mini-retro (per task)** — append a 6-field retro to `docs/project/retros/sprint-S<N>-tasks.md`: what went well / what didn't / lessons / design compliance verdict / TDD verdict / post-review fixes needed.
+10. **Live mini-retro (per task)** — append a 6-field retro to `docs/project/sprints/S<N>/tasks.md`: what went well / what didn't / lessons / design compliance verdict / TDD verdict / post-review fixes needed.
 11. **Update sprint file + design doc + backlog** — row status, design doc status, backlog row marker. Refresh slim indexes via `/index-refresh`.
 12. **Bump the meta submodule pointer** if a nested repo was edited; commit + push.
 

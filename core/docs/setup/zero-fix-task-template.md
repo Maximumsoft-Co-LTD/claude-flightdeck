@@ -7,7 +7,7 @@
 ```markdown
 # Task {TG#}: {Name}
 
-> Sprint: sprint-XX | Design Doc: `docs/designs/sprint-XX/DXXX-{slug}.md` | Status: In Progress
+> Sprint: sprint-XX | Design Doc: `docs/project/sprints/XX/designs/DXXX-{slug}.md` | Status: In Progress
 
 ## 1. Context
 
@@ -15,7 +15,7 @@
 
 ## 2. Design Doc (READ FIRST — FOLLOW STRICTLY)
 
-**Root path:** `{absolute_path}/docs/designs/sprint-XX/DXXX-{slug}.md`
+**Root path:** `{absolute_path}/docs/project/sprints/XX/designs/DXXX-{slug}.md`
 
 This design doc is the specification. Every AC, API contract, business rule, and test case MUST be implemented exactly. Do not skip or reinterpret.
 

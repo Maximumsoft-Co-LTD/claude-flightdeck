@@ -52,7 +52,7 @@ If an AC has no step:
 If a Step has no AC tag:
 
 - The step doesn't earn its place → delete it, OR it's scope-creep
-  → move to `FOLLOWUPS.md`.
+  → move to the backlog's Follow-ups section (`docs/project/backlog.md` `## Follow-ups`).
 - OR the spec is missing an AC the work actually delivers → go back
   and add the AC to the spec first, then re-tag.
 - OR the step is **infrastructure** (a `[infra]`-tagged step that
