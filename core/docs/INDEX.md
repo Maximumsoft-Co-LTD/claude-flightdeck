@@ -70,24 +70,23 @@ Full architecture rationale:
 
 | Skill | When to use | Sister skill | Writes |
 |---|---|---|---|
-| [`/discover`](../.claude/skills/discover/SKILL.md) | Capture a raw feature idea | `/promote` | `docs/project/ideas/D###-slug.md` |
-| [`/promote`](../.claude/skills/promote/SKILL.md) | Graduate discovery → backlog row | `/discover` | `docs/project/backlog.md` row |
-| [`/next-task`](../.claude/skills/next-task/SKILL.md) | Pick + dispatch next sprint task | `/assign` | dispatch + 6-gate review |
-| [`/assign`](../.claude/skills/assign/SKILL.md) | Dispatch a specific task ID | `/next-task` | dispatch + 6-gate review |
-| [`/dispatch-parallel`](../.claude/skills/dispatch-parallel/SKILL.md) | Run 2+ agents in parallel (with Conflict Radar) | `/assign` | N parallel commits |
-| [`/tdd`](../.claude/skills/tdd/SKILL.md) | Write an intent-bearing test; legacy → characterization-first | (none) | test files (red → green) |
-| [`/post-delegation-gate`](../.claude/skills/post-delegation-gate/SKILL.md) | 6-gate review on a returned agent | (none) | review log on PR |
-| [`/design-review`](../.claude/skills/design-review/SKILL.md) | UI fidelity gate after FE sprint | (none) | `docs/project/reviews/sprint-S<N>-design-review.md` |
-| [`/security-review`](../.claude/skills/security-review/SKILL.md) | Phase-7 security pass on the diff (+ slopsquatting) | (none) | findings + PASS/BLOCK verdict |
-| [`/progress`](../.claude/skills/progress/SKILL.md) | Mid-sprint dashboard (read-only) | (none) | (status print) |
+| [`/discover`](../.claude/skills/idea/SKILL.md) | Capture a raw feature idea | `/promote` | `docs/project/ideas/D###-slug.md` |
+| [`/promote`](../.claude/skills/idea/SKILL.md) | Graduate discovery → backlog row | `/discover` | `docs/project/backlog.md` row |
+| [`/next-task`](../.claude/skills/work/SKILL.md) | Pick + dispatch next sprint task | `/assign` | dispatch + 6-gate review |
+| [`/assign`](../.claude/skills/work/SKILL.md) | Dispatch a specific task ID | `/next-task` | dispatch + 6-gate review |
+| [`/dispatch-parallel`](../.claude/skills/work/SKILL.md) | Run 2+ agents in parallel (with Conflict Radar) | `/assign` | N parallel commits |
+| [`/tdd`](./playbooks/tdd.md) | Write an intent-bearing test; legacy → characterization-first | (none) | test files (red → green) |
+| [`/post-delegation-gate`](../.claude/skills/review/SKILL.md) | 6-gate review on a returned agent | (none) | review log on PR |
+| [`/design-review`](../.claude/skills/review/SKILL.md) | UI fidelity gate after FE sprint | (none) | `docs/project/reviews/sprint-S<N>-design-review.md` |
+| [`/security-review`](../.claude/skills/review/SKILL.md) | Phase-7 security pass on the diff (+ slopsquatting) | (none) | findings + PASS/BLOCK verdict |
+| [`/progress`](../.claude/skills/status/SKILL.md) | Mid-sprint dashboard (read-only) | (none) | (status print) |
 | [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit | `/ratify-rules` | `docs/project/sprints/S<N>/retro.md` |
-| [`/ratify-rules`](../.claude/skills/ratify-rules/SKILL.md) | Land retro `## Candidate A-rules` into `brain-hot.md` (operator-gated) | `/retro` | `brain-hot.md` A011+ · trigger-map row |
-| [`/archive`](../.claude/skills/archive/SKILL.md) | Move old sprints to `historical/` | (none) | moves under `docs/project/sprints/historical/` |
+| [`/ratify-rules`](../.claude/skills/retro/SKILL.md) | Land retro `## Candidate A-rules` into `brain-hot.md` (operator-gated) | `/retro` | `brain-hot.md` A011+ · trigger-map row |
+| [`/archive`](../.claude/skills/retro/SKILL.md) | Move old sprints to `historical/` | (none) | moves under `docs/project/sprints/historical/` |
 | [`/document`](../.claude/skills/document/SKILL.md) | Sync API / contract docs from code | (none) | API doc files |
-| [`/index-refresh`](../.claude/skills/index-refresh/SKILL.md) | Refresh slim INDEX files | (none) | INDEX files |
-| [`/changelog`](../.claude/skills/changelog/SKILL.md) | Build CHANGELOG.md from git history | (none) | `CHANGELOG.md` |
-| [`/deploy-preflight`](../.claude/skills/deploy-preflight/SKILL.md) | Read-only deploy-readiness scan | `/deploy` | (report) |
-| [`/deploy`](../.claude/skills/deploy/SKILL.md) | Drive a deployment through 5 phases | `/deploy-preflight` | deploy artifacts |
+| [`/changelog`](../.claude/skills/ship/SKILL.md) | Build CHANGELOG.md from git history | (none) | `CHANGELOG.md` |
+| [`/deploy-preflight`](../.claude/skills/ship/SKILL.md) | Read-only deploy-readiness scan | `/deploy` | (report) |
+| [`/deploy`](../.claude/skills/ship/SKILL.md) | Drive a deployment through 5 phases | `/deploy-preflight` | deploy artifacts |
 | [`/recover`](../.claude/skills/recover/SKILL.md) | Undo a partial dispatch / orphan worktree | (none) | (restored state) |
 
 ## Agents cheat-sheet (core)

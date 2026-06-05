@@ -127,6 +127,6 @@ jq -c 'select((.files_touched // [] | length) > 1) | .files_touched' \
 
 ## See also
 
-- `core/.claude/skills/audit-query/SKILL.md` — the opinionated digest
+- `core/.claude/skills/status/SKILL.md` — the opinionated digest
 - `core/docs/setup/audit-trail.md` — schema + retention + SIEM ingestion
 - `core/.claude/hooks/audit.sh` — the hook that writes these JSONL files

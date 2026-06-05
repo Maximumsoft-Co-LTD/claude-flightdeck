@@ -296,7 +296,7 @@ git -C <correct-repo> push -u origin <branch>
   this playbook is its longform companion
 - `.claude/rules/git-workflow.md` — the 7 reflex rules; rule 7 is
   "reflog before destroying"
-- `.claude/skills/dispatch-parallel/SKILL.md` — Scenario 1 starts
+- `.claude/skills/work/SKILL.md` — Scenario 1 starts
   here
 - `docs/playbooks/parallel-conflict-prevention.md` — how to prevent
   scenario 1 next time

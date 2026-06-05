@@ -132,4 +132,4 @@ upstream.
 - [`CONTRIBUTING.md`](../../../../CONTRIBUTING.md) — how upstream triages incoming feedback
 - [`.github/ISSUE_TEMPLATE/`](../../../../.github/ISSUE_TEMPLATE/) — the 5 issue forms this skill targets
 - [`.claude/hooks/secret-redact.sh`](../../hooks/secret-redact.sh) — source of the redaction regex reused at step 5
-- [`audit-query`](../audit-query/SKILL.md) — the data-sharing-via-discussions pattern (share aggregate audit digests upstream the same opt-in, preview-first way)
+- [`audit-query`](../status/SKILL.md) — the data-sharing-via-discussions pattern (share aggregate audit digests upstream the same opt-in, preview-first way)

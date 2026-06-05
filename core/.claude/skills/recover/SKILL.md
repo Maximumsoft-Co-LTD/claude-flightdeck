@@ -235,7 +235,7 @@ process can improve, not just the immediate state.
   walkthroughs + decision tree
 - `.claude/rules/git-workflow.md` rule 7 — "Recover with `git reflog`
   before destroying"
-- `.claude/skills/dispatch-parallel/SKILL.md` — what to do when
+- `.claude/skills/work/SKILL.md` — what to do when
   partial-dispatch happens
 - `docs/playbooks/parallel-conflict-prevention.md` — preventing the
   failure in the first place

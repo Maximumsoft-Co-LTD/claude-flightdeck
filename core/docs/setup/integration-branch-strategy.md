@@ -172,7 +172,7 @@ How to confirm this strategy is working:
 
 ## Cross-references
 
-- `dispatch-parallel` skill (`.claude/skills/dispatch-parallel/SKILL.md`)
+- `dispatch-parallel` skill (`.claude/skills/work/SKILL.md`)
 - `superpowers:using-git-worktrees`
 - `superpowers:finishing-a-development-branch`
 - `deployment-workflow.md` — overall release flow

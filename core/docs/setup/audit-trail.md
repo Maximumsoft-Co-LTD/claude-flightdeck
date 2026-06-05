@@ -96,7 +96,7 @@ deliberate choice per project.
 
 ## Query recipes (`jq`)
 
-See also: [`/audit-query` skill](../../.claude/skills/audit-query/SKILL.md) — opinionated digest (by-agent counts + p50 / p95, slowest dispatches, file hotspots, recurring task IDs). Use it for weekly / sprint-end pulls; the raw `jq` recipes below are for ad-hoc work the digest doesn't cover.
+See also: [`/audit-query` skill](../../.claude/skills/status/SKILL.md) — opinionated digest (by-agent counts + p50 / p95, slowest dispatches, file hotspots, recurring task IDs). Use it for weekly / sprint-end pulls; the raw `jq` recipes below are for ad-hoc work the digest doesn't cover.
 
 ### All dispatches by a specific subagent
 

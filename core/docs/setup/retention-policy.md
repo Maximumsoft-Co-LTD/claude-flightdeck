@@ -86,7 +86,7 @@ After 3 sprints close, move older sprint files to
 `docs/project/sprints/historical/`:
 
 ```bash
-/archive   # the canonical skill — see core/.claude/skills/archive/SKILL.md
+/archive   # the canonical skill — see core/.claude/skills/retro/SKILL.md
 ```
 
 Archival is purely organizational — **never delete** sprint files. The
@@ -140,7 +140,7 @@ must persist. Coordinate with legal before scrubbing audit lines.
   query recipes (this doc is the retention slice extracted from there)
 - [`compliance-mapping.md`](./compliance-mapping.md) — SOC2 / HIPAA /
   ISO / GDPR / FedRAMP crosswalk; retention rows there link back here
-- [`../../.claude/skills/archive/SKILL.md`](../../.claude/skills/archive/SKILL.md)
+- [`../../.claude/skills/retro/SKILL.md`](../../.claude/skills/retro/SKILL.md)
   — the canonical `/archive` skill for sprint rotation
-- [`../../.claude/skills/audit-query/SKILL.md`](../../.claude/skills/audit-query/SKILL.md)
+- [`../../.claude/skills/status/SKILL.md`](../../.claude/skills/status/SKILL.md)
   — `/audit-query` skill for digesting `audit.jsonl` before rotation

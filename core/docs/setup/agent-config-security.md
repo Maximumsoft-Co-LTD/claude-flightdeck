@@ -43,7 +43,7 @@ actor. Workflow discipline is the second layer.
    fire the Phase 7 security review** (see
    [`../../.claude/rules/phase-matrix.md`](../../.claude/rules/phase-matrix.md)).
    No agent-config change merges without it. Run it via
-   [`/security-review`](../../.claude/skills/security-review/SKILL.md) — the
+   [`/security-review`](../../.claude/skills/review/SKILL.md) — the
    agent-config checklist below is one of its dimensions.
 2. **Never commit these keys from project config:**
    - `ANTHROPIC_BASE_URL` (or any `*_BASE_URL` redirect of the model API)

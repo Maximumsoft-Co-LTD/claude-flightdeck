@@ -305,4 +305,4 @@ Wait for all four to return before proceeding to Stage 4.
 - `core/.claude/skills/onboard/scripts/mine-git-history.sh` — input for Agent A
 - `core/.claude/skills/onboard/scripts/extract-pr-comments.sh` — input for Agent B
 - `references/draft-templates.md` — how Stage 4 maps these outputs into final docs
-- `core/.claude/skills/dispatch-parallel/SKILL.md` — parallel dispatch mechanic
+- `core/.claude/skills/work/SKILL.md` — parallel dispatch mechanic

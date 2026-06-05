@@ -134,7 +134,7 @@ Phase 7 runs when the diff touches any of:
   squatted name (~19.7% of LLM-suggested packages don't exist → slopsquatting is
   install-time RCE). A package you can't confirm exists is a STOP.
 
-**Invoke [`/security-review`](../skills/security-review/SKILL.md)** to run Phase 7
+**Invoke [`/security-review`](../skills/review/SKILL.md)** to run Phase 7
 — a diff-aware, semantic pass across the dimensions above with false-positive
 filtering so it stays signal not noise (it dispatches
 `pr-review-toolkit:silent-failure-hunter` + a security-focused `senior-tech-lead`
@@ -197,7 +197,7 @@ Dispatch `/design-review` for the 3-lens visual gate. Skip otherwise.
   matrix specializes per-type
 - `docs/playbooks/post-delegation-review.md` — the 6-gate playbook
   (gates 1-6 land in phases 6 + 8)
-- `core/.claude/skills/next-task/SKILL.md` — looks up this matrix in
+- `core/.claude/skills/work/SKILL.md` — looks up this matrix in
   Step 2 of task pickup
 - `core/.claude/agents/orchestrator.md` — routing table cross-refs
   this matrix

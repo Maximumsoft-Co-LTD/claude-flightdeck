@@ -61,7 +61,7 @@ installer with `--force` after backing up, or hand-fix.
 
 **You type**: `/discover the operator dashboard needs a status filter`
 
-**What happens**: the [`/discover`](../.claude/skills/discover/SKILL.md)
+**What happens**: the [`/discover`](../.claude/skills/idea/SKILL.md)
 skill walks you through a 3-stage interview (Core → Scope →
 Context) sized to the idea's complexity. It allocates `D###`, scans
 for duplicates against the backlog and other discovery items, and
@@ -82,7 +82,7 @@ writes the detail file.
 
 **You type**: `/promote D007`
 
-**What happens**: the [`/promote`](../.claude/skills/promote/SKILL.md)
+**What happens**: the [`/promote`](../.claude/skills/idea/SKILL.md)
 skill runs the Definition-of-Ready gate (≥1 user story, ≥3 AC,
 dependencies declared, no blocking questions, complexity estimate, no
 duplicate, affected components, cross-cutting concerns). If it
@@ -115,7 +115,7 @@ Once the sprint file exists, mark it the active sprint by updating
 
 **You type**: `/next-task`
 
-**What happens**: the [`/next-task`](../.claude/skills/next-task/SKILL.md)
+**What happens**: the [`/next-task`](../.claude/skills/work/SKILL.md)
 skill reads the active sprint board (`docs/project/sprints/S<N>/tasks.md`), applies the Phase
 Matrix (type × phase lookup), finds the first un-started, un-blocked
 row, and confirms with you. It then either runs the design-doc gate
@@ -199,7 +199,7 @@ git-workflow ([`../.claude/rules/git-workflow.md`](../.claude/rules/git-workflow
 **You type**: `/post-delegation-gate`
 
 **What happens**: the
-[`/post-delegation-gate`](../.claude/skills/post-delegation-gate/SKILL.md)
+[`/post-delegation-gate`](../.claude/skills/review/SKILL.md)
 skill walks the 6-gate playbook
 ([`./playbooks/post-delegation-review.md`](./playbooks/post-delegation-review.md)):
 
@@ -263,7 +263,7 @@ spent vs estimate / lessons / followups / done state).
 **You type**: `/progress`
 
 **What happens**: the
-[`/progress`](../.claude/skills/progress/SKILL.md) skill prints a
+[`/progress`](../.claude/skills/status/SKILL.md) skill prints a
 read-only dashboard: tasks done / in-progress / blocked, completion
 rate, per-component breakdown, blocking links. It does NOT write.
 

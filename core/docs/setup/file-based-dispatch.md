@@ -53,7 +53,7 @@ READS]` list, the verification-JSON requirement, the task text, AC
 (verbatim), touched-files matrix, test plan, cross-cutting flags, the
 after-completion steps, and the output contract. For implementation
 dispatch this is exactly the content of
-[`../../.claude/skills/assign/references/dispatch-prompt-template.md`](../../.claude/skills/assign/references/dispatch-prompt-template.md)
+[`../../.claude/skills/work/references/dispatch-prompt-template.md`](../../.claude/skills/work/references/dispatch-prompt-template.md)
 — but written to the brief file instead of pasted into `prompt`.
 
 ### 3. The dispatch prompt is short and stable
@@ -126,5 +126,5 @@ matrix, write a brief file.** Anything that would make you scroll the
 
 - [`../../.claude/rules/agent-pre-task-ritual.md`](../../.claude/rules/agent-pre-task-ritual.md) — Step 0 (read your brief)
 - [`../../.claude/rules/sub-agent-workflow.md`](../../.claude/rules/sub-agent-workflow.md) — dispatch patterns
-- [`../../.claude/skills/assign/references/dispatch-prompt-template.md`](../../.claude/skills/assign/references/dispatch-prompt-template.md) — the impl brief content
+- [`../../.claude/skills/work/references/dispatch-prompt-template.md`](../../.claude/skills/work/references/dispatch-prompt-template.md) — the impl brief content
 - [`lesson-trigger-map.md`](lesson-trigger-map.md) — what rules the brief must cite

@@ -8,7 +8,7 @@ user_invocable: true
 
 > **Announce on start:** open your reply with "Using /tdd to write an intent-bearing test (mode: greenfield | characterization)." — naming the mode signals which path you took.
 
-The operational front-end to [`docs/setup/test-discipline.md`](../../../docs/setup/test-discipline.md). This is the lean checklist; that doc is the depth.
+The operational front-end to [`docs/setup/test-discipline.md`](../setup/test-discipline.md). This is the lean checklist; that doc is the depth.
 
 ## Why this exists (the lesson, baked in)
 
@@ -17,7 +17,7 @@ The operational front-end to [`docs/setup/test-discipline.md`](../../../docs/set
 
 ## Token budget (MANDATORY)
 
-- This skill is the checklist. The deep material — full theater anti-pattern table, approval / golden-master mechanics, seams, fitness functions, mutation testing — lives in [`docs/setup/test-discipline.md`](../../../docs/setup/test-discipline.md). **Read it on demand**, only when you hit that specific case. Do not inline it.
+- This skill is the checklist. The deep material — full theater anti-pattern table, approval / golden-master mechanics, seams, fitness functions, mutation testing — lives in [`docs/setup/test-discipline.md`](../setup/test-discipline.md). **Read it on demand**, only when you hit that specific case. Do not inline it.
 - Read only the **change-site file + one sibling test** (to learn the project's assertion style). Do not read the whole suite.
 - **Ships no scripts** — this is discipline, not automation. (Mechanical enforcement is opt-in only; see Step 3.)
 
@@ -52,7 +52,7 @@ State the mode in your announce line.
 
 ## Step 2 — Theater self-check (run before you call the test done)
 
-Quick reject list — the full table + the *why* is in [`test-discipline.md`](../../../docs/setup/test-discipline.md):
+Quick reject list — the full table + the *why* is in [`test-discipline.md`](../setup/test-discipline.md):
 
 - [ ] **Not** asserting your own mock was called with no real outcome checked.
 - [ ] **Not** a tautology (`expect(f(x)).toBe(f(x))`, or asserting a literal the code just returned).
@@ -79,8 +79,8 @@ Quick reject list — the full table + the *why* is in [`test-discipline.md`](..
 
 ## Related
 
-- [`docs/setup/test-discipline.md`](../../../docs/setup/test-discipline.md) — the canonical depth (anti-pattern table, characterization recipe, mutation, the opt-in hook). Read on demand.
-- [`.claude/rules/programming-fundamentals.md`](../../rules/programming-fundamentals.md) — the always-loaded TDD pre-flight summary.
-- [`.claude/rules/phase-matrix.md`](../../rules/phase-matrix.md) — phase 4 (test-first); legacy `refactor`/`fix` → characterization.
-- [`docs/playbooks/post-delegation-review.md`](../../../docs/playbooks/post-delegation-review.md) — Gate 4b catches theater on touched tests.
+- [`docs/setup/test-discipline.md`](../setup/test-discipline.md) — the canonical depth (anti-pattern table, characterization recipe, mutation, the opt-in hook). Read on demand.
+- [`.claude/rules/programming-fundamentals.md`](../../.claude/rules/programming-fundamentals.md) — the always-loaded TDD pre-flight summary.
+- [`.claude/rules/phase-matrix.md`](../../.claude/rules/phase-matrix.md) — phase 4 (test-first); legacy `refactor`/`fix` → characterization.
+- [`docs/playbooks/post-delegation-review.md`](../playbooks/post-delegation-review.md) — Gate 4b catches theater on touched tests.
 - `superpowers:test-driven-development` / `superpowers:systematic-debugging` — the red→green and RCA mechanics this skill assumes.

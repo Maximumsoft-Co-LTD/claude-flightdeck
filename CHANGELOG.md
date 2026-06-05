@@ -63,6 +63,33 @@
   - **Why / how it's better:** one board per sprint = no cross-file sync, a
     single source of truth, and a folder you can read top-to-bottom.
 
+- **Skills consolidated 22 → 6 verbs + 4 niche** (user-invocable command surface
+  cut by ~60%). Each old skill becomes a mode/flag of a verb:
+  - **`/idea`** ← discover + promote · **`/work`** ← next-task + assign +
+    dispatch-parallel + post-delegation-gate + tdd + design-first (now
+    **auto-fans-out**: it runs the 4-layer Conflict Radar itself and dispatches a
+    disjoint frontier in parallel, or auto-serializes — no separate parallel
+    command) · **`/review`** ← design-review + security-review + the 6-gate
+    (`/review gates`) · **`/ship`** ← deploy + deploy-preflight + changelog ·
+    **`/retro`** ← retro + ratify-rules + archive · **`/status`** ← progress +
+    audit-query.
+  - **Niche kept:** `/onboard`, `/recover`, `/document`, `/flightdeck-feedback`.
+  - `/tdd` and `/post-delegation-gate` are no longer commands — the TDD recipe
+    moves to `docs/playbooks/tdd.md` and the 6-gate is the existing
+    `post-delegation-review.md` playbook, both invoked inside `/work` (and
+    re-runnable via `/review gates`). `/index-refresh` is removed (the board is
+    self-contained; slim-index auto-refresh is dropped this pass).
+  - All cross-references + skill links rewritten; the repo validator
+    (`scripts/validate-skills.sh`) is green.
+  - **Why / how it's better:** ~9 commands to learn instead of 22; one obvious
+    verb per intent; the auto-fanout puts the parallel/serial decision (and the
+    safety gate) inside `/work` instead of on the user. Grounded in spec-kit /
+    Kiro command-surface research + Anthropic/Cognition fan-out research (see
+    `docs/research/`).
+  - **Note:** `/flightdeck-feedback` was kept standalone rather than folded into
+    `/onboard` (onboard is already over the 250-line budget — folding would
+    worsen a known issue; splitting onboard is a separate deferred pass).
+
 ### Added
 
 - **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free
