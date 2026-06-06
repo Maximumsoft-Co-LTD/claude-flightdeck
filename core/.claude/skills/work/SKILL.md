@@ -38,6 +38,13 @@ and the mandatory 6-gate review
 
 ## Step A — Classify the work
 
+0. **Ensure a sprint board exists.** If `docs/project/sprints/` has no active
+   sprint folder (or its `tasks.md` is missing), scaffold one before picking a
+   task: `mkdir -p docs/project/sprints/S<N>/designs/_briefs`, copy
+   `docs/project/_templates/tasks.md` → `sprints/S<N>/tasks.md`, fill the Glance
+   header, and pull in the backlog rows scheduled for this sprint
+   (`Grep docs/project/backlog.md` for `scheduled S<N>`). This is how a sprint
+   starts — there is no separate "new sprint" command.
 1. **Identify the task(s).** No arg → scan `docs/project/sprints/S<N>/tasks.md`
    for the unblocked frontier (lowest priority-number first, dependencies met).
    Task ID(s) given → take those rows.

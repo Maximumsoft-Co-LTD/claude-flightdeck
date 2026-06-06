@@ -104,15 +104,15 @@ Canonical skills by stage:
 | Stage | Skill | Artifact |
 |---|---|---|
 | Discovery | `/idea` | `docs/project/ideas/D###-slug.md` |
-| Promote backlog → sprint | `/idea promote` | `docs/project/sprints/S<N>/tasks.md` row |
-| Pick next task | `/work` | (selects from sprint file) |
+| Promote idea → backlog | `/idea promote` | `docs/project/backlog.md` row |
+| Pick next task (scaffolds the sprint board if absent) | `/work` | `docs/project/sprints/S<N>/tasks.md` |
 | Author D-doc | `design-doc-writer` agent | `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` |
 | Single foreground dispatch | `Agent()` directly | code + tests |
 | Parallel fanout | `/work` (auto-fans-out) | N parallel commits in worktrees |
 | 6-gate post-dispatch review | `/review gates` | review log |
-| UI design fidelity gate | `/review design` | `docs/project/reviews/sprint-S<N>-design-review.md` |
+| UI design fidelity gate | `/review design` | `docs/project/sprints/S<N>/review-design-<slug>.md` |
 | Mid-sprint progress | `/status` | (status print) |
-| Live per-task retro | append manually or `/retro --task` | `docs/project/sprints/S<N>/tasks.md` |
+| Live per-task retro (A009) | appended by `/work` after each task | `docs/project/sprints/S<N>/tasks.md` |
 | Sprint close + audit | `/retro` | `docs/project/sprints/S<N>/retro.md` |
 | Archive old sprint files | `/retro archive` | move to `sprints/historical/` |
 

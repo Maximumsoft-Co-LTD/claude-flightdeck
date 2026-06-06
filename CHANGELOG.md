@@ -103,6 +103,18 @@
   and the INDEX scoreboard row — per the repo's "research must improve the
   template, not just accumulate" rule.
 
+### Fixed
+
+- **Sprint-scaffolding gap** — `/work` now scaffolds the sprint board
+  (`sprints/S<N>/tasks.md` from `_templates/`, pulling in the rows scheduled for
+  the sprint) when no active board exists, instead of assuming one is already
+  there. Closes a day-1 hole (promote → `/work` with no board).
+- **Stale `CLAUDE.md.tmpl` workflow rows** — promote now correctly shows
+  `backlog.md` as its artifact (not a sprint row); the `/review design` output
+  path matches what the skill writes (`sprints/S<N>/review-design-<slug>.md`);
+  and the live per-task retro row reflects that `/work` appends it (the
+  non-existent `/retro --task` mode reference is gone).
+
 ### Added
 
 - **Usage & workflow site (`site/`) + GitHub Pages** — a dependency-free
