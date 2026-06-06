@@ -61,7 +61,7 @@ Confirm the required plugins are installed (`pr-review-toolkit` required,
 - `frameworks: [...]` → tells the code-style sampler which UI files to sample. No
   architecture is imposed — the core engineers conform to whatever the code does.
 
-## Stage 1 — Architecture scan (1 Explore agent)
+## Stage 1 — Architecture scan (1 Explore agent · or the workflow for large repos)
 
 Dispatch ONE read-only Explore agent to produce the **architecture map**. Brief it
 to cover: top-level architecture (directory roles, languages, frameworks); module
@@ -70,6 +70,16 @@ integrations (APIs, DBs, queues, SDKs); test patterns + how coverage runs; the
 build / CI commands that ACTUALLY run; and any unwritten convention it spots.
 Write `docs/setup/codebase-orientation.md` (~600-800 words). Confirm it exists and
 is non-trivial (>30 lines) before Stage 2.
+
+> **Large / multi-area repo** (Stage 0 topology shows many services / areas, or one
+> agent would blow its context): run the shipped **`fd-understand-codebase`**
+> workflow instead — `Workflow({ name: "fd-understand-codebase" })` fans out one
+> read-only Explore per area in parallel and returns one synthesized map
+> *off-context* (it writes nothing). Persist its result to
+> `docs/setup/codebase-orientation.md`, then continue to Stage 2. This is the
+> `sub-agent-workflow.md` §1.6 "fan out READ-heavy / BREADTH work" path — the
+> orientation scan is exactly that shape. Contract:
+> [`../../workflows/README.md`](../../workflows/README.md).
 
 ## Stage 2 — Conventions mining (parallel Explore agents)
 

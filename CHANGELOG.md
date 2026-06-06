@@ -58,6 +58,15 @@
   - **Why / how it's better:** the rules no longer contradict ultracode's default,
     and the safety invariants are stated where an agent will actually read them.
 
+- **`/onboard` Stage 1 can run the `fd-understand-codebase` workflow** for large /
+  multi-area repos — fans out one read-only Explore per area in parallel and
+  synthesizes one architecture map off-context, instead of a single agent that
+  would blow its context. The §1.6 "fan out READ-heavy / BREADTH work" path; the
+  first non-review consumer of the workflow library.
+  - **Why / how it's better:** onboarding a big monorepo no longer bottlenecks on
+    one agent's context window — it parallelizes the read-heavy scan while keeping
+    the output a single coherent map.
+
 ### Removed
 
 - **`doctor.sh` post-install health-check script**

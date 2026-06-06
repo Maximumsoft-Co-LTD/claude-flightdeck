@@ -26,6 +26,9 @@ commits:
   Workflow-vs-N×Agent decision, `+500k` budget directives, dynamic `/loop` caveat.
   phase-matrix A004 cross-ref.
 - **C5** this loop close + CHANGELOG.
+- **D** wire `/onboard` Stage 1 to the `fd-understand-codebase` workflow for
+  large / multi-area repos (the §1.6 fan-out-reads path) — the first non-review
+  consumer of the workflow library.
 
 ## Why (link to synthesis)
 
@@ -56,7 +59,6 @@ ScheduleWakeup tool contracts (primary) + [[autonomous-fanout-orchestration]].
 
 ## Deferred (next phase)
 
-- **D** wire `/onboard` scan to `fd-understand-codebase`.
 - **E** `/work` parallel legs → `pipeline` (worktree) + orchestrator runs the 6-gate.
 - **F** `/status watch` / `/ship watch` via dynamic `/loop`.
 - `fd-audit-security.js` (Phase-7 loop-until-dry); validator extension to lint
