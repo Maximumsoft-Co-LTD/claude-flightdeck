@@ -1,6 +1,6 @@
 ---
 name: review
-description: "/review — the unified review gate. Use when the user says '/review', '/review design', '/review security', '/review gates', 'review the UI', 'check design fidelity', 'verify the redesign', 'security review', 'is this safe to merge', 'check for vulnerabilities', 'review the diff', 'review the agent's work', 'run the gates', or after any coding subagent reports DONE. Modes: (1) /review auto-selects the lens(es) from the diff — design (Phase 9 triggers), security (Phase 7 triggers), or quality; (2) /review design runs the 3-lens visual-fidelity gate; (3) /review security runs the diff-aware semantic security pass with false-positive filtering + slopsquatting check; (4) /review gates <TASK_ID> re-runs the full 6-gate post-delegation review."
+description: "/review — the unified review gate. Use when the user says '/review', '/review design', '/review security', '/review gates', '/review ultra', 'review the UI', 'check design fidelity', 'verify the redesign', 'security review', 'is this safe to merge', 'check for vulnerabilities', 'review the diff', 'review the agent's work', 'run the gates', 'do a thorough/deep review', 'audit the whole diff', 'ultracode review', or after any coding subagent reports DONE. Modes: (1) /review auto-selects the lens(es) from the diff — design (Phase 9 triggers), security (Phase 7 triggers), or quality; (2) /review design runs the 3-lens visual-fidelity gate; (3) /review security runs the diff-aware semantic security pass with false-positive filtering + slopsquatting check; (4) /review gates <TASK_ID> re-runs the full 6-gate post-delegation review; (5) /review ultra runs a Workflow-backed adversarial review across dimensions for a large diff — augments, never replaces, the 6-gate."
 user_invocable: true
 ---
 
@@ -18,10 +18,11 @@ user_invocable: true
 ## Mode dispatch
 
 ```
-/review              → AUTO-SELECT (§1)
-/review design       → 3-lens visual-fidelity gate (§2)
-/review security     → semantic security pass (§3)
-/review gates <ID>   → 6-gate post-delegation review (§4)
+/review               → AUTO-SELECT (§1)
+/review design        → 3-lens visual-fidelity gate (§2)
+/review security      → semantic security pass (§3)
+/review gates <ID>    → 6-gate post-delegation review (§4)
+/review ultra [<base>]→ Workflow-backed adversarial review, large diffs (§5)
 ```
 
 ---
@@ -169,6 +170,35 @@ UI changed and Gate 6 passed → also run §2 before promoting.
 
 ---
 
+## §5 — ULTRA (`/review ultra [<base>]`)
+
+Workflow-backed, adversarially-verified review for a **large / multi-file diff**
+or a pre-merge audit. Runs the shipped `fd-review-changes` workflow — fan out one
+read-only finder per dimension (bugs · security · types · tests · perf · boundary),
+then refute each finding with 3 perspective-diverse skeptics; only findings a
+majority **fails** to refute are reported.
+
+> **Why this exists:** at-scale review earns parallel breadth + adversarial
+> verification — fewer plausible-but-wrong findings survive. For a normal
+> single-task diff, `/review gates` (§4) is cheaper and stays the default.
+
+> **AUGMENTS, does NOT replace, the 6-gate.** The workflow returns a *findings
+> list*, never a merge verdict. You (orchestrator) still re-run build/test (Gate 2,
+> §4) and own the merge decision. Never let `/review ultra` stand in for §4.
+
+1. **Scope the base** — the `<base>` arg, else the integration base (`<base>...HEAD`).
+2. **Run the workflow** — `Workflow({ name: "fd-review-changes", args: { base } })`
+   (pass `dimensions` to narrow). It dispatches the finders + verifiers off-context;
+   contract + guardrails: [`../../workflows/README.md`](../../workflows/README.md).
+3. **Report** the CONFIRMED findings (severity · file:line · evidence · fix). Log
+   P1/P2/P3 to `docs/project/backlog.md` `## Follow-ups` and write the summary to
+   `docs/project/sprints/S<N>/review-ultra-<slug>.md`.
+4. **Close via §4** for the actual merge decision (re-run Gate 2 build/test).
+
+**ultracode:** when ultracode is on, `/review` (§1) prefers ultra for a wide diff.
+
+---
+
 ## What to NEVER do
 
 - Report a finding with no reachable, attacker-controlled path (security).
@@ -177,3 +207,5 @@ UI changed and Gate 6 passed → also run §2 before promoting.
 - Add/approve a dependency you can't confirm exists on the official registry.
 - Treat committed agent-config as ordinary config — it is executable.
 - Run all lenses when auto-select found no triggers — say so and stop.
+- Let `/review ultra` (§5) substitute for the 6-gate merge decision — it returns
+  findings, never a merge verdict; always close via §4.

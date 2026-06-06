@@ -76,6 +76,7 @@ Full architecture rationale:
 | [`/review gates`](../.claude/skills/review/SKILL.md) | Run the 6-gate post-delegation review on a returned agent (Inspect → Build+Test → Boundary → Spec-compliance → Quality → Wiring → Smoke) | review log on PR |
 | [`/review design`](../.claude/skills/review/SKILL.md) | UI fidelity gate after FE sprint — 3-lens visual fidelity check (L182) | `docs/project/reviews/sprint-S<N>-design-review.md` |
 | [`/review security`](../.claude/skills/review/SKILL.md) | Phase-7 security pass on the diff — diff-aware semantic pass + slopsquatting check | findings + PASS/BLOCK verdict |
+| [`/review ultra`](../.claude/skills/review/SKILL.md) | Large-diff / pre-merge audit — Workflow-backed adversarial review (dimensions → find → 3-vote refute). **Augments, never replaces, the 6-gate** | `docs/project/sprints/S<N>/review-ultra-<slug>.md` + Follow-ups |
 | [`/status`](../.claude/skills/status/SKILL.md) | Mid-sprint read-only dashboard (`/status`); deep audit query (`/status audit`) — never writes | (status print / audit digest) |
 | [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit (`/retro`); land Candidate A-rules into brain-hot.md (`/retro ratify`); move old sprints to historical/ (`/retro archive`) | `docs/project/sprints/S<N>/retro.md` · `brain-hot.md` A011+ · archived sprints |
 | [`/ship`](../.claude/skills/ship/SKILL.md) | Drive a deployment through 5 phases (`/ship`); read-only deploy-readiness scan first (`/ship --check`); build CHANGELOG.md from git history (`/ship changelog`) | deploy artifacts · `CHANGELOG.md` |
@@ -124,6 +125,11 @@ Full architecture rationale:
 | [`parallel-conflict-prevention`](./playbooks/parallel-conflict-prevention.md) | Before `/work` (parallel fanout) | The 4-layer Conflict Radar — path / worktree / contract / dep graph |
 | [`contract-first`](./playbooks/contract-first.md) | Any cross-service interface change | Contract commit first, code follows |
 | [`failure-recovery`](./playbooks/failure-recovery.md) | After a partial dispatch / mid-merge abort | Recovery decision tree; what `/recover` walks you through |
+
+> **Dynamic workflows** (at-scale fan-out via the `Workflow` tool) live in
+> [`.claude/workflows/`](../.claude/workflows/README.md) — `fd-review-changes`
+> powers `/review ultra`. Reach for them on READ/VERIFY/BREADTH work only; writes
+> stay single-threaded and the 6-gate stays orchestrator-verified.
 
 ## Setup docs (the "how it works" surface)
 
