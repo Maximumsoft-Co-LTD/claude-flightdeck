@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout (full history for diff)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -64,21 +64,21 @@ jobs:
       # own Makefile target if it exists.
       - name: Set up Go
         if: contains(steps.detect.outputs.stack, 'go')
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
           cache: true
 
       - name: Set up Node
         if: contains(steps.detect.outputs.stack, 'node')
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: package.json
           cache: npm
 
       - name: Set up Python
         if: contains(steps.detect.outputs.stack, 'python')
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
           cache: pip

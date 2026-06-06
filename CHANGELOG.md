@@ -11,6 +11,8 @@
 
 ## Unreleased
 
+## v0.13.0 — 2026-06-06
+
 ### Added
 
 - **Coding-conduct front door** — a new always-read rule
@@ -43,6 +45,18 @@
     slash-commands. Bringing the hand-authored pages in line with the renamed
     skills keeps the public front door truthful (the data-driven agents/skills/
     changelog pages already auto-derive from source, so they were already current).
+
+- **CI actions bumped to Node 24 majors** — every `actions/*` step across the
+  template's own CI (`.github/workflows/pages.yml`, `validate.yml`) and the CI
+  shipped to targets (`core/.github/workflows/post-delegation-gate.yml`,
+  `ai-workflow-validation.yml`) moves to the latest major that runs on Node 24:
+  `checkout@v6`, `setup-python@v6`, `setup-node@v6`, `setup-go@v6`,
+  `configure-pages@v6`, `upload-pages-artifact@v5`, `deploy-pages@v5`.
+  - **Why / how it's better:** GitHub forces Node 24 on all JS actions from
+    2026-06-16 and removes Node 20 on 2026-09-16; the prior pins (v3/v4/v5)
+    emitted deprecation warnings and would break after the cutoff. Bumping now
+    keeps both our Pages deploy and every installed project's PR-gate CI green —
+    each pinned to a release verified at `runs.using: node24`.
 
 ## v0.12.0 — 2026-06-06
 
