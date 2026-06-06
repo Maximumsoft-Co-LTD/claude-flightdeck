@@ -17,7 +17,7 @@ advances. `Sources` = count of notes in `sources/` tagged with the track.
 
 | Track | Inbox | Sources | Synthesis | Apply | Last update |
 |---|---:|---:|:---:|:---:|---|
-| `claude-code-core` | 88 | 10 | ✅ high ×6 | **shipped ×6** | 2026-06-05 |
+| `claude-code-core` | 88 | 11 | ✅ high ×7 | **shipped ×7** | 2026-06-06 |
 | `adjacent-tools` | 23 | 1 | ✅ high | **shipped** | 2026-05-31 |
 | `sdlc-with-ai` | 104 | 6 | ✅ high | **shipped** | 2026-06-05 |
 | `legacy-modernization` | 23 | 1 | (in sdlc synthesis) | **shipped** | 2026-05-31 |
@@ -109,6 +109,7 @@ What research has actually changed in the template. Each row links an
 | 2026-06-01 | Test-theater guard + legacy-safe characterization path (`test-discipline.md` + Gate 4b + matrix) **+ `/tdd` skill** (operationalizes the doc) | sdlc-with-ai | [test-theater-and-legacy-safe-tdd](synthesis/sdlc-with-ai/test-theater-and-legacy-safe-tdd.md) | local `main` (upgrade-eligible) |
 | 2026-06-01 | `/security-review` skill — diff-aware semantic Phase-7 review + false-positive filtering + slopsquatting dimension + agent-config reuse | claude-code-core | [security-review-as-a-skill](synthesis/claude-code-core/security-review-as-a-skill.md) | local `main` (upgrade-eligible) |
 | 2026-06-05 | **Lean Workflow Redesign** — 22 skills → 6 verbs + 4 niche (`/work` auto-fanout), hybrid sprint-folder state under `docs/project/`, `/doctor` removed | claude-code-core | [lean-workflow-redesign](synthesis/claude-code-core/lean-workflow-redesign.md) | local `main` (upgrade-eligible) |
+| 2026-06-06 | **Dynamic workflows + ultracode** — `/review ultra` (Workflow-backed adversarial review) + `core/.claude/workflows/` library + `§1.6` reconcile rule (augments, never replaces, the 6-gate) | claude-code-core | [dynamic-workflows-and-ultracode](synthesis/claude-code-core/dynamic-workflows-and-ultracode.md) | local (branch `feat/dynamic-workflows-ultracode`; upgrade-eligible) |
 
 ## How to read this
 

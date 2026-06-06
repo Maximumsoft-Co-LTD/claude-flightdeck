@@ -20,6 +20,44 @@
 > studies; Anthropic + Cognition + MAST fan-out studies — see
 > `docs/research/`).
 
+> **Dynamic workflows + ultracode** — apply Claude Code's `Workflow` tool +
+> ultracode to the template **without eroding rigor**: `/review ultra`
+> (Workflow-backed adversarial review), a shipped `core/.claude/workflows/`
+> library, and a `§1.6` rule reconciling ultracode with the default-single-agent
+> gate. The seam: a workflow returns *findings, not a merge verdict* — it
+> AUGMENTS, never replaces, the 6-gate. Research-grounded (live
+> `Workflow`/`ScheduleWakeup` tool contracts + `docs/research/`).
+
+### Added
+
+- **`/review ultra` — Workflow-backed adversarial review** (a 5th `/review` mode).
+  Runs the shipped `fd-review-changes` workflow: one read-only finder per dimension
+  (bugs · security · types · tests · perf · boundary) → each finding refuted by 3
+  perspective-diverse skeptics → only survivors reported. For large / multi-file
+  diffs + pre-merge audits; `/review gates` stays the default for a single-task diff.
+  - **Why / how it's better:** at-scale review gets parallel breadth + adversarial
+    verification (fewer plausible-but-wrong findings survive) **without** weakening
+    the human-verified merge gate — ultra augments §4, never replaces it.
+
+- **`core/.claude/workflows/` dynamic-workflow library** — reusable, `fd-`-namespaced,
+  placeholder-free scripts shipped to every install: `fd-review-changes.js` (powers
+  `/review ultra`), `fd-understand-codebase.js` (parallel Explore → architecture
+  map), and a README documenting the rigor seam + the Workflow-vs-N×Agent decision.
+  Users add their own under `.claude/workflows/local/` (upgrade-safe; `fd-*.js`
+  stay template-owned). Upgrade classifier updated.
+  - **Why / how it's better:** ships at-scale orchestration as version-controlled,
+    invokable-by-name assets instead of ad-hoc prompts, with the
+    writes-single-threaded / 6-gate-orchestrator-verified guardrails kept first-class.
+
+- **`§1.6 Dynamic workflows & ultracode`** in `sub-agent-workflow.md` — reconciles
+  ultracode's "fan out by default" with §1.0's "default to one agent": the default
+  flips only for READ/VERIFY/BREADTH work; writes stay single-threaded, the 6-gate
+  stays orchestrator-verified, subagents never self-enable ultracode. Adds the
+  Workflow-vs-N×Agent decision, `+500k` budget directives, and the dynamic `/loop`
+  (`ScheduleWakeup`) idempotency caveat. phase-matrix A004 cross-ref.
+  - **Why / how it's better:** the rules no longer contradict ultracode's default,
+    and the safety invariants are stated where an agent will actually read them.
+
 ### Removed
 
 - **`doctor.sh` post-install health-check script**
