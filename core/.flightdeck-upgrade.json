@@ -4,11 +4,12 @@
 
   "classes": {
     "user_owned": {
-      "description": "Never touched by upgrade. The user's own sprint / retro / design / backlog content lives here, plus the install manifest itself. Current layout is docs/project/** (hybrid sprint-folder model); the docs/spec/** globs are RETAINED for back-compat so a project installed before the docs/spec -> docs/project rename is never clobbered.",
+      "description": "Never touched by upgrade. The user's own sprint / retro / design / backlog content lives here, plus the install manifest itself. Current layout is docs/project/** (hybrid sprint-folder model); the docs/spec/** globs are RETAINED for back-compat so a project installed before the docs/spec -> docs/project rename is never clobbered. .claude/workflows/local/** holds the user's own dynamic-workflow scripts; the template's own fd-*.js scripts are template_owned (upgrade-managed, so improvements flow through).",
       "patterns": [
         ".ai-workflows/**",
         ".claude/agent-memory/**",
         ".claude/memory/**",
+        ".claude/workflows/local/**",
         "docs/project/backlog.md",
         "docs/project/backlog-index.md",
         "docs/project/sprints/**",
