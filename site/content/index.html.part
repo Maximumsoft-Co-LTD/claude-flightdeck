@@ -88,9 +88,9 @@
   <div class="route reveal">
     <div class="route-line"><span class="pulse" aria-hidden="true"></span></div>
     <ol class="stops">
-      <li style="--s:0"><span class="dot"></span><b>/discover</b><small>interview → brief</small></li>
-      <li style="--s:1"><span class="dot"></span><b>/promote</b><small>brief → backlog</small></li>
-      <li style="--s:2"><span class="dot"></span><b>/next-task</b><small>pick + route</small></li>
+      <li style="--s:0"><span class="dot"></span><b>/idea</b><small>capture → idea</small></li>
+      <li style="--s:1"><span class="dot"></span><b>/idea promote</b><small>idea → backlog</small></li>
+      <li style="--s:2"><span class="dot"></span><b>/work</b><small>pick + route</small></li>
       <li style="--s:3"><span class="dot"></span><b>design-doc</b><small>≥500-line zero-fix</small></li>
       <li style="--s:4"><span class="dot"></span><b>engineer</b><small>TDD: red → green</small></li>
       <li style="--s:5"><span class="dot gate"></span><b>6-gate review</b><small>inspect→…→smoke</small></li>
@@ -123,7 +123,7 @@
       <header><span class="mtag">01 · greenfield</span><h3>Build a new feature</h3></header>
       <p>You want a new endpoint. The orchestrator won't let code start without a design doc.</p>
       <ol class="flow">
-        <li>/next-task picks it &amp; reads the <em>phase matrix</em> (type = feat)</li>
+        <li>/work picks it &amp; reads the <em>phase matrix</em> (type = feat)</li>
         <li>design-doc-writer (Opus) authors a zero-fix D-doc</li>
         <li>backend-engineer (Sonnet) writes the <strong>failing test first</strong></li>
         <li>6-gate review → mini-retro → ship</li>
@@ -191,9 +191,9 @@ git clone __GH__.git ~/code/claude-flightdeck
 <span class="c"># 2 · install into your project (core is architecture-agnostic)</span>
 ~/code/claude-flightdeck/install.sh ~/code/my-project
 
-<span class="c"># 3 · open in Claude Code and run /onboard (setup wizard)</span>
+<span class="c"># 3 · open in Claude Code and run /onboard (auto-generates project docs)</span>
 cd ~/code/my-project</code></pre>
-  <p class="muted">Prereqs: <code>bash</code> + <code>git</code> + <code>jq</code>. Plugins: <code>pr-review-toolkit</code> (required) + <code>superpowers</code> (recommended). Then drive it with <code>/next-task · /post-delegation-gate · /retro · /ratify-rules</code>.</p>
+  <p class="muted">Prereqs: <code>bash</code> + <code>git</code> + <code>jq</code>. Plugins: <code>pr-review-toolkit</code> (required) + <code>superpowers</code> (recommended). Then drive it with <code>/idea · /work · /review · /retro</code>.</p>
   <div class="cta">
     <a class="btn primary" href="__GH__#quick-start" target="_blank" rel="noopener">Full quick-start ↗</a>
     <a class="btn" href="workflow.html">Understand the workflow →</a>

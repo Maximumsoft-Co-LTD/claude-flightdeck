@@ -1,18 +1,18 @@
 <section class="sheet doc"><div class="wrap">
   <p class="eyebrow">// flight operations manual</p>
   <h1>The workflow, end to end</h1>
-  <p class="lede">claude-flightdeck encodes a 7-stage pipeline (S1–S7). Each stage has an owner, an artifact, and a gate. Below: how a task flows, what fires when, and why each guard exists.</p>
+  <p class="lede">claude-flightdeck encodes a 7-stage pipeline (S1–S7), driven by six verbs — <code>/idea · /work · /review · /ship · /retro · /status</code> (plus <code>/onboard · /recover · /document</code> for the niche cases). Each stage has an owner, an artifact, and a gate. Below: how a task flows, what fires when, and why each guard exists.</p>
 
   <!-- 7 stages -->
   <h2>S1–S7 · the pipeline</h2>
   <div class="stages">
-    <div class="stage reveal"><span class="sx">S1</span><h3>Discovery</h3><p>Interview the intent. <code>/discover</code> turns a fuzzy idea into a written brief — assumptions, scope, open questions surfaced before anyone designs.</p></div>
-    <div class="stage reveal"><span class="sx">S2</span><h3>Sprint planning</h3><p>Briefs become backlog items with a type slot (feat / fix / refactor / chore / docs / spike / release). The type decides which phases run.</p></div>
-    <div class="stage reveal"><span class="sx">S3</span><h3>Design</h3><p>A ≥500-line <strong>zero-fix design doc</strong> — acceptance criteria, touched-files matrix, contracts, test plan. Correlates with one-pass implementation, no re-delegation.</p></div>
-    <div class="stage reveal"><span class="sx">S4</span><h3>Implement</h3><p>Test-first. The engineer conforms to the project's real conventions, writes the failing test, then the minimum to green, then refactors under the net.</p></div>
-    <div class="stage reveal"><span class="sx">S5</span><h3>Review</h3><p>The 6-gate post-delegation review (below). Nothing merges on a subagent's "done" — correctness is re-derived from the diff and re-run commands.</p></div>
+    <div class="stage reveal"><span class="sx">S1</span><h3>Discovery</h3><p>Capture the intent. <code>/idea</code> turns a fuzzy need into a written idea (<code>D###</code>) — assumptions, scope, open questions surfaced before anyone designs.</p></div>
+    <div class="stage reveal"><span class="sx">S2</span><h3>Sprint planning</h3><p>Ideas graduate to the backlog through a <strong>Definition-of-Ready gate</strong> (<code>/idea promote</code>) — each carries a type slot (feat / fix / refactor / chore / docs / spike / release) that decides which phases run; ready items break into a sprint with fanout waves.</p></div>
+    <div class="stage reveal"><span class="sx">S3</span><h3>Design</h3><p>A ≥500-line <strong>zero-fix design doc</strong> per task — <code>/work</code> won't dispatch code until one exists. Acceptance criteria, touched-files matrix, contracts, test plan. Correlates with one-pass implementation, no re-delegation.</p></div>
+    <div class="stage reveal"><span class="sx">S4</span><h3>Implement</h3><p>Test-first. <code>/work</code> dispatches the engineer (serial, or a safe parallel fanout) — it writes the failing test, then the minimum to green, then refactors under the net, conforming to the project's real conventions.</p></div>
+    <div class="stage reveal"><span class="sx">S5</span><h3>Review</h3><p><code>/review</code> runs the 6-gate post-delegation review (below). Nothing merges on a subagent's "done" — correctness is re-derived from the diff and re-run commands. A large diff can fan out adversarially via <code>/review ultra</code>.</p></div>
     <div class="stage reveal"><span class="sx">S6</span><h3>Per-task retro</h3><p>A live mini-retro captures the lesson <em>before</em> the next task — so knowledge compounds instead of evaporating.</p></div>
-    <div class="stage reveal"><span class="sx">S7</span><h3>Sprint close</h3><p>Recurring lessons graduate into <code>brain-hot.md</code> rules; carry-overs land in FOLLOWUPS. The control plane gets smarter each sprint.</p></div>
+    <div class="stage reveal"><span class="sx">S7</span><h3>Sprint close</h3><p><code>/retro</code> aggregates the mini-retros: recurring lessons graduate into <code>brain-hot.md</code> rules; carry-overs land in FOLLOWUPS. The control plane gets smarter each sprint.</p></div>
   </div>
 
   <!-- phase matrix -->

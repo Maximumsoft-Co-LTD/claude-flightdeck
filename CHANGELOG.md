@@ -29,6 +29,21 @@
     done). This is cheap, consistent leverage across every repo, framed as the habit
     the A-rules then enforce. Source + loop: `docs/research/` (`coding-conduct-front-door`).
 
+### Changed
+
+- **Usage site synced to the v0.12.0 verb surface** — the curated
+  `site/content/index.html.part` + `site/content/workflow.html.part` now teach the
+  six-verb command surface (`/idea · /work · /review · /ship · /retro · /status`,
+  plus `/onboard · /recover · /document`) instead of the retired
+  `/discover · /promote · /next-task`. The workflow page's S1–S7 stages rebind to
+  their new drivers: S1 `/idea`, S2 `/idea promote` (the Definition-of-Ready gate),
+  S3–S4 `/work`, S5 `/review` (+ `/review ultra` for large diffs), S7 `/retro`.
+  - **Why / how it's better:** the published GitHub Pages site was still teaching
+    the pre-v0.12.0 commands — a new user copying them would hit dead
+    slash-commands. Bringing the hand-authored pages in line with the renamed
+    skills keeps the public front door truthful (the data-driven agents/skills/
+    changelog pages already auto-derive from source, so they were already current).
+
 ## v0.12.0 — 2026-06-06
 
 > **Lean Workflow Redesign** — consolidating 22 skills → 6 verbs
