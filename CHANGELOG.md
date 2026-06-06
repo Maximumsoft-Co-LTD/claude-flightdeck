@@ -9,9 +9,9 @@
 > semver. Each release should list **Added / Changed / Fixed / Removed**
 > sub-sections as relevant.
 
-## Unreleased
+## v0.12.0 — 2026-06-06
 
-> **Lean Workflow Redesign (in progress)** — consolidating 22 skills → 6 verbs
+> **Lean Workflow Redesign** — consolidating 22 skills → 6 verbs
 > (`/idea /work /review /ship /retro /status`) + 3 niche (`/onboard /recover
 > /document`), a hybrid sprint-folder state model under `docs/project/`, and a
 > single naming cheat-sheet. Goal: far fewer commands to learn, a cleaner folder
