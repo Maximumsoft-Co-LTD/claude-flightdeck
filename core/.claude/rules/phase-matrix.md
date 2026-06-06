@@ -187,7 +187,10 @@ Dispatch `/review design` for the 3-lens visual gate. Skip otherwise.
 - **A004 (6-gate review)** — phases 6 + 7 trig + 8 + 9 trig + 10 are
   the gates. The matrix is the *which gates fire* lookup; the playbook
   at `docs/playbooks/post-delegation-review.md` is the *how* of each
-  gate.
+  gate. For a **large / multi-file diff**, the Gate-4b quality + Phase-7
+  security dimensions can be fanned out + adversarially verified via
+  `/review ultra` (Workflow-backed) — it *augments, never replaces*, the
+  gate (returns findings, not a merge verdict).
 - **A009 (live mini-retro)** — phase 12 is universal. Every type runs
   it. No exceptions.
 

@@ -113,6 +113,45 @@ defaulting everything to Opus "to be safe."
 > That doc is the canonical detail; this table is the always-loaded summary
 > — keep them in sync if you change a default.
 
+## §1.6 Dynamic workflows & ultracode
+
+> **Why this exists:** Claude Code's `Workflow` tool (deterministic, off-context,
+> budget-scaled fan-out) + **ultracode** (the session mode that makes
+> workflow-authoring the standing default) invert §1.0's "default to one agent."
+> Both can hold at once only with an explicit seam — this section is the seam.
+
+**When ultracode is ON, §1.0's default flips — but ONLY for READ / VERIFY /
+BREADTH work** (review, audit, research, understand a codebase): author a
+`Workflow` by default instead of a single agent. The safety invariants do **not**
+change:
+
+1. **Writes stay single-threaded.** Parallel writes need provably-disjoint paths +
+   `isolation:"worktree"` + the Conflict Radar (§3.3, A007). A workflow that writes
+   is bound by the same rule — fan out *reads*, serialize *writes*.
+2. **The 6-gate stays orchestrator-verified.** A workflow returns *conclusions, not
+   a merge-ready diff*. It can augment the gate (e.g. `/review ultra`) but never
+   replace it — you still re-run build/test (Gate 2) and own the merge (§4).
+3. **A subagent must never self-enable ultracode.** It is session-level +
+   user-opt-in (runaway cost). A subagent that thinks a task needs it escalates
+   `NEEDS_CONTEXT` — it does not flip the mode.
+
+**Workflow (the tool) vs N × `Agent` (§3.3).** Reach for a `Workflow` script when
+(a) >~10 parallel units, or a loop-until-dry / loop-until-budget, (b) results should
+stay *out* of main context, or (c) the orchestration is repeatable. Otherwise N
+`Agent` calls in one message is enough — don't pay workflow overhead for a handful
+of agents.
+
+**Budget directives.** A `+500k`-style token target lands as `budget.total`; scale
+fan-out / round-count to `budget.remaining()` (a hard ceiling). With no target,
+`remaining()` is `Infinity` — guard loops on `budget.total`.
+
+**Dynamic `/loop` (`ScheduleWakeup`).** Self-paced iteration — the agent picks the
+next wake delay (poll CI / deploy) instead of a fixed interval. It re-fires the same
+prompt, so pair it ONLY with idempotent, re-entrant prompts, never a one-shot command.
+
+Shipped scripts + the full guardrail: [`../workflows/README.md`](../workflows/README.md).
+`/review ultra` is the first consumer.
+
 ## §2 Available subagent types
 
 ### Project-local agents (in `.claude/agents/`)
