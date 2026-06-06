@@ -17,7 +17,7 @@ advances. `Sources` = count of notes in `sources/` tagged with the track.
 
 | Track | Inbox | Sources | Synthesis | Apply | Last update |
 |---|---:|---:|:---:|:---:|---|
-| `claude-code-core` | 88 | 11 | ✅ high ×7 | **shipped ×7** | 2026-06-06 |
+| `claude-code-core` | 88 | 12 | ✅ high ×8 | **shipped ×8** | 2026-06-06 |
 | `adjacent-tools` | 23 | 1 | ✅ high | **shipped** | 2026-05-31 |
 | `sdlc-with-ai` | 104 | 6 | ✅ high | **shipped** | 2026-06-05 |
 | `legacy-modernization` | 23 | 1 | (in sdlc synthesis) | **shipped** | 2026-05-31 |
@@ -110,6 +110,7 @@ What research has actually changed in the template. Each row links an
 | 2026-06-01 | `/security-review` skill — diff-aware semantic Phase-7 review + false-positive filtering + slopsquatting dimension + agent-config reuse | claude-code-core | [security-review-as-a-skill](synthesis/claude-code-core/security-review-as-a-skill.md) | local `main` (upgrade-eligible) |
 | 2026-06-05 | **Lean Workflow Redesign** — 22 skills → 6 verbs + 4 niche (`/work` auto-fanout), hybrid sprint-folder state under `docs/project/`, `/doctor` removed | claude-code-core | [lean-workflow-redesign](synthesis/claude-code-core/lean-workflow-redesign.md) | local `main` (upgrade-eligible) |
 | 2026-06-06 | **Dynamic workflows + ultracode** — `/review ultra` (Workflow-backed adversarial review) + `core/.claude/workflows/` library + `§1.6` reconcile rule (augments, never replaces, the 6-gate) | claude-code-core | [dynamic-workflows-and-ultracode](synthesis/claude-code-core/dynamic-workflows-and-ultracode.md) | local (branch `feat/dynamic-workflows-ultracode`; upgrade-eligible) |
+| 2026-06-06 | **Coding conduct front door** — Karpathy-style behavioral guidelines (think-first / simplicity / surgical / goal-driven) as a new rule, in the root CLAUDE.md + every per-area CLAUDE.md the orchestrator controls | claude-code-core | [coding-conduct-front-door](synthesis/claude-code-core/coding-conduct-front-door.md) | local (branch `feat/coding-conduct-rules`; upgrade-eligible) |
 
 ## How to read this
 

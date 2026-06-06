@@ -9,6 +9,26 @@
 > semver. Each release should list **Added / Changed / Fixed / Removed**
 > sub-sections as relevant.
 
+## Unreleased
+
+### Added
+
+- **Coding-conduct front door** — a new always-read rule
+  `core/.claude/rules/coding-conduct.md` adapting the open Karpathy-style behavioral
+  guidelines (Think Before Coding · Simplicity First · Surgical Changes · Goal-Driven
+  Execution) in their bold-principle + imperative-bullets + "test"-line format,
+  de-domain-specified and cross-linked to the A-rules they map onto. Surfaced compactly
+  in the root `core/CLAUDE.md.tmpl` ("Behavioral guidelines — every agent, every repo")
+  and as a fixed `## Coding conduct` pointer in every per-area `CLAUDE.md` the
+  `onboarding-engineer` drafts (`draft-templates.md`); wired into the pre-task ritual
+  (Step 2) + `brain-hot.md` so every dispatched agent reads it — orchestrator and the
+  service / area repos it controls alike.
+  - **Why / how it's better:** our rules were strong on *enforcement* (6-gate, A-rules)
+    but never named the *posture* an agent holds **before** the rigor — the class that
+    causes most LLM coding mistakes (assume / over-build / scope-creep / unverified
+    done). This is cheap, consistent leverage across every repo, framed as the habit
+    the A-rules then enforce. Source + loop: `docs/research/` (`coding-conduct-front-door`).
+
 ## v0.12.0 — 2026-06-06
 
 > **Lean Workflow Redesign** — consolidating 22 skills → 6 verbs

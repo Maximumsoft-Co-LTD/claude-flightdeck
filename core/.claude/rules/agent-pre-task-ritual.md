@@ -66,10 +66,12 @@ assume any particular architecture is in place:
 
 ### Step 2 — Rule + lesson scan
 
-4. Read **`.claude/rules/phase-matrix.md`** (type × phase lookup),
-   **`.claude/rules/programming-fundamentals.md`** (reflex coding
-   rules), and **`.claude/rules/git-workflow.md`** (commit / branch /
-   PR reflex). These auto-load on every code-touching task per the
+4. Read **`.claude/rules/coding-conduct.md`** (the four behavioral
+   guidelines — think-before-coding / simplicity-first / surgical-changes /
+   goal-driven — the posture before the rigor), **`.claude/rules/phase-matrix.md`**
+   (type × phase lookup), **`.claude/rules/programming-fundamentals.md`**
+   (reflex coding rules), and **`.claude/rules/git-workflow.md`** (commit /
+   branch / PR reflex). These auto-load on every code-touching task per the
    Phase Matrix — they are non-negotiable for any agent that writes
    or commits code.
 5. Read **`.claude/rules/code-style.md`** — the project's learned

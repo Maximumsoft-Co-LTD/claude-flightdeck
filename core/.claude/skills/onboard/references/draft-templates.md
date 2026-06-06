@@ -98,12 +98,19 @@ Read the area's manifest + a depth-2 file list to classify:
 | `Chart.yaml` + `templates/` | Helm chart |
 | `Dockerfile` only, no language manifest | Container build context only — note in CLAUDE.md but don't draft full rules |
 
-### B.2 The 5-section per-area shape
+### B.2 The 6-section per-area shape
 
-Each per-area `CLAUDE.md` follows:
+Each per-area `CLAUDE.md` follows (the `## Coding conduct` pointer is fixed
+boilerplate; the other five are project-derived):
 
 ```markdown
 # CLAUDE.md — <area name>
+
+## Coding conduct
+Think before coding · Simplicity first · Surgical changes · Goal-driven execution.
+The same conduct governs every repo the orchestrator controls — full text +
+rationale in the root `.claude/rules/coding-conduct.md`. Keep this pointer verbatim;
+do NOT restate the whole rule per area (it's loaded by the pre-task ritual).
 
 ## What this area is
 <1-paragraph purpose — from the area's README if present, else inferred
@@ -124,12 +131,22 @@ code-style sampler. Reference `.claude/rules/code-style.md` for the
 project's conventions; add a custom-preset rule file only if one is installed.>
 ```
 
+> The `## Coding conduct` pointer is **fixed boilerplate** — copy it verbatim into
+> every per-area `CLAUDE.md` so a service repo's own file reminds agents of the four
+> guidelines and where the canonical text lives. The orchestrator's root `CLAUDE.md`
+> carries the same four (see `core/CLAUDE.md.tmpl` "Behavioral guidelines").
+
 ### B.3 Worked example — `backend/CLAUDE.md` (Go monorepo area)
 
 _example_:
 
 ```markdown
 # CLAUDE.md — backend
+
+## Coding conduct
+Think before coding · Simplicity first · Surgical changes · Goal-driven execution.
+The same conduct governs every repo the orchestrator controls — full text in the
+root `.claude/rules/coding-conduct.md`.
 
 ## What this area is
 The URL Shortener API. HTTP REST handlers + PG persistence + Redis

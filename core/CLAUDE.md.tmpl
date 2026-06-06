@@ -24,6 +24,18 @@
 > > `docs/superpowers/specs/<dated-design>.md` — read it before
 > > touching architecture.
 
+## Behavioral guidelines (every agent, every repo)
+
+The posture every agent brings BEFORE the rigor — orchestrator and every service /
+area repo it controls. Full text: [`.claude/rules/coding-conduct.md`](.claude/rules/coding-conduct.md).
+
+1. **Think before coding** — don't assume, don't hide confusion, surface tradeoffs; unclear → stop and ask (subagents → `NEEDS_CONTEXT`).
+2. **Simplicity first** — minimum code that solves it; nothing speculative.
+3. **Surgical changes** — touch only what you must, match existing style; every changed line traces to the request (unrelated dead code → mention, don't delete).
+4. **Goal-driven execution** — define success criteria, loop until verified (= TDD + verification-before-completion, up front).
+
+> The A-rules ([`brain-hot.md`](.claude/rules/brain-hot.md)) enforce these under the 6-gate — this is the habit, not the gate.
+
 ## Cross-area non-negotiables
 
 Replace this section with the 3-7 rules that are non-negotiable across
