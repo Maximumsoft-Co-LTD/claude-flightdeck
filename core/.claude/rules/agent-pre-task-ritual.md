@@ -49,6 +49,9 @@ time you need to re-check a detail. See
 Before writing, learn how *this* project really organizes code — don't
 assume any particular architecture is in place:
 
+- **Skim `docs/setup/codebase-orientation.md`** (the architecture map generated
+  by `/onboard`, if present) for the big picture — areas, boundaries, stack,
+  integrations — before diving into files.
 - **Read `.claude/rules/code-style.md`** (the project's learned conventions)
   + **Glob the area you'll touch + Read 2-3 representative existing files**
   (a handler, a model, a test). Match the project's real layout, naming,

@@ -1,337 +1,166 @@
 ---
 name: onboard
-description: "Setup wizard for a freshly-installed claude-flightdeck. Walks 8 stages — topology detection, codebase scan, team interview, git-history mining, document drafting, A-rule ratification, state capture, first-feature handoff — to bring Claude Code from 'template installed' to 'fully understands this project'. Use right after `install.sh` ('how do I get started', 'set up the workflow', 'onboard the project', '/onboard'). Subcommands: /onboard refresh (re-run on existing install), /onboard scan (Stage 1 only), /onboard rules (Stages 3+5), /onboard retro (post-first-sprint reflection)."
+description: "Use right after install.sh — '/onboard', 'how do I get started', 'set up the workflow', 'onboard the project'. Auto-generates the project-understanding docs the orchestrator + every dispatched agent read: the ARCHITECTURE map (docs/setup/codebase-orientation.md), the CONVENTIONS reference (.claude/rules/code-style.md), and the CLAUDE.md routing — by scanning + mining the codebase. Minutes, mostly automated. Subcommands: /onboard refresh (re-generate after the code changed), /onboard interview (OPTIONAL deep human enrichment), /onboard rules (re-mine + ratify A-rules), /onboard retro (post-first-sprint reflection)."
 user_invocable: true
 ---
 
-# /onboard — Project Onboarding Wizard
+# /onboard — Generate the project-understanding docs
 
-Bring Claude Code + the control plane from "template installed" to
-"fully understands this project". 8 stages, ~4-6 hours interactive,
-hybrid (auto-do mechanical work · prompt only for context the user
-alone has).
+**Announce:** Using /onboard to generate the architecture + conventions docs.
 
-## Token budget (MANDATORY)
+**Purpose.** Bring the orchestrator and every dispatched agent from "template
+installed" to "understands THIS project" — by **auto-generating, from the
+codebase**, the three things the agents actually read:
 
-- Stages 0-1 use Bash scripts (topology) + ONE parallel Explore
-  dispatch — no full file Reads in the main session.
-- Stage 2 interview uses `AskUserQuestion` (≤4 per round) — never
-  free-form prose questions.
-- Stage 3 mining uses 3 parallel Explore agents — output stages
-  to `_onboard-staging/` for the drafting agent, never read back
-  into main context.
-- Stage 4 drafting is delegated to `onboarding-engineer` agent —
-  do not re-read the drafts in main context; trust its summary.
-- Stage 5 ratification reads only `_onboard-staging/a-rule-candidates.md`
-  with `limit: 200`.
-- Stage 6 state capture uses `AskUserQuestion` + paste-friendly
-  textboxes — no scanning of foreign tools (Jira / Linear) in-session.
-- **Hard cap: 50k tokens** main-session context across all 8 stages
-  for a medium project.
+| Output | What it is | Who reads it |
+|---|---|---|
+| `docs/setup/codebase-orientation.md` | the **architecture map** (structure, areas, stack, integrations, build/test) | orchestrator + agents (pre-task ritual) |
+| `.claude/rules/code-style.md` | the **conventions reference** (layout, naming, error handling, test + framework idioms) | `backend-engineer` / `frontend-engineer` |
+| `CLAUDE.md` (root) + area `CLAUDE.md` | routing + non-negotiables, drafted from the two above | orchestrator + agents |
 
-## Subcommands
+Mostly automated (read-only Explore agents + one drafting agent) — **minutes, not
+hours**. The deep human interview is **opt-in** (`/onboard interview`), not required.
 
-- `/onboard` — fresh full wizard (Stages 0-7). Stage 8 (retro) runs
-  separately after the first sprint closes.
-- `/onboard refresh` — re-onboard mode. Skip stages whose input
-  hasn't changed; re-mine git history; present DELTA only.
-- `/onboard scan` — Stage 1 only. Regenerate
-  `docs/setup/codebase-orientation.md`. Cheap; safe to re-run
-  whenever the codebase shape changes substantially.
-- `/onboard rules` — Stages 3+5 only. Re-mine git history for new
-  A-rule candidates + ratify.
-- `/onboard retro` — Stage 8 only. After the first sprint closes,
-  reflect on what worked / didn't in the wizard itself; refine the
-  control plane.
+## Token budget
+
+- Stages 0-2 are Bash (topology) + read-only Explore dispatches — no full file
+  Reads in the main session; miners stage their output to `_onboard-staging/`.
+- Stage 3 drafting is delegated to `onboarding-engineer` — trust its summary,
+  don't re-Read the drafts. **Hard cap: ~30k** main-session tokens for the
+  automated path (the old interview path cost far more).
+
+## Modes
+
+- **`/onboard`** — auto-generate the understanding docs (Stage 0→3 below). Default.
+- **`/onboard refresh`** — re-run the generation; present DELTA only (skip stages
+  whose inputs are unchanged).
+- **`/onboard interview`** — OPTIONAL deep human enrichment for context only humans
+  have (system purpose, what's fragile, exemplary files, sprint state). See §Interview.
+- **`/onboard rules`** — re-mine git history for A-rule candidates + ratify them
+  (operator-gated). See §Ratify.
+- **`/onboard retro`** — after the first sprint closes, reflect on the wizard itself.
+
+---
 
 ## Stage 0 — Pre-flight (auto)
 
 ```bash
-# Topology probe (languages / frameworks / areas / plugins / sibling installs)
 .claude/skills/onboard/scripts/detect-topology.sh "$PROJECT_DIR"
 ```
 
-Before proceeding, confirm the required plugins are installed (`pr-review-toolkit`
-required, `superpowers` recommended) — see
+Confirm the required plugins are installed (`pr-review-toolkit` required,
+`superpowers` recommended) — see
 [`../../../docs/setup/plugin-dependencies.md`](../../../docs/setup/plugin-dependencies.md)
-§Verify for the one-line check.
+§Verify. Read the topology JSON and branch:
 
-Read the topology JSON. Branch on:
+- `existing_install: true` → switch to `refresh` mode unless a full re-run was asked.
+- `git_repo: false` / `git_commits < 10` → warn that convention mining will be thin
+  (greenfield); proceed with the scan, skip the git-history miner.
+- `sibling_installs: [...]` → offer A-rule inheritance at Stage 3 (see
+  [`references/multi-repo-coordination.md`](references/multi-repo-coordination.md)).
+- `frameworks: [...]` → tells the code-style sampler which UI files to sample. No
+  architecture is imposed — the core engineers conform to whatever the code does.
 
-- `existing_install: true` → switch to `/onboard refresh` mode unless
-  user explicitly asked for full re-run.
-- `git_repo: false` → warn the operator; mining stages will be
-  empty (no signal). Suggest `git init` if appropriate.
-- `git_commits < 10` → warn that A-rule mining will produce few
-  candidates; greenfield projects benefit less from Stage 3.
-- `sibling_installs: [...]` non-empty → flag for Stage 4
-  inheritance prompt (see `references/multi-repo-coordination.md`).
-- `frameworks: [...]` → these (next / vue / react / …) tell the Stage 3
-  code-style sampler which UI files to sample. No architecture is chosen
-  from them — the core engineers conform to whatever the code does.
-- `presets_recommended` → only the shipped infra preset (`k8s-helm`) is
-  ever recommended, and only when Chart.yaml/charts are present. If it's
-  recommended but not installed, suggest re-running `install.sh --preset
-  k8s-helm`. There is no backend/frontend architecture preset to pick — the
-  core `backend-engineer` / `frontend-engineer` handle those by reading the
-  codebase (see Stage 3 + `docs/setup/conform-to-codebase.md`).
-- **`plugins` → required-plugin readiness (DO NOT skip this check).** The
-  workflow depends on two Claude Code plugins (install via `/plugin` →
-  `claude-plugins-official`; see `docs/setup/plugin-dependencies.md`):
-  - `pr-review-toolkit: false` → **blocking-ish**: Gate 4b (quality review)
-    dispatches its reviewers. Without it, warn loudly and tell the operator
-    the gate falls back to the built-in `feature-dev:code-reviewer` +
-    `senior-tech-lead` (degraded). Strongly recommend installing it first.
-  - `superpowers: false` → **warn**: A001/A003 + the fix flow invoke its
-    skills (TDD / verification / systematic-debugging). Without it those
-    won't auto-invoke, but the inline A-rules + `discipline-red-flags.md`
-    still apply. Recommend installing it.
+## Stage 1 — Architecture scan (1 Explore agent)
 
-Report Stage 0 summary as the first interactive checkpoint:
+Dispatch ONE read-only Explore agent to produce the **architecture map**. Brief it
+to cover: top-level architecture (directory roles, languages, frameworks); module
+/ area boundaries; the 10 most-edited files (6-month `git log` churn); external
+integrations (APIs, DBs, queues, SDKs); test patterns + how coverage runs; the
+build / CI commands that ACTUALLY run; and any unwritten convention it spots.
+Write `docs/setup/codebase-orientation.md` (~600-800 words). Confirm it exists and
+is non-trivial (>30 lines) before Stage 2.
 
-```
-== Stage 0: Pre-flight ==
-Topology: monorepo (areas: backend, frontend)
-Languages: go, typescript    Frameworks: next
-Git: 247 commits in last 6 months
-Existing install: no
-Sibling installs: ../service-billing (1 found)
-Presets: none required (core is architecture-agnostic; k8s-helm only if you deploy via Helm)
-Plugins: superpowers ✓ · pr-review-toolkit ✗ ← REQUIRED for Gate 4b
-  ⚠ install pr-review-toolkit (/plugin → claude-plugins-official) before the first sprint,
-    or the 6-gate review falls back to feature-dev:code-reviewer (degraded).
-Proceed? [Y/n]
-```
+## Stage 2 — Conventions mining (parallel Explore agents)
 
-## Stage 1 — Codebase scan (1 Explore agent, ~5 min)
+Dispatch the miners in a SINGLE message; each stages output to
+`docs/setup/_onboard-staging/`. Full prompts:
+[`references/pattern-mining-prompts.md`](references/pattern-mining-prompts.md).
 
-Dispatch ONE Explore agent (read-only) with this brief:
+- **Code-style sampler** (the key input) — samples 2-4 representative files per
+  area+language (handler, core-logic, test, component) and extracts the project's
+  ACTUAL conventions → `code-style-signals.md`. This is what makes the engineers
+  write code that looks like the repo.
+- **Git-history miner** — `scripts/mine-git-history.sh "$PROJECT_DIR" --months 6`
+  → recurring fix patterns + 3-7 A-rule candidate names (not bodies).
+- **Convention sniffer** — `scripts/extract-pr-comments.sh "$PROJECT_DIR" --limit 30`
+  → repeated review comments (≥3×) = unwritten conventions → `conventions-raw.md`.
+- **Drift detector** (optional) — boundary violations (handler→DB direct, infra
+  leaking into domain) → `drift-findings.md`.
 
-```
-Scan this project's codebase. Return a structural map that will become
-docs/setup/codebase-orientation.md (a Stage 1 staging artifact). Cover:
-1. Top-level architecture — directory roles, languages, frameworks.
-2. Module / area boundaries — which folders own which concerns.
-3. Top 10 most-edited files in last 6 months (`git log` churn).
-4. External integrations — APIs, databases, queues, third-party SDKs.
-5. Test patterns — frameworks, layout, current coverage.
-6. Build / CI commands that ACTUALLY run (Makefile / package.json /
-   .github/workflows).
-7. Anything that looks like an unwritten convention.
-Write to docs/setup/codebase-orientation.md (~600-800 words).
-```
+> Greenfield (Stage 0 said thin git history) → run only the code-style sampler.
 
-Wait for return. Confirm the file exists + is non-trivial (> 30
-lines) before Stage 2.
+## Stage 3 — Draft the docs (onboarding-engineer agent)
 
-## Stage 2 — Team interview (AskUserQuestion, 3 rounds)
+Dispatch `onboarding-engineer` with the staged inputs. It produces:
+`CLAUDE.md` (root routing + non-negotiables), per-area `CLAUDE.md`, the polished
+`docs/setup/codebase-orientation.md`, `docs/setup/team-conventions.md`, and fills
+`.claude/rules/code-style.md` from `code-style-signals.md` (per area → per aspect).
+It also writes `_onboard-staging/a-rule-candidates.md` (ranked drafts). Recipes:
+[`references/draft-templates.md`](references/draft-templates.md).
 
-See `references/interview-questions.md` for the full bank. Each round
-≤ 4 questions per `AskUserQuestion` invocation.
+> **A-rules are NOT landed automatically.** `code-style.md` is descriptive (written
+> directly); A-rules are operator-gated — candidates wait for `/onboard rules`.
 
-**Round 1 — System soul** (always run):
-- What does this system DO? (1 sentence)
-- Who consumes it?
-- What's uniquely fragile / hard to change?
-- Where's the design source-of-truth? (ADR folder / Confluence URL / Notion / `none yet`)
+## Stage 4 — Summary + handoff
 
-**Round 2 — Conventions** (always run):
-- Branch naming convention
-- Commit message convention
-- Test policy (TDD strict / test-after / case-by-case)
-- Deploy workflow (CI provider + flow)
-- **Exemplary files** — point at 1-2 files that best represent "how we
-  write code here" (a model handler, a model component/test). Stage 3-D
-  samples these first when seeding `code-style.md`.
-
-**Round 3 — First-sprint state** (always run):
-- Currently in a sprint? (yes/no + sprint name)
-- Top 3 known carry-overs / tech debt items
-- One small task you'd like to pilot the workflow with
-
-Stage answers as a single markdown file at
-`docs/setup/_onboard-staging/interview-answers.md` for the drafting
-agent to read.
-
-## Stage 3 — Pattern mining (4 parallel Explore agents)
-
-Dispatch all FOUR in a single message:
-
-**Agent A — Bug postmortem miner:**
-```bash
-.claude/skills/onboard/scripts/mine-git-history.sh "$PROJECT_DIR" --months 6
-```
-Output JSONL → `_onboard-staging/git-signals.jsonl`. Agent
-summarizes the top recurring fix patterns + proposes 3-7 A-rule
-candidate names (NOT bodies; bodies come in Stage 4).
-
-**Agent B — Convention sniffer:**
-```bash
-.claude/skills/onboard/scripts/extract-pr-comments.sh "$PROJECT_DIR" --limit 30
-```
-Output JSONL → `_onboard-staging/pr-comments.jsonl`. Agent finds
-repeated review comments (≥ 3 occurrences of the same phrase /
-pattern) → unwritten conventions. Output → `_onboard-staging/conventions-raw.md`.
-
-**Agent C — Architectural drift detector:**
-Free-form Explore. Walks the import graph (if present), looks for
-boundary violations (handlers calling DB directly, infrastructure
-leaking into domain, layer crossings). Output →
-`_onboard-staging/drift-findings.md`.
-
-**Agent D — Code-style sampler (the key input for the engineers):**
-Read-only Explore. Using `languages` + `frameworks` from Stage 0, samples
-**2-4 representative files per area+language** — a handler/entrypoint, a
-core-logic file, a test, and (frontend) a component. Extracts the project's
-**actual** conventions: file layout, naming, error handling, test structure,
-state/styling/i18n idioms (frontend), and which libraries are idiomatic.
-Output → `_onboard-staging/code-style-signals.md`. This is what makes
-`backend-engineer` / `frontend-engineer` write code that looks like the repo.
-
-See `references/pattern-mining-prompts.md` for the full prompts.
-
-## Stage 4 — Draft documentation (onboarding-engineer agent)
-
-Dispatch the `onboarding-engineer` agent with:
+Print what was written (the 3 docs above + area CLAUDE.md + the A-rule candidate
+count), then hand off:
 
 ```
-Inputs staged:
-  docs/setup/codebase-orientation.md         (Stage 1)
-  docs/setup/_onboard-staging/interview-answers.md  (Stage 2)
-  docs/setup/_onboard-staging/git-signals.jsonl     (Stage 3-A)
-  docs/setup/_onboard-staging/pr-comments.jsonl     (Stage 3-B)
-  docs/setup/_onboard-staging/conventions-raw.md    (Stage 3-B)
-  docs/setup/_onboard-staging/drift-findings.md     (Stage 3-C)
-  docs/setup/_onboard-staging/code-style-signals.md (Stage 3-D)
+== Onboarding docs generated ==
+  docs/setup/codebase-orientation.md   (architecture map)
+  .claude/rules/code-style.md          (conventions reference)
+  CLAUDE.md + <N> area CLAUDE.md        (routing)
+  <K> A-rule candidates (not yet landed)
 
-Produce:
-  CLAUDE.md (root) — filled from interview + scan
-  <area>/CLAUDE.md per area — filled from scan
-  docs/setup/codebase-orientation.md — polished
-  docs/setup/team-conventions.md — from conventions-raw + drift
-  .claude/rules/code-style.md — fill the stub from code-style-signals.md
-       (per area → per aspect: layout, naming, error handling, tests,
-        framework idioms). This is the style contract the engineers read.
-  docs/setup/_onboard-staging/a-rule-candidates.md — 10 ranked drafts
-
-Do NOT write A-rules into brain-hot.md directly. Ratification is the
-operator's job at Stage 5. (code-style.md is descriptive, not a hard rule —
-write it directly, then have the operator skim it in Stage 5.)
+Next:  /work            — pick or scaffold the first sprint and start
+Later: /onboard rules     — ratify the A-rule candidates
+       /onboard interview — capture human-only context (optional)
 ```
 
-Wait for return. Confirm output files exist before Stage 5.
+The orchestrator + agents now read these via the pre-task ritual. Done.
 
-## Stage 5 — A-rule ratification (AskUserQuestion, multi-select)
+---
 
-Read `_onboard-staging/a-rule-candidates.md` (with `limit: 200`).
-For each draft, present a multi-select `AskUserQuestion`:
+## §Interview — `/onboard interview` (OPTIONAL human enrichment)
 
-- **Keep** — land verbatim in `brain-hot.md` `## Project-specific rules`
-- **Keep with edits** — operator types the revised wording
-- **Drop** — not relevant to this team
+For teams that want the human-only context captured. 3 short `AskUserQuestion`
+rounds (≤4 questions each) — system soul (what it does, who consumes it, what's
+fragile, design source-of-truth); conventions (branch/commit/test/deploy +
+exemplary files); first-sprint state. Full bank:
+[`references/interview-questions.md`](references/interview-questions.md). Answers
+are folded into `CLAUDE.md` + `team-conventions.md` (re-run the Stage 3 drafter
+with the interview answers staged). Not required for agents to function.
 
-Append the kept rules to `.claude/rules/brain-hot.md` under the
-`## Project-specific rules` section, starting at A011 (or the next
-free A-number if the operator had pre-existing project rules).
+## §Ratify — `/onboard rules` (operator-gated A-rule landing)
 
-**Never auto-apply.** If the operator selects nothing, that's a
-valid outcome — note in the Stage 5 summary that no A-rules were
-ratified yet and `/onboard rules` can re-run mining later.
+Re-mine if needed, then for each `_onboard-staging/a-rule-candidates.md` draft,
+present a multi-select `AskUserQuestion`: **Keep** (land verbatim) / **Keep with
+edits** / **Drop**. Append kept rules to `.claude/rules/brain-hot.md`
+`## Project-specific rules` (A011+). **Never auto-apply.** Selecting nothing is a
+valid outcome. (Same gate as `/retro ratify`.)
 
-## Stage 6 — State capture (AskUserQuestion + paste prompts)
+## `/onboard retro` — post-first-sprint reflection
 
-Walk the operator through filling three files:
-
-1. **`docs/project/sprints/S<N>/tasks.md`** — `AskUserQuestion`:
-   - Currently active sprint? (default: "S00 — Onboarding")
-   - In-flight task? (default: none)
-   - Branch convention from Stage 2 Round 2 — pre-fill
-2. **`docs/project/backlog.md`** — paste prompt:
-   "Paste any current backlog rows (export from Jira/Linear/Issues).
-   I'll reformat to the `BACKLOG_ENTRY_TEMPLATE.md` shape.
-   Or skip — we can seed it during the first sprint."
-3. **`docs/project/backlog.md`** — `AskUserQuestion` from Round 3
-   answers — list the top 3 known carry-overs as F-rows.
-
-## Stage 7 — First-feature shakedown handoff
-
-Final interactive moment:
-
-```
-== Onboarding complete ==
-Files written:
-  CLAUDE.md (root)
-  <N> per-area CLAUDE.md
-  .claude/rules/brain-hot.md (A011 ... A0<NN>)
-  docs/setup/codebase-orientation.md
-  docs/setup/team-conventions.md
-  docs/project/sprints/S<N>/tasks.md / backlog.md / FOLLOWUPS.md
-
-Next step: pilot the workflow on a small task from Stage 2 Round 3.
-Run `/work` to dispatch, or `/idea <idea>` if you want to
-capture more discovery items first.
-
-Stage 8 (onboarding retro) runs after that first sprint closes —
-invoke `/onboard retro` then.
-```
-
-Return control. Wizard done.
-
-## Stage 8 — Onboarding retro (deferred, `/onboard retro`)
-
-Runs only after the operator's first sprint closes (i.e. they've run
-`/retro` at least once). Captures lessons about the wizard itself:
-
-- Which stages took longer than expected?
-- Which interview questions felt wrong / missing?
-- Which A-rule drafts were dropped + why?
-- Which gates were misfit (over-applied / under-applied) for this
-  team's reality?
-
-Writes `docs/project/retros/onboarding.md`. Surfaces candidates for
-refining the control plane (`brain-hot.md` adjustments, new B-rules,
-phase-matrix tweaks).
-
-## Multi-repo coordination
-
-If Stage 0 detected `sibling_installs`, Stage 4 dispatch includes an
-extra prompt: *"Inherit project-local A-rules from sibling `<path>`?
-This copies the ratified A011+ rules from the sibling's brain-hot.md
-into this project's drafts."*
-
-If yes:
-1. Read sibling's `.claude/rules/brain-hot.md`, extract its
-   `## Project-specific rules` section
-2. Merge into THIS project's Stage 4 candidates (de-dup by rule
-   name)
-3. Document the inheritance link in
-   `docs/setup/sibling-repos.md` (template lands in target)
-
-See `references/multi-repo-coordination.md` for the full protocol.
+Runs after the first `/retro`. Captures lessons about the wizard itself (which
+stages misfit, which A-rule drafts were dropped + why, which gates were over/under-
+applied) → `docs/project/sprints/S<N>/retro.md` or a dedicated onboarding note.
 
 ## Failure / fallback
 
-- **Stage 1 Explore returns thin output** (< 30 lines) → stop, ask
-  operator to confirm the project actually has code in it; suggest
-  rerunning after the initial commits.
-- **Stage 3 mining returns 0 signals** → skip Stage 5 A-rule
-  ratification; note "greenfield project, no historical signal".
-- **Stage 4 agent returns with `_TODO operator_` markers** → surface
-  them at Stage 5 alongside A-rule ratification; ask the operator to
-  fill the gaps before moving to Stage 6.
-- **Operator aborts mid-wizard** → `_onboard-staging/` is left in
-  place; re-running `/onboard` resumes from the last completed
-  stage (detect via file presence).
+- Stage 1 returns thin (<30 lines) → confirm the project has code; suggest re-running
+  after the first commits.
+- Stage 2 mining returns 0 signals → note "greenfield, no historical signal"; the
+  code-style sampler still seeds `code-style.md`.
+- Stage 3 returns `_TODO operator_` markers → surface them; the operator fills the
+  gaps (or runs `/onboard interview`).
+- Operator aborts → `_onboard-staging/` is left in place; re-running resumes from
+  the last completed stage (detect via file presence).
 
 ## See also
 
-- `.claude/agents/onboarding-engineer.md` — the drafting agent
-  dispatched at Stage 4
-- `references/repo-topology-detection.md` — how topology classification
-  drives downstream stages
-- `references/interview-questions.md` — full Stage 2 question bank
-- `references/pattern-mining-prompts.md` — Stage 3 agent prompts
-- `references/draft-templates.md` — recipes the engineer agent uses
-- `references/multi-repo-coordination.md` — sibling-install + org-fork patterns
-- `docs/setup/onboarding-guide.md` — human-readable companion
-- `docs/setup/multi-team-deployment.md` — the org-fork pattern for shared rules
+- [`../../agents/onboarding-engineer.md`](../../agents/onboarding-engineer.md) — the Stage 3 drafting agent
+- [`references/pattern-mining-prompts.md`](references/pattern-mining-prompts.md) · [`references/draft-templates.md`](references/draft-templates.md) · [`references/interview-questions.md`](references/interview-questions.md)
+- [`references/repo-topology-detection.md`](references/repo-topology-detection.md) · [`references/multi-repo-coordination.md`](references/multi-repo-coordination.md)
+- [`../../../docs/setup/onboarding-guide.md`](../../../docs/setup/onboarding-guide.md) — human-readable companion

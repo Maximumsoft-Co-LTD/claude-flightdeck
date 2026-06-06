@@ -23,9 +23,11 @@ conventions, its fragile spots, its first sprint." It writes:
 - `docs/setup/team-conventions.md` — softer conventions tier
 - Initial `docs/project/sprints/S<N>/tasks.md` (the active sprint board) / `backlog.md` (with `## Follow-ups`)
 
-Runtime: 4-6 hours interactive on a medium project. Most of that is
-the wizard working; your input is concentrated in the ~30 min
-interview at Stage 2 + ~20 min ratification at Stage 5.
+Runtime: **minutes** on a medium project — the default path is automated
+(scan → mine → draft), producing the architecture map + conventions reference +
+CLAUDE.md routing with little human input. The deep interview (`/onboard
+interview`) and A-rule ratification (`/onboard rules`) are **opt-in** enrichment
+you can run later — they are no longer part of the required path.
 
 **When NOT to run it:** if your project is greenfield with < 5
 commits, the mining stages won't find signal. Onboard anyway — just

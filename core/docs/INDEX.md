@@ -79,7 +79,7 @@ Full architecture rationale:
 | [`/status`](../.claude/skills/status/SKILL.md) | Mid-sprint read-only dashboard (`/status`); deep audit query (`/status audit`) — never writes | (status print / audit digest) |
 | [`/retro`](../.claude/skills/retro/SKILL.md) | Sprint close + backlog audit (`/retro`); land Candidate A-rules into brain-hot.md (`/retro ratify`); move old sprints to historical/ (`/retro archive`) | `docs/project/sprints/S<N>/retro.md` · `brain-hot.md` A011+ · archived sprints |
 | [`/ship`](../.claude/skills/ship/SKILL.md) | Drive a deployment through 5 phases (`/ship`); read-only deploy-readiness scan first (`/ship --check`); build CHANGELOG.md from git history (`/ship changelog`) | deploy artifacts · `CHANGELOG.md` |
-| [`/onboard`](../.claude/skills/onboard/SKILL.md) | 8-stage hybrid wizard: scan codebase, mine git history, draft CLAUDE.md + A-rules + sprint board. Run once after install, or `/onboard refresh` to update | `CLAUDE.md` · `brain-hot.md` · `tasks.md` · `backlog.md` |
+| [`/onboard`](../.claude/skills/onboard/SKILL.md) | Auto-generate the project-understanding docs (architecture map + conventions reference + CLAUDE.md routing) by scanning + mining the codebase. Minutes; interview opt-in. `refresh` re-runs it | `codebase-orientation.md` · `code-style.md` · `CLAUDE.md` |
 
 **Niche commands** (always available):
 

@@ -103,6 +103,24 @@
   and the INDEX scoreboard row — per the repo's "research must improve the
   template, not just accumulate" rule.
 
+### Changed
+
+- **`/onboard` reworked from a 4-6h interactive wizard into a fast,
+  doc-generation-first skill** (337 → 166 lines; the last validator size warning
+  is gone). The default `/onboard` now AUTO-GENERATES the three artifacts the
+  orchestrator + agents actually read — the architecture map
+  (`docs/setup/codebase-orientation.md`), the conventions reference
+  (`.claude/rules/code-style.md`), and the `CLAUDE.md` routing — by scanning +
+  mining the codebase (read-only Explore agents + one drafting agent), in minutes.
+  - The slow **human interview**, **A-rule ratification**, and **state capture**
+    are now **opt-in** modes (`/onboard interview`, `/onboard rules`) — no longer
+    on the required path. A-rule candidates are proposed, never auto-landed.
+  - The pre-task ritual now points agents at the architecture map (Step 1.5), so
+    "the orchestrator + agents understand the project" is wired in, not implicit.
+  - **Why / how it's better:** the team's complaint was that onboarding took too
+    long; the value an agent needs is the *docs*, which are mechanically derivable
+    from the codebase. Fast default; deep human context stays available on demand.
+
 ### Fixed
 
 - **Sprint-scaffolding gap** — `/work` now scaffolds the sprint board
