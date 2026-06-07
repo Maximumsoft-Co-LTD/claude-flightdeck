@@ -17,9 +17,26 @@
 | **ID** | `B###` sequential | Never reuse. Increment `Next ID` counter at top of backlog.md |
 | **Type** | `feat` / `bug` / `enh` / `debt` / `audit` | See Type Guide below |
 | **Title** | **Bold name** — description | Keep to ~100 chars. Bold the noun phrase, dash, then context |
+
+> **The Status enum is the contract that keeps the backlog trustworthy.** The #1
+> backlog failure is a Status cell that becomes a free-text *log*
+> (`discovery → verified → …done` buried mid-cell): no fixed position is
+> authoritative, greps see only the stale prefix, and `/work` re-picks shipped
+> work. So:
+>
+> - **Status is exactly one token** from the enum — no narrative, no accumulation,
+>   no second clause. History belongs in git + the sprint files, not the cell.
+> - **`open` / `wip S##` are the only values allowed in `## Active`.** Terminal
+>   values (`done S##` / `wontfix` / `superseded-by B###`) are *swept out* to the
+>   cold archive — they never sit in the hot file. `scripts/backlog.sh sweep`
+>   does this; `scripts/backlog.sh check` fails CI if one lingers.
+> - **Design-review status is NOT a backlog status.** "Verified at design review"
+>   lives in the sprint's `designs/INDEX.md` Status column — putting it in the
+>   backlog is what made `verified` collide with shipped-`done`. The backlog
+>   Status tracks **delivery lifecycle only**.
 | **Pri** | `P0` / `P1` / `P2` / `P3` | No suffixes (-CRITICAL, -HIGH, -LOW). Just P0–P3 |
 | **Size** | `S` / `M` / `L` / `XL` | S=~1 task group, M=~2-3, L=~4-6, XL=~7+ |
-| **Status** | `new` / `scheduled S##` / `done S##` / `deferred` / `wontfix` | Always include sprint number |
+| **Status** | **exactly one** of: `open` · `wip S##` · `done S##` · `wontfix` · `superseded-by B###` | **One token, never a log** — see the enum rules below |
 
 ### Type Guide
 
@@ -88,29 +105,33 @@ Place immediately after the table, using `<details>` for collapsible content:
 
 ## Section Organization
 
-Backlog file has 4 sections, ordered by lifecycle:
+The hot `backlog.md` has just **two** sections — it is a working set, not an
+archive of all work ever:
 
 ```markdown
-## Active
-<!-- Unscheduled items, sorted by priority (P0 first) -->
+## Active        ← open + wip rows ONLY (the whole hot working set)
+## Follow-ups    ← Open / Closed retro follow-ups (F#### lifecycle)
+```
 
-## Scheduled
-<!-- Items assigned to a sprint, grouped by sprint number -->
+Closed items do **not** get an `## Archive` section in `backlog.md`. They are
+swept to a sibling **cold ledger** that is grepped, never Read wholesale:
 
-## Deferred
-<!-- Explicitly postponed — each MUST have a reason -->
-
-## Archive
-<!-- Completed items — collapsed <details> block -->
+```
+docs/project/archive/backlog-archive.md   ← one thin line per closed item
 ```
 
 ### Rules
 
-1. **New entries** go to Active with status `new`
-2. **Sprint planning** moves items to Scheduled, status → `scheduled S##`
-3. **Completed items** move to Archive, status → `done S##`
-4. **Postponed items** move to Deferred with reason in detail block
-5. **Every section** uses the same 6-column table — no exceptions
+1. **New entries** go to `## Active` with status `open`.
+2. **Sprint planning** sets the row's status → `wip S##` (it stays in `## Active`).
+3. **On close** the status becomes terminal (`done S##` / `wontfix` /
+   `superseded-by B###`) and the row is **swept out** of `## Active` into
+   `archive/backlog-archive.md` — `scripts/backlog.sh sweep` (run by `/retro`).
+4. **Postponed** = leave it `open` (re-prioritize by row order); a genuine
+   "won't do" is `wontfix` → swept. There is no separate Deferred section.
+5. **`## Active` uses the 6-column table**; the cold archive uses a thin
+   3-column line (`| ID | Status | Title |`) — full detail stays in the sprint
+   files + `ideas/` + git, never duplicated into the archive.
 
 ## File Header
 

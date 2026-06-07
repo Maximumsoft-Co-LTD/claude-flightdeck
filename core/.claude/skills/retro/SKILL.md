@@ -17,6 +17,8 @@ Old `/ratify-rules` and `/archive` are gone; use `/retro ratify` and
 - One `Read` of `docs/project/sprints/S<N>/tasks.md` (`limit: 400`) — the
   primary input (the board holds the live mini-retros).
 - One `Read` of `docs/project/backlog.md` — for the audit + the highest F#### ID.
+- `scripts/backlog.sh sweep` + `index` — sprint-close backlog hygiene (closed
+  `## Active` rows → cold archive; index regen). Deterministic bash, 0 LLM tokens.
 - `Grep` for everything else (lesson recurrence, candidate rules, sprint scan).
 - `Grep` one section of `../../rules/brain-hot.md` (ratify mode) — never full-Read.
 
@@ -42,18 +44,35 @@ HARD gates block close.
 8. **Execute every "fix now" item** — do NOT commit the retro until they land
    (update affected skills + rules in the same commit).
 
-**HARD GATE — Backlog audit (mismatch ≠ 0 blocks close):**
+**HARD GATE — Backlog audit (drift blocks close):**
 ```bash
-SPRINT=S<N>
-grep -nE "$SPRINT\b" docs/project/backlog.md | grep -vE "done $SPRINT|\[~\] Partial|moved to S"
+scripts/backlog.sh check        # Status enum + size cap — must exit 0
+scripts/backlog.sh reconcile    # advisory: wip rows that look already-closed in S<N>
 ```
-Any returned line = mismatch. Resolve each. Cite: `Backlog audit: <N>/<N> rows matched · 0 mismatches`.
+`check` must pass. Resolve every reconcile flag (set genuinely-shipped rows to
+`done S<N>`; the sweep below moves them out). Cite: `Backlog audit: check ✓ · <N>
+reconcile flag(s) resolved`.
 
 **HARD GATE — Follow-ups verification (this sprint's rows must not stay `open`):**
 - `Grep docs/project/backlog.md '## Follow-ups'` — every `F####` row referencing
   this sprint must end `in-progress`, `consumed-by:<task-id>`, or `wont-do
   (reason)`. `open` = process loss; return the gap to `sprint-retro-author`.
 - Cite: `Follow-ups: X consumed · Y new · Z still open · 0 sprint-touched rows left open`.
+
+**Backlog sweep (mechanism, not vigilance — keeps `backlog.md` lean):**
+```bash
+scripts/backlog.sh sweep        # terminal ## Active rows → archive/backlog-archive.md
+scripts/backlog.sh index        # regenerate backlog-index.md from the hot file
+```
+Run both in the SAME commit as step 12. `sweep` is idempotent and one-line-per-item;
+detail stays in the sprint file + `ideas/D<NNN>-*.md` + git — never copied into the
+archive (that is what keeps it thin). `## Active` is left **open/wip-only**. The
+shipped CI gate (`scripts/backlog.sh check`, wired into
+`.github/workflows/ai-workflow-validation.yml`) fails the next PR if a closed/blob
+row lingers — and catches the inverse drift too (a shipped item mislabeled
+`open`/`verified`). Rule + rationale:
+[`../../../docs/setup/index-discipline.md`](../../../docs/setup/index-discipline.md)
+"The hot/cold split".
 
 9. **Recurring-lesson promotion** — a finding recurring 2+ times → `sprint-retro-author`
    drafts it under `## Candidate A-rules` in the retro (proposes only; never
@@ -107,12 +126,13 @@ Keeps `docs/project/sprints/` lean — archive everything older than the 3 most
 recent sprints. Uses `git mv` (nothing deleted); always confirm first. Forms:
 `/retro archive` · `/retro archive S<N>` · `/retro archive list` · `/retro archive restore S<N>`.
 
-1. **Scan** — `Glob docs/project/sprints/*/tasks.md` + `*/retro.md`; sort by `S<N>`.
-2. **Keep the latest 3 active;** older = archive candidates.
-3. **Show preview** — every file + destination. **Confirm with the user.**
-4. **Execute `git mv`** → `docs/project/sprints/historical/S<N>/`.
-5. **Update `docs/project/sprints/historical/INDEX.md`** — one row per archived
-   sprint (title + date archived).
+1. **Plan** — `scripts/backlog.sh archive-sprints --keep 3` (dry-run) prints the
+   closed sprints it would roll to `historical/` (closed = has a `retro.md`).
+2. **Show preview** — that dry-run output IS the preview. **Confirm with the user.**
+3. **Execute** — `scripts/backlog.sh archive-sprints --keep 3 --apply` runs the
+   `git mv` → `docs/project/sprints/historical/S<N>/` + appends
+   `historical/INDEX.md` rows. (Equivalent manual `git mv` is fine if you prefer
+   per-file confirmation.)
 6. **Commit** — `docs(archive): move sprints older than the active window to historical/`.
 
 Restore reverses the moves. **Never delete** (always `git mv`); never archive a

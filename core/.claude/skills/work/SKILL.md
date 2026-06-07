@@ -43,7 +43,7 @@ and the mandatory 6-gate review
    task: `mkdir -p docs/project/sprints/S<N>/designs/_briefs`, copy
    `docs/project/_templates/tasks.md` → `sprints/S<N>/tasks.md`, fill the Glance
    header, and pull in the backlog rows scheduled for this sprint
-   (`Grep docs/project/backlog.md` for `scheduled S<N>`). This is how a sprint
+   (`Grep docs/project/backlog.md` for `wip S<N>`). This is how a sprint
    starts — there is no separate "new sprint" command.
 1. **Identify the task(s).** No arg → scan `docs/project/sprints/S<N>/tasks.md`
    for the unblocked frontier (lowest priority-number first, dependencies met).
@@ -54,6 +54,14 @@ and the mandatory 6-gate review
    to the user before dispatch.**
 3. **Readiness gate** — confirm dependencies done, acceptance criteria present,
    not already in flight. Block + report if not ready.
+4. **Confirm-open gate (do NOT trust the Status column).** Before committing to
+   execute, run `scripts/backlog.sh verify <B###>` for the backlog item behind
+   the task. Exit 0 = genuinely open → proceed. Exit 1 = already closed (it's in
+   the cold archive or terminal-but-unswept) → **do not re-implement**: sweep the
+   stale row (`scripts/backlog.sh sweep`) and pick the next eligible task. Exit 2
+   = unknown ID → don't assume open; grep the sprint records first. This is
+   mechanism for the lesson that status drift causes re-picking shipped work —
+   one cheap grep beats a wasted implementation.
 
 ## Step A′ — Design-first (A005, folds in the old `/plan`)
 
@@ -133,6 +141,10 @@ Any gate fails → fix → re-run that gate only. Don't mark done until all pass
 - All lanes green → update each task's state in
   `docs/project/sprints/S<N>/tasks.md` (`[x]`/`[~]`), append its **live
   mini-retro** (A009) to the board, and report what's next.
+- If a task fully delivers its backlog item, set that `## Active` row's Status to
+  `done S<N>` (one token — never edit it into a narrative). It is swept to the
+  cold archive at sprint close (`/retro` runs `scripts/backlog.sh sweep`); the
+  board `[x]` is the per-task truth in the meantime.
 
 ## What to NEVER do
 

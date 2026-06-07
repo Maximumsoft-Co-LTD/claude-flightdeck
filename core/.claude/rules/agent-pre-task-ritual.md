@@ -93,7 +93,9 @@ assume any particular architecture is in place:
    - `docs/project/sprints/S<N>/designs/D<NNN>-<slug>.md` (active sprint), or
    - `docs/designs/_archive/<sprint>/...` (historical reference only).
 9. Confirm: AC list, touched-files matrix, applicable A/L rules,
-   dependencies, blockedBy.
+   dependencies, blockedBy. **Confirm the work isn't already shipped** — run
+   `scripts/backlog.sh verify <B###>` for the backlog item; if it reports CLOSED,
+   STOP and report back (don't re-implement done work — status columns drift).
 10. If the design doc does NOT exist → **STOP.** Defer to the
     `design-doc-writer` agent first (A005 — design-doc-first).
 11. If the doc is < 200 lines and the task is non-trivial → emit a

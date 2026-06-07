@@ -52,3 +52,29 @@ jobs:
                 || { echo "$f: missing '## Token budget' heading"; exit 1; }
             done
           fi
+
+      - name: Backlog hygiene — Status enum + size cap (scripts/backlog.sh check)
+        # Status drift is the #1 reason /work re-picks shipped work. scripts/backlog.sh
+        # check enforces the enum mechanically: every ## Active row's Status is exactly
+        # `open` or `wip S<N>` — which catches BOTH drift directions (terminal rows left
+        # in Active AND mislabeled blobs like `verified`/`discovery`/done-buried-mid-cell)
+        # — plus a HARD size cap so the hot file can't grow back to the 316KB failure.
+        # Rationale + the hot/cold split: docs/setup/index-discipline.md.
+        run: |
+          set -e
+          if [ -f scripts/backlog.sh ] && [ -f docs/project/backlog.md ]; then
+            bash scripts/backlog.sh check
+            # Advisory: surface wip rows that look already-closed in their sprint
+            # (never fails the build — the B###→task link is heuristic).
+            bash scripts/backlog.sh reconcile || true
+          fi
+          # Advisory: also flag follow-up Open rows that reached a terminal status.
+          if [ -f docs/project/backlog.md ]; then
+            LEAK=$(awk '/^### Open/{a=1;next} /^### |^## /{a=0} a' docs/project/backlog.md \
+                     | grep -E '^\|[[:space:]]*F[0-9]' \
+                     | grep -iE 'consumed-by|wont-?do|won.t do' || true)
+            if [ -n "$LEAK" ]; then
+              echo "::warning file=docs/project/backlog.md::Follow-up rows with a terminal status are still under '### Open' — move them to '### Closed':"
+              echo "$LEAK"
+            fi
+          fi

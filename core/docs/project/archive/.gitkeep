@@ -1,0 +1,6 @@
+# Cold ledger lives here.
+#
+# scripts/backlog.sh sweep creates + appends backlog-archive.md (one thin line
+# per closed backlog item) on first sprint close. Grep it on demand — never Read
+# it wholesale into context. Rolls to backlog-archive-2.md past ~1,000 lines.
+# Full detail of any item stays in its sprint files + ideas/ + git history.

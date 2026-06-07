@@ -547,10 +547,13 @@ copy_tree() {
 note "Copying core/ → $TARGET/"
 copy_tree "$SCRIPT_DIR/core" "$TARGET"
 
-# Ensure hook scripts are executable after copy (defensive — cp -R should
-# preserve mode, but some shares / filesystems strip the bit).
+# Ensure hook + control-plane scripts are executable after copy (defensive —
+# cp -R should preserve mode, but some shares / filesystems strip the bit).
 if [[ $DRY_RUN -eq 0 && -d "$TARGET/.claude/hooks" ]]; then
   find "$TARGET/.claude/hooks" -type f -name '*.sh' -exec chmod +x {} +
+fi
+if [[ $DRY_RUN -eq 0 && -d "$TARGET/scripts" ]]; then
+  find "$TARGET/scripts" -type f -name '*.sh' -exec chmod +x {} +
 fi
 
 # ---------- select permission profile ----------
