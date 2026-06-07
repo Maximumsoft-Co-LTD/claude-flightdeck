@@ -9,7 +9,7 @@
 > semver. Each release should list **Added / Changed / Fixed / Removed**
 > sub-sections as relevant.
 
-## Unreleased
+## v0.14.0 — 2026-06-07
 
 ### Added
 
