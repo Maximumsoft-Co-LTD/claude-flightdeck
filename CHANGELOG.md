@@ -11,6 +11,96 @@
 
 ## Unreleased
 
+### Added
+
+- **Backlog hot/cold split — sprint-close archive sweep + shipped CI guard.**
+  A new convention that stops `backlog.md` from silently growing to thousands of
+  lines. Three coordinated changes:
+  - `core/docs/setup/index-discipline.md` — new `## The hot/cold split` section:
+    `## Active` holds **only `open` / `in-progress` rows**; terminal-status rows
+    (`done` / `superseded` / `wont-do`) are swept into a **cold** ledger
+    `docs/project/archive/backlog-archive.md` (one line per item, rotates at a
+    1,000-line budget into `-2`, `-3`, …). Plus a mutation-table row making the
+    sweep a same-commit obligation.
+  - `core/.claude/skills/retro/SKILL.md` — Mode 1 (sprint close) gains a **Backlog
+    sweep** step right after the backlog-audit / follow-ups HARD GATEs, plus a
+    Token-budget line for the archive append.
+  - `core/.github/workflows/ai-workflow-validation.yml` — a **shipped** CI step
+    that fails the PR if any closed row is left in `## Active`, and warns when
+    `backlog.md` exceeds 1,500 lines.
+  - **Why / how it's better:** `backlog.md` is a *hot* file — `/work`, `/status`,
+    `/retro` Read it every invocation, so every closed row left in `## Active` is
+    paid for on every read (the index-discipline token argument, applied to the
+    backlog body, not just its index). Closed work that never leaves `## Active`
+    was the single biggest backlog token sink (a real consumer backlog had **246
+    Active rows of which 245 were closed**, ~1,100 dead lines). The archive is
+    cheap to grow because it is *cold* (grep-on-demand, never Read wholesale),
+    *thin* (detail stays in `sprints/` + `ideas/` + git, never duplicated), and
+    *rotated* — so it answers "won't the archive just re-bloat?" by construction.
+    Enforcement is mechanism (retro sweep + CI gate), not vigilance, so it can't
+    regress the way a documented-only convention would.
+
+- **Backlog Status enum + `scripts/backlog.sh` mechanism + `/backlog-migrate`.**
+  Hardens the hot/cold split above into something drift-proof, after a consumer
+  project (316 KB `backlog.md`, 130+ sprint folders) showed the split alone
+  wasn't enough: `/work` kept re-picking shipped work because the Status column
+  had drifted.
+  - `core/scripts/backlog.sh` (**new**, shipped, pure bash, 0 LLM tokens) —
+    subcommands `check` (CI gate; enum + line **and byte** size cap),
+    `verify <B###>` (pick-gate; cross-checks the sprint board `[x]`, not just the
+    status column), `sweep`, `reconcile` (board-evidence), `index`,
+    `archive-sprints`, and `install-hook` (a git **pre-commit** gate so a drifted
+    backlog can't be committed — the "always-synced" guarantee). install.sh now
+    `chmod +x`'s `scripts/*.sh` after copy.
+  - `core/.claude/skills/backlog-migrate/SKILL.md` (**new**) — one-time
+    evidence-based reconcile of a legacy drifted backlog: classifies every row
+    by sprint records (not the Status cell), rewrites the hot file to
+    open/wip-only, emits the cold archive + an `backlog-uncertain.md` review list,
+    rolls old sprints to `historical/`.
+  - `core/.claude/skills/work/SKILL.md` — Step A gains a **confirm-open gate**
+    (`scripts/backlog.sh verify` before executing; exit 1 ⇒ don't re-implement).
+  - `core/.claude/skills/retro/SKILL.md` — Mode 1 sweep/audit now call
+    `reconcile`/`sweep`/`index`; Mode 3 archive uses `archive-sprints`.
+  - `core/.claude/rules/agent-pre-task-ritual.md` — Step 3 adds the same verify.
+  - **Why / how it's better:** the deepest cause was a Status cell that became a
+    free-text *log* (`discovery → verified → …done` buried mid-cell) — so greps
+    saw only the stale prefix and `verified` (design-review) collided with `done`
+    (shipped). The fix makes Status a **single token from a closed enum**
+    (`open | wip S## | done S## | wontfix | superseded-by B###`), delivery-only
+    (design-review status moves to `designs/INDEX.md`), and makes done-ness
+    **derivable** (absent-from-hot + present-in-cold-archive) rather than a
+    hand-maintained assertion. The reliability work runs in **bash + CI — zero
+    LLM tokens** — and the pick-gate prevents the most expensive waste of all:
+    re-executing already-shipped work.
+
+### Changed
+
+- **Backlog schema unified on a single `## Active` hot section.** The shipped
+  `core/docs/project/backlog.md.tmpl` is rewritten from
+  `## Unscheduled/Scheduled/Recently Done/Archive` to **`## Active` (open/wip
+  only) + `## Follow-ups`** — done items live only in the cold archive.
+  `BACKLOG_ENTRY_TEMPLATE.md`, `NAMING.md`, and `docs/project/README.md` align to
+  the enum + hot/cold model. The CI gate (`ai-workflow-validation.yml`) now runs
+  `scripts/backlog.sh check` (enum-conformance + **hard** size cap) instead of a
+  single keyword grep, and `index-discipline.md` documents the enum rationale.
+
+### Fixed
+
+- **CI backlog gate was a no-op on installed projects.** The gate keyed on
+  `## Active`, but the shipped `backlog.md.tmpl` used `## Unscheduled`/`##
+  Scheduled` — so nothing was ever checked. It also only caught one drift
+  direction (the literal word `done` in `## Active`), missing the real failure
+  mode (a shipped item mislabeled `verified`/`discovery`). Unifying on `## Active`
+  + the enum check fixes both: the gate now fires, and catches both directions.
+
+### Upgrade impact
+
+- **Existing projects must run `/backlog-migrate` once** to move from the old
+  multi-section free-text-status backlog to the `## Active` enum + cold archive
+  (it preserves everything via git; nothing is deleted). After that, the recurring
+  mechanism (`scripts/backlog.sh` + the CI gate) keeps it clean. New installs get
+  the new schema directly.
+
 ## v0.13.0 — 2026-06-06
 
 ### Added

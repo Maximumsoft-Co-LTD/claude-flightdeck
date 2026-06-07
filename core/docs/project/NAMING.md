@@ -21,7 +21,7 @@
 - **Priority** — `P0 | P1 | P2 | P3` (backlog) · `low | med | high` (follow-ups)
 - **Size** — `S | M | L | XL` (see `../designs/_templates/SIZE_TIERS.md`)
 - **Task state** (board) — `[ ]` not started · `[~]` in progress/partial · `[x]` done · `[B]` blocked
-- **Backlog status** — `new | scheduled S## | done S## | deferred | wontfix`
+- **Backlog status** (one token, delivery lifecycle only) — hot: `open | wip S##` · terminal (swept to `archive/backlog-archive.md`): `done S## | wontfix | superseded-by B###`
 - **Follow-up status** — `open | in-progress | consumed-by:<task-id> | wont-do (reason)`
 
 ## Counters serialize through the integration base

@@ -79,9 +79,10 @@ ID rules: [`../../../docs/project/NAMING.md`](../../../docs/project/NAMING.md).
    (optional).
 6. **Allocate the next B###** — `Grep docs/project/backlog.md` for the highest
    B### and increment.
-7. **Append the enriched entry** to `docs/project/backlog.md` `## Unscheduled`
-   (or `## Scheduled` if a sprint was named): user story + AC + affected
-   components + discovery ref (`see D###`) + Priority · Size · Source = idea.
+7. **Append the enriched entry** to `docs/project/backlog.md` `## Active` with
+   Status `open` (or `wip S##` if a sprint was named — one token, never a
+   narrative): user story + AC + affected components + discovery ref (`see D###`)
+   + Priority · Size · Source = idea.
 8. **Update the idea detail file** — set State = `promoted (B###)` in the header.
    Commit backlog + idea-file edits atomically.
 9. **Confirm** — print the new B### and, if set, the target sprint.
